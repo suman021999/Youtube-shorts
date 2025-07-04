@@ -1,6 +1,6 @@
 import React from 'react'
-import Navbar from '../components/Navandside/Navbar'
-import SidebarCard from '../../sidebar/SidebarCard'
+import Navbar from '../components/Navbar/Navbar'
+import SidebarCard from '../components/sidebar/SidebarCard'
 import Homecontext from '../components/Home/Homecontext'
 
 
