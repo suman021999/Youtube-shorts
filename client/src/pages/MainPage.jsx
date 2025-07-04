@@ -1,18 +1,21 @@
 import React from 'react'
 import Navbar from '../components/Navandside/Navbar'
-import SidebarCard from '../components/Navandside/SidebarCard'
+import SidebarCard from '../../sidebar/SidebarCard'
 import Homecontext from '../components/Home/Homecontext'
 
 
 const MainPage = () => {
   return (
     <>
-      <Navbar/>
+    <section className='w-full h-screen bg-[#1928cd] flex '>
+     <Navbar/>
 
-        <div className='w-full h-full  flex flex-col items-center justify-center'>
+    <div className='w-full h-[80vh]  flex flex-col items-center justify-center bg-amber-300'>
       <SidebarCard/>
       <Homecontext/>
-        </div>
+    </div>
+    </section>
+    
     </>
   )
 }

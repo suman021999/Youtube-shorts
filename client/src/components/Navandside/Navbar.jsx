@@ -1,11 +1,10 @@
 import React from 'react'
-import Sidebar from './Sidebar'
+
 import logo from "../../../public/youtube.svg"
 import { CiSearch } from "react-icons/ci";
 import { GoPlus } from "react-icons/go";
-import SidebarCard from './SidebarCard';
+import { RxHamburgerMenu } from 'react-icons/rx';
 const Navbar = () => {
-
   //   const [sidebarOpen, setSidebarOpen] = useState(false);
 
 //   const toggleSidebar = () => {
@@ -14,11 +13,13 @@ const Navbar = () => {
   return (
     <>
 
-    <section className='fixed w-full  bg-red-300'>
-      <div className='flex gap-4 p-4 mx-6 items-center justify-between'>
+    <section className='fixed w-full h-[10vh] mb-4 bg-amber-200'>
+
+
+       <div className='flex gap-4 p-4 mx-6 items-center justify-between'>
 
         <div className='flex gap-4 items-center'>
-        <div><Sidebar/></div>
+        <div><RxHamburgerMenu className='h-6 w-6'/></div>
 
         <div>
           <img src={logo} alt="" className='h-10 w-10'/>
@@ -52,6 +53,7 @@ const Navbar = () => {
 
 
       </div>
+     
         
     </section>
 
