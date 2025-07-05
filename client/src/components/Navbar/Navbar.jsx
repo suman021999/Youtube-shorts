@@ -13,7 +13,7 @@ const Navbar = () => {
   return (
     <>
 
-    <section className='fixed w-full h-[10vh] mb-4 bg-amber-200'>
+    <section className='fixed top-0 left-0 z-50 w-full h-[10vh] border-[#2777a0] bg-white'>
     
     </section>
 

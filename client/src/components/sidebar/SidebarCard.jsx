@@ -4,7 +4,7 @@ import React from 'react';
 const SidebarCard = () => {
   return (
     <>
-    <section className='p-4 '>
+    <section className='p-4 md:bg-red-700 w-[20vw] h-[85vh] fixed '>
  
     </section>
     </>

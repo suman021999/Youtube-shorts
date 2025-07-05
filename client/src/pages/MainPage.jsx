@@ -2,18 +2,21 @@ import React from 'react'
 import Navbar from '../components/Navbar/Navbar'
 import SidebarCard from '../components/sidebar/SidebarCard'
 import Homecontext from '../components/Home/Homecontext'
+import { Route,Routes } from 'react-router-dom'
 
 
 const MainPage = () => {
   return (
     <>
-    <section className='w-full h-screen bg-[#1928cd] flex '>
-     <Navbar/>
+    {/* <Navbar/> */}
 
-    <div className='w-full h-[80vh]  flex flex-col items-center justify-center bg-amber-300'>
+  
+    <section className='w-full min-h-screen bg-[#b1b2c2] pt-[15vh] flex'>
+    
       <SidebarCard/>
+     
       <Homecontext/>
-    </div>
+    
     </section>
     
     </>
@@ -21,3 +24,6 @@ const MainPage = () => {
 }
 
 export default MainPage
+
+
+
