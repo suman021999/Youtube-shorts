@@ -8,10 +8,10 @@ import { Route,Routes } from 'react-router-dom'
 const MainPage = () => {
   return (
     <>
-    {/* <Navbar/> */}
+    <Navbar/>
 
   
-    <section className='w-full min-h-screen bg-[#b1b2c2] pt-[15vh] flex'>
+    <section className='w-full min-h-screen  pt-[15vh] flex'>
     
       <SidebarCard/>
      

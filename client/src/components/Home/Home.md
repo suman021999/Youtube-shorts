@@ -1,0 +1,1 @@
+//md:ml-[45vh] should work with condition of sidebar open and close {/* {`w-full ${sidebarOpen ? 'md:ml-[45vh]' : ''}`} */}
