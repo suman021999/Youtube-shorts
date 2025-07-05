@@ -1,24 +1,33 @@
 import React from 'react';
-// import { FaHome, FaCompass, FaSubscript } from "react-icons/fa";
 
+import { LiaHomeSolid } from "react-icons/lia";
+import { SiYoutubeshorts } from "react-icons/si";
 const SidebarCard = () => {
   return (
     <>
-    <section className='p-4 md:bg-[#f4f2f2e8] w-[20vw] h-[85vh] fixed z-70'>
-      <div className='flex flex-col gap-4'>
-        <div className='flex items-center gap-2 p-2 hover:bg-gray-200 rounded-md cursor-pointer'>
-          {/* <FaHome className='text-xl' /> */}
-          <span className='text-lg'>Home</span>
+    <section className='p-4 md:bg-[#f4f2f2e8] w-[20vw] h-[85vh] fixed z-70 md:flex  hidden'>
+      <div className='bg-red-500 p-4 w-[500px] h-[30vh] rounded-lg flex flex-col gap-4'>
+
+        <div className='bg-white h-10 flex items-center  rounded-lg'>
+          <LiaHomeSolid className='h-6 w-6   mx-2 ' />
+          <h2 className=''>Home</h2>
         </div>
-        <div className='flex items-center gap-2 p-2 hover:bg-gray-200 rounded-md cursor-pointer'>
-          {/* <FaCompass className='text-xl' /> */}
-          <span className='text-lg'>Explore</span>
+
+         <div className='bg-white h-10 flex items-center  rounded-lg'>
+          <SiYoutubeshorts  className='h-6 w-6   mx-2 ' />
+          <h2 className=''>Home</h2>
         </div>
-        <div className='flex items-center gap-2 p-2 hover:bg-gray-200 rounded-md cursor-pointer'>
-          {/* <FaSubscript className='text-xl' /> */}
-          <span className='text-lg'>Subscriptions</span>
+
+
+         <div className='bg-white h-10 flex items-center  rounded-lg'>
+          <LiaHomeSolid className='h-6 w-6   mx-2 ' />
+          <h2 className=''>Home</h2>
         </div>
+            
+
+           
       </div>
+      
     </section>
     </>
   );
