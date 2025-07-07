@@ -58,7 +58,7 @@ const Navbar = () => {
 
             <div className="hidden lg:flex items-center">
               <input
-                id="search"
+              id="search"
                 type="text"
                 placeholder="search"
                 className="w-[500px] h-10 px-8 border border-[#9e9898d6] rounded-l-4xl hover:shadow-[inset_0_0_6px_#1e90ff]"

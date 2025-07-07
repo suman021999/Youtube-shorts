@@ -3,7 +3,7 @@
 
 /* Light mode (default) */
 body {
-  @apply bg-white text-gray-900;
+  @apply bg-[#f4f2f2e8] text-gray-900;
 }
 
 /* Dark mode */

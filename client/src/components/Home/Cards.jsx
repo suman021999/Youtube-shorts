@@ -8,12 +8,12 @@ const Cards = () => {
   return (
     <div className={`
       lg:w-[15vw] 
-      
+      mb-20 lg:mb-0
       rounded-lg 
       
     `}>
       {/* Video placeholder */}
-      <div className="mb-4">
+      <div className="mb-4 ">
         <Link>
           <video 
             src="romcom.mp4" 
