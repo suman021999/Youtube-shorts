@@ -6,21 +6,23 @@ import { Link } from "react-router-dom";
 const Cards = () => {
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
   return (
+    <>
     <div className={`
       lg:w-[15vw] 
       mb-20 lg:mb-0
       rounded-lg 
       
     `}>
+   <Link to="/shorts" className="block">
       {/* Video placeholder */}
       <div className="mb-4 ">
-        <Link>
+        
           <video 
-            src="romcom.mp4" 
+            src="1111.mp4" 
             type="video/mp4" 
             className="w-full rounded-lg"
           />
-        </Link>
+        
       </div>
       
       <div className='px-4 py-2'>
@@ -43,7 +45,9 @@ const Cards = () => {
           Views • Date
         </p>
       </div>
+      </Link>
     </div>
+    </>
   );
 };
 
