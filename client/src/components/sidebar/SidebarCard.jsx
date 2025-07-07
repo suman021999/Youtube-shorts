@@ -4,6 +4,8 @@ import { LiaHomeSolid } from "react-icons/lia";
 import { SiYoutubeshorts } from "react-icons/si";
 import { useSelector, useDispatch } from 'react-redux';
 import { closeSidebar } from '../../hooks/sidebarSlice';
+import { Link } from 'react-router-dom';
+
 
 const SidebarCard = () => {
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
@@ -39,24 +41,24 @@ const SidebarCard = () => {
       <div className='p-4 w-full h-[30vh] rounded-lg flex flex-col gap-4'>
 
         {/* Home Item */}
-        <div 
+        <Link to="/"
           className={`${selectedItem === 'Home' ? (isDarkMode ? 'bg-[#dbe1e330]' : 'bg-[#b3b0b034]') : 'bg-transparent'} 
           h-10 flex items-center rounded-lg cursor-pointer ${!isSidebarOpen ? 'justify-center' : ''}`}
           onClick={() => setSelectedItem('Home')}
         >
           <LiaHomeSolid className={`h-6 w-6 mx-2 flex-shrink-0 ${isDarkMode ? 'text-white' : ''}`} />
           {isSidebarOpen && <h2 className={isDarkMode ? 'text-white' : ''}>Home</h2>}
-        </div>
+        </Link>
 
         {/* Shorts Item */}
-        <div 
+        <Link to="/shorts" 
           className={`${selectedItem === 'Shorts' ? (isDarkMode ? 'bg-[#dbe1e330]' : 'bg-[#b3b0b034]') : 'bg-transparent'} 
           h-10 flex items-center rounded-lg cursor-pointer ${!isSidebarOpen ? 'justify-center' : ''}`}
           onClick={() => setSelectedItem('Shorts')}
         >
           <SiYoutubeshorts className={`h-6 w-6 mx-2 flex-shrink-0 ${isDarkMode ? 'text-white' : ''}`} />
           {isSidebarOpen && <h2 className={isDarkMode ? 'text-white' : ''}>Shorts</h2>}
-        </div>
+        </Link>
 
         {/* Library Item */}
         <div 
@@ -69,6 +71,8 @@ const SidebarCard = () => {
         </div>
         
       </div>
+
+
     </section>
   );
 };
