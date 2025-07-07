@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { toggleSidebar } from '../../hooks/sidebarSlice';
 import logo from "../../../public/youtube.svg";
 import { CiSearch } from "react-icons/ci";
 import { GoPlus } from "react-icons/go";
@@ -32,7 +32,7 @@ const Navbar = () => {
       <section
          className={`fixed top-0 left-0 z-50 w-full h-[20vh] border-[#2777a0] transition-all duration-300 
           ${scrolled && "bg-[#f4f2f2e8]"} 
-          ${isDarkMode && "dark:bg-gray-800"}`}
+          ${isDarkMode && "dark:bg-[#000000e8]"}`}
         style={{
           backdropFilter: scrolled ? "blur(10px)" : "none",
           WebkitBackdropFilter: scrolled ? "blur(10px)" : "none",
@@ -42,7 +42,10 @@ const Navbar = () => {
           {/* Left: Hamburger & Logo */}
           <div className="flex gap-4 items-center">
             <div className="lg:flex hidden cursor-pointer">
-              <RxHamburgerMenu className="h-6 w-6" />
+              <RxHamburgerMenu 
+              className="h-6 w-6" 
+               onClick={() => dispatch(toggleSidebar())}
+              />
             </div>
             <div className="flex items-center justify-center">
               <img src={logo} alt="" className="h-10 w-10" />
@@ -57,9 +60,9 @@ const Navbar = () => {
               <input
                 type="text"
                 placeholder="search"
-                className="w-[500px] h-15 px-8 border border-[#9e9898d6] rounded-l-4xl hover:shadow-[inset_0_0_6px_#1e90ff]"
+                className="w-[500px] h-10 px-8 border border-[#9e9898d6] rounded-l-4xl hover:shadow-[inset_0_0_6px_#1e90ff]"
               />
-              <div className="py-4 border border-[#9e9898d6] rounded-r-4xl w-[100px] h-15 flex items-center justify-center bg-[#e4dede57] hover:bg-[#cccaca95]">
+              <div className="py-4 border border-[#9e9898d6] rounded-r-4xl w-[100px] h-10 flex items-center justify-center bg-[#e4dede57] hover:bg-[#cccaca95]">
                 <CiSearch className="w-6 h-6" />
               </div>
             </div>

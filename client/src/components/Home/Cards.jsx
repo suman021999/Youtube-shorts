@@ -8,9 +8,9 @@ const Cards = () => {
   return (
     <div className={`
       lg:w-[15vw] 
-      ${isDarkMode ? 'bg-gray-700' : 'bg-white'} 
+      
       rounded-lg 
-      shadow-lg
+      
     `}>
       {/* Video placeholder */}
       <div className="mb-4">
