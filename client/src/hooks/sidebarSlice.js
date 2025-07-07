@@ -10,7 +10,7 @@ const sidebarSlice = createSlice({
       state.isOpen = !state.isOpen;
     },
     closeSidebar: (state) => {
-      state.isOpen = false;
+      state.isOpen = true;
     }
   }
 });
