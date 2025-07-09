@@ -17,7 +17,7 @@ const Cards = () => {
       {/* Video placeholder */}
       <div className="mb-4 ">
         
-          <video 
+          <video
             src="1111.mp4" 
             type="video/mp4" 
             className="w-full rounded-lg"
