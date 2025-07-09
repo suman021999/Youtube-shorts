@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux';
 import Scard from './Scard';
+// import { MdOutlineZoomOutMap } from "react-icons/md";
 
 const Shortscontext = () => {
      const isSidebarOpen = useSelector((state) => state.sidebar.isOpen);
