@@ -3,6 +3,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { FaPlay, FaPause } from "react-icons/fa";
 import { MdOutlineZoomOutMap } from "react-icons/md";
 import Sound from './Sound';
+import Scfun from './Scfun';
 
 const Scard = () => {
   const [isPlaying, setIsPlaying] = useState(true);
@@ -108,7 +109,8 @@ const Scard = () => {
   }, []);
 
   return (
-    <section className="relative group z-10">
+    <>
+    <section className="relative group z-10 ">
       <div className="relative h-[70vh] w-[300px] rounded-lg shadow-md overflow-hidden">
         <video
           ref={videoRef}
@@ -218,7 +220,15 @@ const Scard = () => {
         </div>
       )}
     </section>
+
+    <section ><Scfun/></section>
+
+
+    {/* zoom in function
+    div */}
+    </>
   );
 };
 
 export default Scard;
+
