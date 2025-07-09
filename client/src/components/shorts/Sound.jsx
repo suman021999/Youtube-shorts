@@ -53,7 +53,7 @@ const Sound = ({ videoRef }) => {
   };
 
   return (
-    <div className="relative flex items-center gap-2">
+    <div className="relative flex items-center gap-2 ">
       <button
         onClick={toggleMute}
         className="text-white text-2xl cursor-pointer hover:scale-110 transition-transform"
