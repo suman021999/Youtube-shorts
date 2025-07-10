@@ -27,7 +27,7 @@ const Scfun = () => {
 
         {/* Chatbox that appears on the right when opened */}
         {isChatOpen && (
-          <div className='ml-2'>
+          <div className='ml-2 '>
             <Chatbox />
           </div>
         )}

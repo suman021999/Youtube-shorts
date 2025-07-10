@@ -53,6 +53,7 @@ const Sound = ({ videoRef }) => {
   };
 
   return (
+    <>
     <div className="relative flex items-center gap-2 ">
       <button
         onClick={toggleMute}
@@ -78,6 +79,7 @@ const Sound = ({ videoRef }) => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
