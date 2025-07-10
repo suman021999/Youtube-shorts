@@ -5,6 +5,7 @@ import Homecontext from "../components/Home/Homecontext";
 import { Route, Routes } from "react-router-dom";
 import Shortscontext from "../components/shorts/Shortscontext";
 
+
 const MainPage = () => {
   return (
     <>
@@ -13,6 +14,7 @@ const MainPage = () => {
         <Routes>
           <Route path="/" element={<Homecontext />} />
           <Route path="/shorts" element={<Shortscontext />} />
+          
         </Routes>
 
         <SidebarCard />
