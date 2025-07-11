@@ -57,7 +57,7 @@ Edit
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/youtube-shorts-chat.git
+git clone https://github.com/suman021999/Youtube-shorts
 cd youtube-shorts-chat
 2. Set Up the Server
 bash
