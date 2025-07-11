@@ -128,8 +128,7 @@ receiveMessage – Listen for messages
 📸 Screenshots
 (Include screenshots of chat UI, video upload, user profile, etc. if available)
 
-📄 License
-MIT License © 2025 [Your Name]
+
 
 🙌 Acknowledgements
 MERN Stack Docs
@@ -141,19 +140,3 @@ Cloudinary
 yaml
 Copy
 Edit
-
----
-
-Let me know if you'd like it personalized with your GitHub repo link, deployed app link, or more specific features like video compression, grid/carousel UI, or emoji support in chat.
-
-
-
-
-
-
-
-
-Ask ChatGPT
-
-
-
