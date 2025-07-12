@@ -2,6 +2,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { FaPlay, FaPause } from "react-icons/fa";
 import { MdOutlineZoomOutMap } from "react-icons/md";
+import {Link} from "react-router-dom"
 import Sound from './Sound';
 import Scfun from './Scfun';
 
@@ -162,8 +163,8 @@ const Scard = () => {
         {/* YouTube Shorts style text section */}
         <div className="absolute bottom-2 left-0 right-0 p-4 pb-10 z-10">
           <div className="flex items-center mb-2">
-            <div className="w-8 h-8 rounded-full bg-gray-400 mr-2"></div>
-            <span className="text-white font-medium text-sm">Channel Name</span>
+            <Link to="/Mychennel" className='flex items-center'><div className="w-8 h-8 rounded-full bg-gray-400 mr-2"></div>
+            <span className="text-white font-medium text-sm">Channel Name</span></Link>
             <button className="ml-auto bg-white text-black px-3 py-1 rounded-full text-sm font-medium">
               Subscribe
             </button>

@@ -4,6 +4,7 @@ import SidebarCard from "../components/sidebar/SidebarCard";
 import Homecontext from "../components/Home/Homecontext";
 import { Route, Routes } from "react-router-dom";
 import Shortscontext from "../components/shorts/Shortscontext";
+import Mypage from "../components/Home/Mypage";
 
 
 const MainPage = () => {
@@ -14,6 +15,7 @@ const MainPage = () => {
         <Routes>
           <Route path="/" element={<Homecontext />} />
           <Route path="/shorts" element={<Shortscontext />} />
+          <Route path="/Mychennel" element={<Mypage />} />
           
         </Routes>
 
