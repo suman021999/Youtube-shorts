@@ -21,10 +21,12 @@ import { useSelector } from 'react-redux';
 
 const CreateShorts = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [caption, setCaption] = useState('');
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [showPreview, setShowPreview] = useState(false);
   const fileInputRef = useRef(null);
   const isSidebarOpen = useSelector((state) => state.sidebar.isOpen);
+  const isDarkMode = useSelector((state) => state.theme.isDarkMode);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -44,12 +46,12 @@ const CreateShorts = () => {
     <section className={` w-full ${isSidebarOpen ? 'lg:ml-[45vh] ' : 'lg:ml-20'} mb-20 mt-8`}>
 <div className="flex flex-col items-center min-h-screen    p-4">
 
-      <div className="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+      <div className={`w-full max-w-2xl bg-white  rounded-lg shadow-lg p-6 ${isDarkMode && "dark:bg-[#302f2fe8]"}`}>
         <h1 className="text-2xl font-bold mb-6 dark:text-white">Create Short</h1>
         
         {/* Video Upload/Preview Area */}
         <div 
-          className={`relative w-full aspect-[9/16] max-h-[70vh] mb-6 rounded-xl overflow-hidden ${!selectedFile ? 'border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center' : ''}`}
+          className={`relative w-full aspect-[9/16] max-h-[70vh] mb-6 rounded-xl overflow-hidden ${!selectedFile ? 'border-2 border-dashed  flex items-center justify-center' : ''}`}
           onClick={() => !selectedFile && fileInputRef.current.click()}
         >
           {selectedFile && showPreview ? (
@@ -86,30 +88,30 @@ const CreateShorts = () => {
         {/* Shorts Creation Tools */}
         <div className="space-y-4">
 
-          <div className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+          <div className={`flex items-center space-x-3 p-3 shadow-lg border-2 border-dashed  rounded-lg ${isDarkMode && "dark:bg-[#202020e8]"}`}>
             <FiAlignLeft className="text-gray-600 dark:text-gray-300" />
             <input
               type="text"
-              value={caption}
-              onChange={(e) => setCaption(e.target.value)}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               placeholder="Add a title..."
-              className="flex-1 bg-transparent outline-none dark:text-white placeholder-gray-400"
+              className={`flex-1 bg-transparent outline-none  placeholder-gray-400 ${isDarkMode && "dark:bg-[#202020e8]"}`}
               maxLength={150}
             />
-            <span className="text-xs text-gray-400">{caption.length}/150</span>
+            <span className="text-xs text-gray-400">{title.length}/150</span>
           </div>
 
-          <div className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+          <div className={`flex items-center space-x-3 p-3 shadow-lg border-2 border-dashed  rounded-lg ${isDarkMode && "dark:bg-[#202020e8]"}`}>
             <FiAlignLeft className="text-gray-600 dark:text-gray-300" />
             <input
               type="text"
-              value={caption}
-              onChange={(e) => setCaption(e.target.value)}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               placeholder="Add a description..."
-              className="flex-1 bg-transparent outline-none dark:text-white placeholder-gray-400"
+              className={`flex-1 bg-transparent outline-none  placeholder-gray-400 ${isDarkMode && "dark:bg-[#202020e8]"}`}
               maxLength={150}
             />
-            <span className="text-xs text-gray-400">{caption.length}/150</span>
+            <span className="text-xs text-gray-400">{description.length}/150</span>
           </div>
 
           
@@ -138,5 +140,3 @@ const CreateShorts = () => {
 };
 
 export default CreateShorts;
-
-{/*    */}
