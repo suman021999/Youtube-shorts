@@ -145,6 +145,7 @@ import { FaRegSun, FaRegMoon } from "react-icons/fa";
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '../../hooks/themeSlice'; 
 import Searchbar from '../searchbar/Searchbar'; // Import the Searchbar component
+import {Link} from "react-router-dom"
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -256,10 +257,13 @@ const Navbar = () => {
 
           {/* Buttons */}
           <div className="gap-4 items-center lg:flex hidden">
+            <Link to="/create">
             <div className="bg-[#d4d0d079] hover:bg-[#a4a1a179] px-4 py-2 rounded-4xl flex items-center gap-2">
               <GoPlus />
               Create
             </div>
+            </Link>
+            
 
             <div>
               <div className="w-10 h-10 bg-red-800 text-amber-50 flex items-center justify-center rounded-full">

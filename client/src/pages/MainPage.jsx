@@ -5,6 +5,7 @@ import Homecontext from "../components/Home/Homecontext";
 import { Route, Routes } from "react-router-dom";
 import Shortscontext from "../components/shorts/Shortscontext";
 import Mypage from "../components/Home/Mypage";
+import Create from "../components/create/Create";
 
 
 const MainPage = () => {
@@ -16,6 +17,7 @@ const MainPage = () => {
           <Route path="/" element={<Homecontext />} />
           <Route path="/shorts" element={<Shortscontext />} />
           <Route path="/Mychennel" element={<Mypage />} />
+          <Route path="/create" element={<Create />} />
           
         </Routes>
 
