@@ -8,6 +8,6 @@ ddd
 // Middleware
 app.use(express.json())
 
-Port=process.env.PORT || 5000
+Port=process.env.PORT || 500
 
 app.listen(3000, () => {console.log(`Server is running on port ${Port}`)})
