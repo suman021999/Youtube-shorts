@@ -171,7 +171,7 @@ const Scard = () => {
           </div>
           
           <div>
-            <h2 className="text-white font-bold text-lg">Video Title</h2>
+            {/* <h2 className="text-white font-bold text-lg">Video Title</h2> */}
             <p className="text-white text-sm">Video description</p>
           </div>
         </div>

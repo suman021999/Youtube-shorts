@@ -201,7 +201,7 @@ const Chatbox = () => {
           ) : (
             <div 
               onClick={toggleCommentInput}
-              className={`flex items-center space-x-2 bg-white p-2 rounded-full cursor-text ${isDarkMode && "dark:bg-[#121212e8]"}`}
+              className={`flex items-center space-x-2 bg-white   p-2 rounded-full cursor-text ${isDarkMode && "dark:bg-[#1b1a1ae8] shadow-2xl"}`}
             >
               <div className="w-8 h-8 bg-gray-300 text-gray-600 flex items-center justify-center rounded-full">
                 Y

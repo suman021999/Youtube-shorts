@@ -21,7 +21,7 @@ import { useSelector } from 'react-redux';
 
 const CreateShorts = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [title, setTitle] = useState('');
+  // const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [showPreview, setShowPreview] = useState(false);
   const fileInputRef = useRef(null);
@@ -88,7 +88,7 @@ const CreateShorts = () => {
         {/* Shorts Creation Tools */}
         <div className="space-y-4">
 
-          <div className={`flex items-center space-x-3 p-3 shadow-lg border-2 border-dashed  rounded-lg ${isDarkMode && "dark:bg-[#202020e8]"}`}>
+          {/* <div className={`flex items-center space-x-3 p-3 shadow-lg border-2 border-dashed  rounded-lg ${isDarkMode && "dark:bg-[#202020e8]"}`}>
             <FiAlignLeft className="text-gray-600 dark:text-gray-300" />
             <input
               type="text"
@@ -99,7 +99,7 @@ const CreateShorts = () => {
               maxLength={150}
             />
             <span className="text-xs text-gray-400">{title.length}/150</span>
-          </div>
+          </div> */}
 
           <div className={`flex items-center space-x-3 p-3 shadow-lg border-2 border-dashed  rounded-lg ${isDarkMode && "dark:bg-[#202020e8]"}`}>
             <FiAlignLeft className="text-gray-600 dark:text-gray-300" />
