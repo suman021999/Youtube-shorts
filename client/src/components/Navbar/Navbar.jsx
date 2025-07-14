@@ -60,7 +60,7 @@ const Navbar = () => {
               />
             </div>
             <div className="flex items-center justify-center">
-              <img src={logo} alt="" className="h-10 w-10" />
+              <Link to="/"><img src={logo} alt="" className="h-10 w-10" /></Link>
             </div>
           </div>
 

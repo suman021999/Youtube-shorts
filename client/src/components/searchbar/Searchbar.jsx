@@ -57,10 +57,10 @@ const Searchbar = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className={`fixed inset-0 z-50 right-48 flex justify-center pt-20 px-4`}>
+    <div className={`fixed inset-0 z-50 md:right-48 flex justify-center pt-20 px-4`}>
       <div 
         ref={searchbarRef}
-        className={`w-full max-w-[500px] min-h-40 bg-white rounded-lg shadow-xl p-4 border border-gray-300 dark:border-gray-600 ${isDarkMode && "dark:bg-[#121212e8]"}`}
+        className={`w-screen max-w-[500px]  min-h-40 bg-white rounded-lg shadow-xl p-4 border border-gray-300 dark:border-gray-600 ${isDarkMode && "dark:bg-[#121212e8]"}`}
       >
         <div className='flex items-center justify-between mb-4'>
           <h3 className='text-lg font-medium dark:text-white'>Recent searches</h3>

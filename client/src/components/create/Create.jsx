@@ -1,17 +1,3 @@
-// import React from 'react'
-
-// const Create = () => {
-//   return (
-//     <>
-      
-//     </>
-//   )
-// }
-
-// export default Create
-
-
-
 
 import React, { useRef, useState } from 'react';
 import { FiUpload,  FiAlignLeft } from 'react-icons/fi';
@@ -21,7 +7,6 @@ import { useSelector } from 'react-redux';
 
 const CreateShorts = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  // const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [showPreview, setShowPreview] = useState(false);
   const fileInputRef = useRef(null);
@@ -88,19 +73,7 @@ const CreateShorts = () => {
         {/* Shorts Creation Tools */}
         <div className="space-y-4">
 
-          {/* <div className={`flex items-center space-x-3 p-3 shadow-lg border-2 border-dashed  rounded-lg ${isDarkMode && "dark:bg-[#202020e8]"}`}>
-            <FiAlignLeft className="text-gray-600 dark:text-gray-300" />
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Add a title..."
-              className={`flex-1 bg-transparent outline-none  placeholder-gray-400 ${isDarkMode && "dark:bg-[#202020e8]"}`}
-              maxLength={150}
-            />
-            <span className="text-xs text-gray-400">{title.length}/150</span>
-          </div> */}
-
+         
           <div className={`flex items-center space-x-3 p-3 shadow-lg border-2 border-dashed  rounded-lg ${isDarkMode && "dark:bg-[#202020e8]"}`}>
             <FiAlignLeft className="text-gray-600 dark:text-gray-300" />
             <input
