@@ -8,7 +8,7 @@ body {
 
 /* Dark mode */
 .dark body {
-  @apply bg-[#121212] text-white;
+  @apply bg-[#030303e4] text-white;
 }
 
 /* Component-specific dark styles */

@@ -44,8 +44,7 @@ const Navbar = () => {
     <>
       <section
          className={`fixed top-0 left-0 z-50 w-full h-[20vh] border-[#2777a0] transition-all duration-300 
-          ${scrolled && "bg-[#f4f2f2e8]"} 
-          ${isDarkMode && "dark:bg-[#121212e8]"}`}
+         ${scrolled ? (isDarkMode ? "dark:bg-[#030303e4]" : "bg-[#f4f2f2e8]") : ""}`}
         style={{
           backdropFilter: scrolled ? "blur(10px)" : "none",
           WebkitBackdropFilter: scrolled ? "blur(10px)" : "none",

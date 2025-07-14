@@ -90,7 +90,7 @@ const SidebarCard = () => {
       )}
 
       {/* Rest of your existing JSX remains exactly the same */}
-      <section className={`p-4 transition-all duration-300 h-[85vh] fixed z-70 lg:flex hidden ${isSidebarOpen ? "w-[20vw]" : "w-[100px]"} ${isDarkMode ? "bg-[#121212]" : ""} sidebar`}>
+      <section className={`p-4 transition-all duration-300 h-[85vh] fixed z-70 lg:flex hidden ${isSidebarOpen ? "w-[20vw]" : "w-[100px]"}  sidebar`}>
         <div className="p-4 w-full h-[30vh] rounded-lg flex flex-col gap-4">
           <Link
             to="/"
