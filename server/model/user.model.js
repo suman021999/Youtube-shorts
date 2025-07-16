@@ -1,11 +1,10 @@
 import mongoose, { Schema } from "mongoose";
-import bcrypt from 'bcryptjs';
 
 const userSchema = new Schema(
   {
     username: {
       type: String,
-      required: function() { return !this.googleId; }, // Required only for local auth
+      required: true,
       unique: true,
       lowercase: true,
       trim: true,
@@ -17,12 +16,6 @@ const userSchema = new Schema(
       unique: true,
       lowercase: true,
       trim: true,
-      validate: {
-        validator: function(v) {
-          return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v);
-        },
-        message: props => `${props.value} is not a valid email address!`
-      }
     },
     firstName: {
       type: String,
@@ -38,103 +31,38 @@ const userSchema = new Schema(
     },
     password: {
       type: String,
-      required: function() { return !this.googleId; }, // Not required for Google auth
-      minlength: [8, 'Password must be at least 8 characters long'],
-      select: false // Never return password in queries
+      // Make password optional for OAuth users
+      required: function() {
+        return !(this.googleId || this.provider);
+      }
     },
+    // Add OAuth-specific fields
     googleId: {
       type: String,
       unique: true,
-      sparse: true // Allows multiple null values for non-Google users
+      sparse: true // Allows null values without violating unique constraint
+    },
+    provider: {
+      type: String,
+      enum: ['local', 'google'], // Can extend with other providers
+      default: 'local'
     },
     avatar: {
-      type: String,
-      default: ''
+      type: String // For storing profile picture URL from OAuth
     },
-    isVerified: {
-      type: Boolean,
-      default: false
-    },
+    // Consider adding refresh token for OAuth
     refreshToken: {
-      type: String,
-      select: false
-    },
-    lastLogin: {
-      type: Date
+      type: String
     }
   },
-  { 
-    timestamps: true,
-    toJSON: {
-      virtuals: true,
-      transform: function(doc, ret) {
-        delete ret.password;
-        delete ret.refreshToken;
-        delete ret.__v;
-        return ret;
-      }
-    },
-    toObject: {
-      virtuals: true,
-      transform: function(doc, ret) {
-        delete ret.password;
-        delete ret.refreshToken;
-        delete ret.__v;
-        return ret;
-      }
-    }
-  }
+  { timestamps: true }
 );
 
-// Virtual for full name
-userSchema.virtual('fullName').get(function() {
-  return `${this.firstName} ${this.lastName}`;
-});
-
-// Password hashing middleware
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Method to compare passwords
-userSchema.methods.matchPassword = async function(enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
-};
-
-// Static method to find or create Google user
-userSchema.statics.findOrCreate = async function(profile) {
-  let user = await this.findOne({ email: profile.emails[0].value });
-  
-  if (!user) {
-    user = await this.create({
-      googleId: profile.id,
-      email: profile.emails[0].value,
-      firstName: profile.name?.givenName || profile.displayName.split(' ')[0],
-      lastName: profile.name?.familyName || profile.displayName.split(' ')[1] || '',
-      avatar: profile.photos?.[0]?.value || '',
-      isVerified: profile.emails[0].verified || false
-    });
-  } else if (!user.googleId) {
-    // Link Google account to existing user
-    user.googleId = profile.id;
-    if (!user.avatar && profile.photos?.[0]?.value) {
-      user.avatar = profile.photos[0].value;
-    }
-    await user.save();
-  }
-  
-  return user;
+// Add method to check if user has password set
+userSchema.methods.hasPassword = function() {
+  return !!this.password;
 };
 
 export const User = mongoose.model("User", userSchema);
-
 
 

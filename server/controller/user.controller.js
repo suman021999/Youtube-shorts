@@ -1,3 +1,4 @@
+
 import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
 import {User} from '../model/user.model.js';
@@ -34,7 +35,6 @@ export const handleGoogleAuth = asyncHandler(async (req, res) => {
 });
 
 export const loginAccount = asyncHandler(async (req, res) => {
-  // Your regular login logic here
   const { email, password } = req.body;
 
   const user = await User.findOne({ email });
@@ -61,5 +61,28 @@ export const loginAccount = asyncHandler(async (req, res) => {
   }
 });
 
+export const switchAccount = asyncHandler(async (req, res) => {
+  if (!req.user) {
+    res.status(401);
+    throw new Error('Not authenticated');
+  }
 
+  // Generate a state parameter with the current user's ID
+  const state = req.user._id.toString();
+  
+  // Redirect to Google auth with the 'google-switch' strategy
+  passport.authenticate('google-switch', {
+    scope: ['profile', 'email'],
+    state: state,
+    session: false
+  })(req, res);
+});
 
+export const logout = asyncHandler(async (req, res) => {
+  res.cookie('jwt', '', {
+    httpOnly: true,
+    expires: new Date(0)
+  });
+  
+  res.status(200).json({ message: 'Logged out successfully' });
+});
