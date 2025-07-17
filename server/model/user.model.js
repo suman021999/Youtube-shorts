@@ -17,18 +17,6 @@ const userSchema = new Schema(
       lowercase: true,
       trim: true,
     },
-    firstName: {
-      type: String,
-      required: true,
-      trim: true,
-      index: true,
-    },
-    lastName: {
-      type: String,
-      required: true,
-      trim: true,
-      index: true,
-    },
     password: {
       type: String,
       // Make password optional for OAuth users
