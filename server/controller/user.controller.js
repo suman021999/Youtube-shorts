@@ -34,9 +34,14 @@ export const handleGoogleAuth = asyncHandler(async (req, res) => {
   });
 });
 
+
+export const registerAccount=asyncHandler(async(req,res)=>{
+  
+})
+
 export const loginAccount = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-
+console.log('Searching for user with email:', email);
   const user = await User.findOne({ email });
 
   if (user && (await user.matchPassword(password))) {

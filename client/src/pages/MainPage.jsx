@@ -1,27 +1,24 @@
-import React from "react";
-import Navbar from "../components/Navbar/Navbar";
-import SidebarCard from "../components/sidebar/SidebarCard";
-import Homecontext from "../components/Home/Homecontext";
-import { Route, Routes } from "react-router-dom";
-import Shortscontext from "../components/shorts/Shortscontext";
-import Mypage from "../components/Home/Mypage";
-import Create from "../components/create/Create";
+import { Route,Routes } from "react-router-dom";
+import Login from "./Loginpage";
+import Dashboard from "../components/dashboard/Dashboard";
+
+
 
 
 const MainPage = () => {
   return (
     <>
-      <Navbar />
-      <section className="w-full min-h-screen  pt-[15vh] flex">
+      
+      <section >
         <Routes>
-          <Route path="/" element={<Homecontext />} />
-          <Route path="/shorts" element={<Shortscontext />} />
-          <Route path="/Mychennel" element={<Mypage />} />
-          <Route path="/create" element={<Create />} />
+          <Route path="/login" element={<Login />}/>
+          <Route path="/*" element={<Dashboard />} />
+          
+          
           
         </Routes>
 
-        <SidebarCard />
+        
       </section>
     </>
   );
