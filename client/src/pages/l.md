@@ -16,8 +16,7 @@ const LoginPage = () => {
         }`}
       >
         {/* Sign Up Form */}
-        <div
-          className={`absolute top-0 h-full transition-all duration-600 ease-in-out left-0 w-1/2 ${
+        <div className={`absolute top-0  h-full transition-all duration-600 ease-in-out left-0  w-1/2 ${
             isRightActive
               ? "translate-x-full opacity-100 z-50 animate-show"
               : "opacity-0 z-10"
@@ -65,8 +64,7 @@ const LoginPage = () => {
         </div>
 
         {/* Sign In Form */}
-        <div
-          className={`absolute top-0 h-full transition-all duration-600 ease-in-out left-0 w-1/2 z-20 ${
+        <div className={`absolute top-0 h-full transition-all duration-600 ease-in-out left-0  w-1/2 z-20 ${
             isRightActive ? "translate-x-full" : ""
           }`}
         >
@@ -107,7 +105,7 @@ const LoginPage = () => {
 
         {/* Overlay */}
         <div
-          className={`absolute top-0 left-1/2 w-1/2 h-full overflow-hidden transition-all duration-600 ease-in-out z-30 ${
+          className={`absolute top-0  left-1/2 w-1/2 h-full overflow-hidden transition-all duration-600 ease-in-out z-30 ${
             isRightActive ? "-translate-x-full" : ""
           }`}
         >
