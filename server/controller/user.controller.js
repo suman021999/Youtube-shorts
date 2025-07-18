@@ -85,10 +85,16 @@ export const registerAccount = asyncHandler(async (req, res) => {
 export const loginAccount = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
+  // Check if email and password are provided
+  if (!email || !password) {
+    res.status(400);
+    throw new Error('Please provide email and password');
+  }
+
   const user = await User.findOne({ email });
 
-  // Check if user exists and has a password (not OAuth-only user)
-  if (!user || !user.hasPassword()) {
+  // Check if user exists and password is available (for local authentication)
+  if (!user || !user.password) {
     res.status(401);
     throw new Error('Invalid email or password');
   }
@@ -106,10 +112,10 @@ export const loginAccount = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV !== 'development',
     sameSite: 'strict',
-    maxAge: 30 * 24 * 60 * 60 * 1000
+    maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
   });
 
-  res.json({
+  res.status(200).json({
     _id: user._id,
     name: user.name,
     email: user.email,
