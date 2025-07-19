@@ -150,13 +150,9 @@ const SidebarCard = () => {
         </div>
 
         {showLogoutPopup && (
-          <div className={`absolute -top-28 right-2 rounded-lg p-2 w-40 z-50 ${isDarkMode ? "dark:bg-[#030303f8]" : "bg-[#b9b8b8f3]"}`}>
+          <div className={`absolute -top-18 right-2 rounded-lg p-2 w-40 z-50 ${isDarkMode ? "dark:bg-[#3e3d3df8]" : "bg-[#b9b8b8f3]"}`}>
             <div className={`py-2 px-3 rounded cursor-pointer ${isDarkMode ? "dark:hover:bg-[#dbe1e330]" : "hover:bg-[#5b59599c] hover:bg-opacity-20"}`}>
               Sign out
-            </div>
-            <div className="border-t border-gray-200 dark:border-gray-700 my-1"></div>
-            <div className={`py-2 px-3 rounded cursor-pointer ${isDarkMode ? "dark:hover:bg-[#dbe1e330]" : "hover:bg-[#5b59599c] hover:bg-opacity-20"}`}>
-              Switch account
             </div>
           </div>
         )}

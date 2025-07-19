@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema(
   {
-    username: {
+    name: {
       type: String,
       required: true,
       unique: true,
@@ -28,17 +28,17 @@ const userSchema = new Schema(
     googleId: {
       type: String,
       unique: true,
-      sparse: true // Allows null values without violating unique constraint
+      sparse: true
     },
     provider: {
       type: String,
-      enum: ['local', 'google'], // Can extend with other providers
+      enum: ['local', 'google'], 
       default: 'local'
     },
     avatar: {
-      type: String // For storing profile picture URL from OAuth
+      type: String 
     },
-    // Consider adding refresh token for OAuth
+   
     refreshToken: {
       type: String
     }
@@ -46,10 +46,7 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-// Add method to check if user has password set
-userSchema.methods.hasPassword = function() {
-  return !!this.password;
-};
+
 
 export const User = mongoose.model("User", userSchema);
 
