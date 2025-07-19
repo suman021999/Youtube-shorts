@@ -7,8 +7,10 @@ const Shortscontext = () => {
      const isSidebarOpen = useSelector((state) => state.sidebar.isOpen);
   return (
     <>
-     <section className={` w-full ${isSidebarOpen ? 'lg:ml-[45vh] ' : ''} lg:ml-8  mt-20`}>  
+     <section className={` w-full ${isSidebarOpen ? 'lg:ml-[45vh] ' : ''} lg:ml-8  mt-20 mb-[40vh]`}>  
         <div className="flex flex-wrap justify-center items-center gap-4 p-4 w-full ">
+
+          
           <Scard/>
           
           

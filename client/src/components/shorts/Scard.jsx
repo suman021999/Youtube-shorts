@@ -111,8 +111,11 @@ const Scard = () => {
 
   return (
     <>
-    <section className="relative group z-10 ">
-      <div className="relative h-[70vh] w-[300px] rounded-lg shadow-md overflow-hidden">
+    <section className="relative group z-10 flex gap-4">
+
+      <div className='relative flex '>
+
+        <div className="relative h-[70vh] w-[300px] rounded-lg shadow-md overflow-hidden">
         <video
           ref={videoRef}
           controls={false}
@@ -181,7 +184,7 @@ const Scard = () => {
       </div>
 
       {/* Controls */}
-      <div className="absolute top-0 left-0 right-0 p-4 flex items-center justify-between z-10">
+      <div className="absolute overflow-hidden top-0 left-0 right-0 p-4 flex items-center justify-between z-10 ">
         <div className='flex items-center justify-between'>
           <button onClick={handlePlayPause}>
             {isPlaying ? (
@@ -200,9 +203,12 @@ const Scard = () => {
           </div>
         </div>
 
-        <MdOutlineZoomOutMap className={`text-white text-2xl cursor-pointer hover:scale-110 transition-transform ${
+       
+        <div className="hidden lg:flex">
+ <MdOutlineZoomOutMap className={`text-white text-2xl cursor-pointer hover:scale-110 transition-transform ${
           isPlaying ? "opacity-0 group-hover:opacity-100" : ""
         }`} />
+        </div>
       </div>
 
       {/* Centered play button */}
@@ -220,9 +226,16 @@ const Scard = () => {
           </div>
         </div>
       )}
+
+      </div>
+
+
+       <div className="flex absolute lg:static  right-8 z-20">
+          <Scfun />
+        </div>
     </section>
 
-    <section ><Scfun/></section>
+    
 
 
     {/* zoom in function
