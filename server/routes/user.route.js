@@ -5,18 +5,18 @@ import {googleAuth,googleAuthCallback,protect} from "../middleware/auth.middlewa
 const router = Router();
 
 // Google OAuth routes
-router.get('/google', googleAuth);
-router.get('/google/callback', googleAuthCallback, handleGoogleAuth);
+router.route('/google').get( googleAuth);
+router.route('/google/callback').get(googleAuthCallback, handleGoogleAuth);
 
 
 
 // Register route
-router.post("/register", registerAccount);
+router.route("/register").post( registerAccount);
 
 // Login route
-router.post("/login", loginAccount);
+router.route("/login").post( loginAccount);
 
 // Logout route
-router.get("/logout", logout);
+router.route("/logout").get(logout);
 
 export default router;

@@ -42,11 +42,6 @@ const userSchema = new Schema(
     refreshToken: {
       type: String
     },
-    videoId: {
-        type: String,
-        required: true,
-        index: true
-      },
   },
   { timestamps: true }
 );
