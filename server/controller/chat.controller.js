@@ -5,14 +5,30 @@ import Chat from '../model/chat.model.js';
 class ChatController {
   constructor(io) {
     this.io = io;
-    this.redisClient = createClient({
+    
+    // Configure Redis connection
+    const redisOptions = {
       url: process.env.REDIS_URL || 'redis://localhost:6379'
-    });
-    this.pubClient = createClient({
-      url: process.env.REDIS_URL || 'redis://localhost:6379'
-    });
+    };
+
+    // Add TLS options if using Upstash Redis
+    if (process.env.REDIS_URL?.includes('upstash.io')) {
+      redisOptions.socket = {
+        tls: true,
+        rejectUnauthorized: false
+      };
+    }
+
+    // Create Redis clients
+    this.redisClient = createClient(redisOptions);
+    this.pubClient = createClient(redisOptions);
     this.subClient = this.pubClient.duplicate();
     
+    // Add error listeners
+    this.redisClient.on('error', (err) => console.error('Redis Client Error:', err));
+    this.pubClient.on('error', (err) => console.error('Pub Client Error:', err));
+    this.subClient.on('error', (err) => console.error('Sub Client Error:', err));
+
     this.initializeRedis();
     if (io) this.initializeSocket();
   }
@@ -22,9 +38,11 @@ class ChatController {
   ====================== */
   async initializeRedis() {
     try {
-      await this.redisClient.connect();
-      await this.pubClient.connect();
-      await this.subClient.connect();
+      await Promise.all([
+        this.redisClient.connect(),
+        this.pubClient.connect(),
+        this.subClient.connect()
+      ]);
       
       if (this.io) {
         this.io.adapter(createAdapter(this.pubClient, this.subClient));
@@ -32,6 +50,7 @@ class ChatController {
       console.log('Redis connected successfully');
     } catch (err) {
       console.error('Redis connection error:', err);
+      // Implement retry logic here if needed
     }
   }
 
@@ -174,17 +193,14 @@ class ChatController {
     for (const msg of messages) {
       const parsedMsg = JSON.parse(msg);
       if (parsedMsg.id === messageId) {
-        // Initialize arrays if not exists
         if (!parsedMsg.likedBy) parsedMsg.likedBy = [];
         if (!parsedMsg.dislikedBy) parsedMsg.dislikedBy = [];
         
-        // Remove like if exists
         if (parsedMsg.likedBy.includes(userId)) {
           parsedMsg.likes -= 1;
           parsedMsg.likedBy = parsedMsg.likedBy.filter(id => id !== userId);
         }
         
-        // Add dislike
         if (!parsedMsg.dislikedBy.includes(userId)) {
           parsedMsg.dislikes = (parsedMsg.dislikes || 0) + 1;
           parsedMsg.dislikedBy.push(userId);
@@ -276,7 +292,6 @@ class ChatController {
 }
 
 export default ChatController;
-
 
 
 
