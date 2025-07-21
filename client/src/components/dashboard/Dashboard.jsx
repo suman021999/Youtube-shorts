@@ -15,7 +15,7 @@ const Dashboard = props => {
       <Navbar />
       <section className="w-full min-h-screen  pt-[15vh] flex">
         <Routes>
-          <Route path="/" element={<Homecontext />} />
+          <Route path="/homes" element={<Homecontext />} />
           <Route path="/shorts" element={<Shortscontext />} />
           <Route path="/Mychennel" element={<Mypage />} />
           <Route path="/create" element={<Create />} />

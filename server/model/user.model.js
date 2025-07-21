@@ -2,11 +2,9 @@ import mongoose, { Schema } from "mongoose";
 
 const userSchema = new Schema(
   {
-    name: {
+    username: {
       type: String,
       required: true,
-      unique: true,
-      lowercase: true,
       trim: true,
       index: true,
     },
@@ -38,15 +36,26 @@ const userSchema = new Schema(
     avatar: {
       type: String 
     },
-   
     refreshToken: {
       type: String
     },
   },
-  { timestamps: true }
+  { 
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+  }
 );
 
-
+// Pre-save hook to generate avatar from name
+userSchema.pre('save', function(next) {
+  if (!this.avatar && this.username) {
+    // Get first two letters and convert to uppercase
+    const initials = this.username.slice(0, 2).toUpperCase();
+    this.avatar = initials;
+  }
+  next();
+});
 
 export const User = mongoose.model("User", userSchema);
 

@@ -17,6 +17,6 @@ router.route("/register").post( registerAccount);
 router.route("/login").post( loginAccount);
 
 // Logout route
-router.route("/logout").get(logout);
+router.route("/logout").get(protect, logout);
 
 export default router;

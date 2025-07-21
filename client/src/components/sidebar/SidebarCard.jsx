@@ -16,7 +16,7 @@ const SidebarCard = () => {
   const location = useLocation();
 
   // Only highlight if on these exact paths
-  const shouldHighlightHome = location.pathname === "/";
+  const shouldHighlightHome = location.pathname === "/homes";
   const shouldHighlightShorts = location.pathname === "/shorts";
 
   // Progress bar animation (unchanged)
@@ -82,7 +82,7 @@ const SidebarCard = () => {
       } sidebar`}>
         <div className="p-4 w-full h-[30vh] rounded-lg flex flex-col gap-4">
           <Link
-            to="/"
+            to="/homes"
             className={`${
               shouldHighlightHome ? 
                 (isDarkMode ? "bg-[#dbe1e330]" : "bg-[#b3b0b034]") : 
@@ -116,7 +116,7 @@ const SidebarCard = () => {
         isDarkMode ? "bg-[#1e1e1e]" : "bg-white"
       } border-t ${isDarkMode ? "border-gray-700" : "border-gray-200"}`}>
         <Link
-          to="/"
+          to="/homes"
           className={`${
             shouldHighlightHome ? 
               (isDarkMode ? "bg-[#dbe1e330]" : "bg-[#b3b0b034]") : 
