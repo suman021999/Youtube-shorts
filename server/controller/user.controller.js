@@ -15,6 +15,7 @@ const generateToken = (user) => {
   );
 };
 
+// auth.controller.js
 export const handleGoogleAuth = asyncHandler(async (req, res) => {
   if (!req.user) {
     res.status(401);
@@ -22,12 +23,18 @@ export const handleGoogleAuth = asyncHandler(async (req, res) => {
   }
 
   const token = generateToken(req.user);
-
-
-  res.status(200).json({
+  const userData = {
     _id: req.user._id,
     name: req.user.name,
     email: req.user.email,
+    avatar: req.user.avatar,
+    provider: req.user.provider
+  };
+
+  // For API responses
+  res.status(200).json({
+    success: true,
+    ...userData,
     token
   });
 });

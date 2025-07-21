@@ -11,7 +11,9 @@ const Shortscontext = () => {
         <div className="flex flex-wrap justify-center items-center gap-4 p-4 w-full ">
 
           
-          <Scard/>
+             <Scard/>
+          
+          
           
           
         </div>

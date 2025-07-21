@@ -98,7 +98,7 @@ const LoginPage = () => {
     }
   };
 
-  const handleGoogleAuth = (action) => {
+  const handleGoogleAuth = () => {
     window.location.href = `${import.meta.env.VITE_AUTH_URL}/google`;
   };
 

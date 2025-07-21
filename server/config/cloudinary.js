@@ -21,7 +21,7 @@ const uploadOnCloudinary=async(localFilePath)=>{
         return res
         
     } catch (err) {
-        fs.unlinkSync(localFilePath) //remove save temporery file as the upload opration fail
+        fs.unlinkSync(localFilePath) 
         return null
     }
 }

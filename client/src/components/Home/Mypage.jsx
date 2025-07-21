@@ -79,16 +79,11 @@ const Mypage = () => {
           </div>
         </div>
       </div>
-      <div className={`flex border-b ${isSidebarOpen ? 'lg:ml-[10vh]' : 'ml-20'}  ${isDarkMode ? 'border-gray-200' : 'border-gray-800'} px-8`}>
-        <Link 
-           
-          className={`pb-3 px-4 font-medium ${isDarkMode ? 'text-white' : 'text-black'} border-b-2 border-transparent hover:border-gray-400`}
-        >
-          Home
-        </Link>
+      <div className={`flex mb-4 ${isSidebarOpen ? 'lg:ml-[10vh]' : 'ml-20'}  ${isDarkMode ? 'border-gray-200' : 'border-gray-800'} px-8`}>
+        
         <Link 
           
-          className={`pb-3 px-4 font-medium ${isDarkMode ? 'text-white' : 'text-black'} border-b-2 border-transparent hover:border-gray-400`}
+          className={`p-2 flex items-center justify-center  font-medium ${isDarkMode ? 'text-white' : 'text-black'} border-b-2  hover:border-gray-400`}
         >
           Shorts
         </Link>
@@ -96,18 +91,8 @@ const Mypage = () => {
 
       {/* Your original videos grid section */}
       <div className="lg:flex lg:flex-wrap justify-center items-center gap-4 p-4 w-full grid grid-cols-2 md:grid-cols-3 md:items-center">
-        <Cards/>
-        <Cards/>
-        <Cards/>
-        <Cards/>
-        <Cards/>
-        <Cards/>
-        <Cards/>
-        <Cards/>
-        <Cards/>
-        <Cards/>
-        <Cards/>
-        <Cards/>
+     
+     
       </div>
     </section>
   )

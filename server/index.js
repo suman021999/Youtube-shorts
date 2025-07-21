@@ -344,6 +344,7 @@ import dotenv from "dotenv";
 import cors from 'cors';
 import userRouter from "./routes/user.route.js";
 import chatRouter from "./routes/chat.route.js";
+import vedioRouter from "./routes/vedio.route.js";
 import database from './db/database.js';
 import cookieParser from 'cookie-parser';
 import { configurePassport } from './config/passport.config.js';
@@ -377,6 +378,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: false })); 
 app.use("/api/v1/auth", userRouter);
+app.use("/api/v1/vedio", vedioRouter);
 
 const port = process.env.PORT || 5000;
 const httpServer = createServer(app);

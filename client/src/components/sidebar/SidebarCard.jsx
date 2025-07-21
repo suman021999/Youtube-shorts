@@ -3,8 +3,9 @@ import { LiaHomeSolid } from "react-icons/lia";
 import { SiYoutubeshorts } from "react-icons/si";
 import { useSelector, useDispatch } from "react-redux";
 import { closeSidebar } from "../../hooks/sidebarSlice";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
+import axios from "axios";
 
 const SidebarCard = () => {
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
@@ -14,12 +15,53 @@ const SidebarCard = () => {
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // Get user data from localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isLoggedIn = !!user;
+
+  // Avatar display logic
+  const renderAvatar = () => {
+    if (!isLoggedIn) {
+      return <span className="text-sm">?</span>;
+    }
+    
+    // For Google users with avatar image
+    if (user.avatar) {
+      return (
+        <p>{user.avatar} </p>
+      );
+    }
+    
+    // For regular users - show initials
+    const initials = user.username 
+      ? user.username.slice(0, 2).toUpperCase()
+      : "US";
+    
+    return <span className="text-sm">{initials}</span>;
+  };
+
+  // Logout function
+  const handleLogout = async () => {
+    try {
+      await axios.get(`${import.meta.env.VITE_AUTH_URL}/logout`, {
+        withCredentials: true
+      });
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      navigate("/");
+    }
+  };
 
   // Only highlight if on these exact paths
   const shouldHighlightHome = location.pathname === "/homes";
   const shouldHighlightShorts = location.pathname === "/shorts";
 
-  // Progress bar animation (unchanged)
+  // Progress bar animation
   useEffect(() => {
     let timer;
     let progressInterval;
@@ -143,15 +185,18 @@ const SidebarCard = () => {
           <Link to="/create"><GoPlus className="w-6 h-6" /></Link>
         </div>
         <div 
-          className="w-10 h-10 bg-red-800 text-amber-50 flex items-center justify-center rounded-full cursor-pointer"
+          className="w-10 h-10 bg-red-800 text-amber-50 flex items-center justify-center rounded-full cursor-pointer overflow-hidden"
           onClick={() => setShowLogoutPopup(!showLogoutPopup)}
         >
-          BE
+          {renderAvatar()}
         </div>
 
         {showLogoutPopup && (
           <div className={`absolute -top-18 right-2 rounded-lg p-2 w-40 z-50 ${isDarkMode ? "dark:bg-[#3e3d3df8]" : "bg-[#b9b8b8f3]"}`}>
-            <div className={`py-2 px-3 rounded cursor-pointer ${isDarkMode ? "dark:hover:bg-[#dbe1e330]" : "hover:bg-[#5b59599c] hover:bg-opacity-20"}`}>
+            <div 
+              className={`py-2 px-3 rounded cursor-pointer ${isDarkMode ? "dark:hover:bg-[#dbe1e330]" : "hover:bg-[#5b59599c] hover:bg-opacity-20"}`}
+              onClick={handleLogout}
+            >
               Sign out
             </div>
           </div>

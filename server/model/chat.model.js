@@ -2,9 +2,9 @@ import mongoose from 'mongoose';
 
 const chatSchema = new mongoose.Schema({
   videoId: {
-    type: String,
-    required: true,
-    index: true
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Video',
+    required: true
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
