@@ -44,10 +44,10 @@ const Navbar = () => {
     <>
       <section
          className={`fixed top-0 left-0 z-50 w-full h-[20vh] border-[#2777a0] transition-all duration-300 
-         ${scrolled ? (isDarkMode ? "dark:bg-[#030303e4]" : "bg-[#f4f2f2e8]") : ""}`}
+         ${scrolled ? (isDarkMode ? "lg:dark:bg-[#030303e4]" : "lg:bg-[#f4f2f2e8]") : ""}`}
         style={{
-          backdropFilter: scrolled ? "blur(10px)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(10px)" : "none",
+          backdropFilter: scrolled ? "lg:blur(10px)" : "none",
+          WebkitBackdropFilter: scrolled ? "lg:blur(10px)" : "none",
         }}
       >
         <div className="flex gap-4 p-4 mx-6 items-center justify-between">
@@ -78,7 +78,7 @@ const Navbar = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               
-              <div className="py-4 border border-[#9e9898d6] rounded-r-4xl w-[100px] h-10 flex items-center justify-center bg-[#e4dede57] hover:bg-[#cccaca95]">
+              <div className="py-4 border border-[#9e9898d6] rounded-r-4xl w-[100px] h-10 flex items-center justify-center  hover:bg-[#cccaca95] "> 
                 <CiSearch className="w-6 h-6" />
               </div>
             </div>
@@ -99,8 +99,8 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Search Icon only */}
-            <div className="lg:hidden flex items-center">
-              <CiSearch className="w-6 h-6" onClick={handleSearchClick} />
+            <div className="lg:hidden  flex items-center">
+              <CiSearch className="w-10 h-10 " onClick={handleSearchClick} />
             </div>
 
             {/* Theme Toggle Icons mobile */}

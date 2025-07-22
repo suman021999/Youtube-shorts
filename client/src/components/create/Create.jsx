@@ -291,7 +291,7 @@ const Create = () => {
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
 
   const validateFile = (file) => {
-    const validTypes = ['video/mp4', 'video/webm'];
+    const validTypes = ['video/mp4', 'video/webm', 'video/quicktime'];
     if (!validTypes.includes(file.type)) {
       setError('Invalid file type. Please upload MP4 or WebM.');
       return false;
@@ -433,14 +433,14 @@ const Create = () => {
                 <FiUpload className="mx-auto text-3xl text-gray-400 dark:text-gray-500 mb-2" />
                 <p className="text-lg font-medium dark:text-gray-300">Upload video</p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">or drag and drop</p>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">MP4 or WebM, 60s or less</p>
+                <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">MP4 or WebM or quicktime</p>
               </div>
             )}
             <input 
               type="file" 
               ref={fileInputRef}
               onChange={handleFileChange}
-              accept="video/mp4,video/webm"
+              accept="video/mp4,video/webm,video/quicktime"
               className="hidden"
               aria-label="Select video file"
             />
