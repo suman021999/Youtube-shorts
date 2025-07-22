@@ -5,31 +5,6 @@ import { Link } from "react-router-dom";
 
 const Cards = () => {
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
-
-
-   const user = JSON.parse(localStorage.getItem("user"));
-  const isLoggedIn = !!user;
-
-  // Avatar display logic
-  const renderAvatar = () => {
-    if (!isLoggedIn) {
-      return <span className="text-sm">?</span>;
-    }
-    
-    // For Google users with avatar image
-    if (user.avatar) {
-      return (    
-        <p>{user.avatar}</p>
-      );
-    }
-    
-    // For regular users - show initials
-    const initials = user.username 
-      ? user.username.slice(0, 2).toUpperCase()
-      : "US";
-    
-    return <span className="text-sm">{initials}</span>;
-  };
   return (
     <>
     <div className={`

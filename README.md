@@ -19,7 +19,7 @@ A real-time chat application inspired by YouTube Shorts. Users can sign up, post
 ## 🛠️ Tech Stack
 
 - **Frontend**: React, Axios, Socket.IO Client
-- **Backend**: Node.js, Express, Socket.IO
+- **Backend**: Node.js, Express, Socket.IO, redis
 - **Database**: MongoDB with Mongoose
 - **Storage**: Cloudinary (for video & images)
 - **Authentication**: JWT, bcrypt
@@ -134,7 +134,7 @@ receiveMessage – Listen for messages
 MERN Stack Docs
 
 Socket.IO
-
+Redis
 Cloudinary
 
 yaml

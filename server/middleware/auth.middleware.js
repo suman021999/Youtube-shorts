@@ -21,10 +21,7 @@ export const googleAuthCallback = passport.authenticate('google', {
 
 
 
-
-
-
-
+//authMiddleware
 const authMiddleware = async(req, res, next) => {
  
   try {
@@ -46,6 +43,7 @@ const authMiddleware = async(req, res, next) => {
     return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
+
 
 export { authMiddleware };
 

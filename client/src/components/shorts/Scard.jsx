@@ -109,6 +109,34 @@ const Scard = () => {
     };
   }, []);
 
+
+//user shortname
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isLoggedIn = !!user;
+
+  // Avatar display logic
+  const renderAvatar = () => {
+    if (!isLoggedIn) {
+      return <span className="text-sm">?</span>;
+    }
+    
+    // For Google users with avatar image
+    if (user.avatar) {
+      return (    
+        <p>{user.avatar}</p>
+      );
+    }
+    
+    // For regular users - show initials
+    const initials = user.username 
+      ? user.username.slice(0, 2).toUpperCase()
+      : "US";
+    
+    return <span className="text-sm">{initials}</span>;
+  };
+
+  
+
   return (
     <>
     <section className="relative group z-10 flex gap-4">
@@ -166,7 +194,7 @@ const Scard = () => {
         {/* YouTube Shorts style text section */}
         <div className="absolute bottom-2 left-0 right-0 p-4 pb-10 z-10">
           <div className="flex items-center mb-2">
-            <Link to="/Mychennel" className='flex items-center'><div className="w-8 h-8 rounded-full bg-gray-400 mr-2"></div>
+            <Link to="/Mychennel" className='flex items-center'><div className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-400 mr-2">{renderAvatar()}</div>
             <span className="text-white font-medium text-sm">Channel Name</span></Link>
             <button className="ml-auto bg-white text-black px-3 py-1 rounded-full text-sm font-medium">
               Subscribe

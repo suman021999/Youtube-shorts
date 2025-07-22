@@ -17,7 +17,7 @@ const uploadOnCloudinary=async(localFilePath)=>{
                 resource_type:"auto" //video 
             }
         )
-        console.log("uploade",res.url)
+        console.log("upload",res.url)
         return res
         
     } catch (err) {
