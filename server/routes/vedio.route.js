@@ -1,12 +1,14 @@
 import express from 'express';
 import { uploadVideo, getAllVideo } from '../controller/Vedio.controller.js';
-import { authMiddleware } from '../middleware/auth.middleware.js';
+import { authMiddleware, protect } from '../middleware/auth.middleware.js';
 import { upload } from '../utils/upload.js';
 
 const router = express.Router();
 
 // Video routes
 router.route('/upload').post(authMiddleware, upload.single('video'), uploadVideo) 
-  router.route('/').get(getAllVideo);
+router.route('/').get(getAllVideo);
 
 export default router;
+
+

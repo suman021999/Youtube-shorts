@@ -358,7 +358,7 @@ const Create = () => {
       const token = localStorage.getItem('token');
       
       const response = await axios.post(
-        `${import.meta.env.VITE_VEDIO_URL}/upload`, 
+        `${import.meta.env.VITE_VIDEO_URL}/upload`, 
         formData, 
         {
           headers: {

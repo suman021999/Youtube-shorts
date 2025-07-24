@@ -1,20 +1,52 @@
-//video model
+
+// // models/video.model.js
 import mongoose from 'mongoose';
 
 const videoSchema = new mongoose.Schema({
-    description: String,
-    videoUrl: { type: String, required: true },
-    duration: Number, // in seconds
-    format: String,
-    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    createdAt: { type: Date, default: Date.now }
+    description: {
+        type: String,
+        trim: true,
+        maxlength: 500
+    },
+    videoUrl: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    duration: {
+        type: Number,
+        required: true
+    },
+    format: {
+        type: String,
+        required: true
+    },
+    likes:{
+        type: Number,
+        required: true,
+    },
+    dislike:{
+        type: Number,
+        required: true,
+    },
+    views:{
+        type: Number,
+        required: true,
+    },
+    id: {
+        type:mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+}, {
+    timestamps: true
 });
+
+// Add text index for search functionality
+videoSchema.index({ description: 'text',  });
 
 export const Video = mongoose.model('Video', videoSchema);
 
 
 
-
-
-
-
+  

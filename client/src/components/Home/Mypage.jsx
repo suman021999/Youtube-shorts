@@ -1,8 +1,8 @@
 
 import React from 'react'
 import { useSelector } from 'react-redux'
-import Cards from './Cards'
 import { Link } from 'react-router-dom'
+import Cards from './Cards'
 
 const Mypage = () => {
   const isSidebarOpen = useSelector((state) => state.sidebar.isOpen)
@@ -49,12 +49,12 @@ const Mypage = () => {
             <h1 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>Shad0w_Edit0r</h1>
             <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>@shadow-52I</p>
             <div className="flex items-center space-x-4 mt-2">
-              <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>3.18K subscribers</p>
+              {/* <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>3.18K subscribers</p> */}
               <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>124 videos</p>
             </div>
-            <button className={`mt-3 px-4 py-1 rounded-full ${isDarkMode ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:bg-gray-800'} text-sm font-medium transition-colors`}>
+            {/* <button className={`mt-3 px-4 py-1 rounded-full ${isDarkMode ? 'bg-white text-black hover:bg-gray-200' : 'bg-black text-white hover:bg-gray-800'} text-sm font-medium transition-colors`}>
               Subscribe
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
@@ -71,7 +71,7 @@ const Mypage = () => {
       {/* Your original videos grid section */}
       <div className="lg:flex lg:flex-wrap justify-center items-center gap-4 p-4 w-full grid grid-cols-2 md:grid-cols-3 md:items-center">
      
-     
+          <Cards/>
       </div>
     </section>
   )
