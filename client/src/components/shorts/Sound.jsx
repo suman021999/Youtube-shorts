@@ -74,7 +74,7 @@ const Sound = ({ videoRef }) => {
             step="0.01"
             value={isMuted ? 0 : volume}
             onChange={handleVolumeChange}
-            className="w-24 h-1 accent-white cursor-pointer"
+            className="w-36 h-1 accent-white cursor-pointer"
           />
         </div>
       )}

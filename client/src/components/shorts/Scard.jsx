@@ -143,7 +143,7 @@ const Scard = () => {
 
       <div className='relative flex '>
 
-        <div className="relative h-[80vh] md:w-[400px] max-w-sm rounded-lg shadow-md overflow-hidden">
+        <div className="relative h-[70vh]  bg-cover md:w-[400px] max-w-sm rounded-lg shadow-md overflow-hidden">
         <video
           ref={videoRef}
           controls={false}

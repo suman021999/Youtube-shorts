@@ -8,8 +8,8 @@ const Shortscontext = () => {
     
   return (
     <>
-     <section className={` w-full ${isSidebarOpen ? 'lg:ml-[45vh] ' : ''} lg:ml-8  mt-20 mb-[40vh]  h-full`}>  
-        <div className="flex flex-wrap justify-center items-center gap-4 p-4 w-full ">
+     <section className={` w-full  mt-20 mb-[40vh]  h-full`}>  
+        <div className="flex flex-wrap justify-center items-center gap-4 p-4 ">
 
           
              <Scard/>

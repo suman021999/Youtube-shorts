@@ -1,4 +1,4 @@
-
+//index.js
 import express from 'express';
 import dotenv from "dotenv";
 import cors from 'cors';
@@ -46,6 +46,7 @@ app.use("/api/v1/vedio", vedioRouter);
 
 const port = process.env.PORT || 5000;
 const httpServer = createServer(app);
+// httpServer.setTimeout(0)
 
 // Initialize Socket.IO
 const io = new Server(httpServer, {

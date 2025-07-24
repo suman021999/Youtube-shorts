@@ -1,3 +1,4 @@
+//video model
 import mongoose from 'mongoose';
 
 const videoSchema = new mongoose.Schema({
@@ -10,3 +11,10 @@ const videoSchema = new mongoose.Schema({
 });
 
 export const Video = mongoose.model('Video', videoSchema);
+
+
+
+
+
+
+
