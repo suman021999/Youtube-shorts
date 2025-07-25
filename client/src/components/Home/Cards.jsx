@@ -3,7 +3,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 
-const Cards = () => {
+const Cards = ({ videoUrl, description, views}) => {
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
   return (
     <>
@@ -18,7 +18,7 @@ const Cards = () => {
       <div className="mb-4 ">
         
           <video
-            src="1111.mp4" 
+            src={videoUrl}
             type="video/mp4" 
             className="w-full rounded-lg"
           />
@@ -35,14 +35,14 @@ const Cards = () => {
           whitespace-nowrap 
           ${isDarkMode ? 'text-white' : ''}
         `}>
-          text
+          {description || 'No description'}
         </h2>
         <p className={`
           text-sm 
           pb-2 
           ${isDarkMode ? 'text-gray-300' : 'text-gray-500'}
         `}>
-          Views • Date
+          {views}Views • Date
         </p>
       </div>
       </Link>
@@ -52,3 +52,7 @@ const Cards = () => {
 };
 
 export default Cards;
+
+
+
+

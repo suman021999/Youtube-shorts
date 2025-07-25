@@ -90,7 +90,7 @@ const LoginPage = () => {
       
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
-      navigate("/homes");  // Changed from '/*'
+      navigate("/");  // Changed from '/*'
     } catch (err) {
       setSignUpError(err.response?.data?.message || "Registration failed. Please try again.");
     } finally {
