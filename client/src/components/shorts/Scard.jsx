@@ -6,7 +6,7 @@ import {Link} from "react-router-dom"
 import Sound from './Sound';
 import Scfun from './Scfun';
 
-const Scard = () => {
+const Scard = ({ videoUrl,  id }) => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [showCenterButton, setShowCenterButton] = useState(true);
   const [progress, setProgress] = useState(0);
@@ -111,31 +111,53 @@ const Scard = () => {
 
 
 //user shortname
-  const user = JSON.parse(localStorage.getItem("user"));
-  const isLoggedIn = !!user;
+  // const user = JSON.parse(localStorage.getItem("user"));
+  // const isLoggedIn = !!user;
 
-  // Avatar display logic
-  const renderAvatar = () => {
-    if (!isLoggedIn) {
-      return <span className="text-sm">?</span>;
-    }
+//   // Avatar display logic
+//   const renderAvatar = () => {
+//     if (!isLoggedIn) {
+//       return <span className="text-sm">?</span>;
+//     }
     
-    // For Google users with avatar image
-    if (user.avatar) {
-      return (    
-        <p>{user.avatar}</p>
+//     // For Google users with avatar image
+//     if (user.avatar) {
+//       return (    
+//         <p>{user.avatar}</p>
+//       );
+//     }
+    
+//     // For regular users - show initials
+//     const initials = user.username 
+//       ? user.username.slice(0, 2).toUpperCase()
+//       : "US";
+    
+//     return <span className="text-sm">{initials}</span>;
+//   };
+
+ 
+
+
+  // Updated avatar rendering
+  const renderAvatar = () => {
+    if (!id) return <span className="text-sm">?</span>;
+    
+    if (id.avatar) {
+      return (
+        <p>{id.avatar}</p>
       );
     }
     
-    // For regular users - show initials
-    const initials = user.username 
-      ? user.username.slice(0, 2).toUpperCase()
-      : "US";
+    const initials = id.username 
+      ? id.username.slice(0, 2).toUpperCase()
+      : "YT";
     
     return <span className="text-sm">{initials}</span>;
   };
 
-  
+ const username = id
+  ? id.username || id.email?.split('@')[0] || 'My Channel'
+  : 'Unknown User';
 
   return (
     <>
@@ -145,18 +167,17 @@ const Scard = () => {
 
         <div className="relative h-[70vh]  bg-cover md:w-[400px] max-w-sm rounded-lg shadow-md overflow-hidden">
         <video
-          ref={videoRef}
-          controls={false}
-          autoPlay
-          loop
-          preload="auto"
-          className="h-full w-full object-cover"
-          onClick={handleVideoClick}
-          onMouseMove={resetTimeout}
-        >
-          <source src="1111.mp4" type="video/mp4" />
-          <source src="1111.mp4" type="video/ogg" />
-        </video>
+           ref={videoRef}
+           controls={false}
+           autoPlay
+           loop
+           preload="auto"
+           className="h-full w-full object-cover"
+           onClick={handleVideoClick}
+           onMouseMove={resetTimeout}
+               >
+         <source src={videoUrl} type="video/mp4" />
+         </video>
 
         {/* Progress bar with input range */}
         <div className="absolute bottom-0 left-0 right-0  pb-[2px]">
@@ -195,7 +216,7 @@ const Scard = () => {
         <div className="absolute bottom-2 left-0 right-0 p-4 pb-10 z-10">
           <div className="flex items-center mb-2">
             <Link to="/Mychennel" className='flex items-center'><div className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-400 mr-2">{renderAvatar()}</div>
-            <span className="text-white font-medium text-sm">Channel Name</span></Link>
+            <span className="text-white font-medium text-sm">@{username}</span></Link>
             <button className="ml-auto bg-white text-black px-3 py-1 rounded-full text-sm font-medium">
               Subscribe
             </button>
@@ -273,4 +294,3 @@ const Scard = () => {
 };
 
 export default Scard;
-

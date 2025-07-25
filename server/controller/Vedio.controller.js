@@ -49,11 +49,16 @@ export const uploadVideo = asyncHandler(async (req, res) => {
     }
 });
 
+
+
 export const getAllVideo = asyncHandler(async (req, res) => {
     try {
-
-
-        const videos = await Video.find().populate('id', 'username email avatar');
+        // Get user ID from request
+        const userId = req.user._id; // This will work if auth middleware runs first
+        
+        // Fetch videos for the logged-in user using correct field name
+        const videos = await Video.find({ id: userId }).populate('id', 'username email avatar');
+        // Note: Changed 'id' to 'user' assuming that's your reference field name
         
         return res.status(200).json({
             success: true,
@@ -68,29 +73,20 @@ export const getAllVideo = asyncHandler(async (req, res) => {
     }
 });
 
-
-
-
-
-
-// export const getAllVideo = asyncHandler(async (req, res) => {
-//     try {
-//         // Get user ID from request
-//         const userId = req.user._id; // This will work if auth middleware runs first
+export const getAllVideos = asyncHandler(async (req, res) => {
+    try {
+        // Fetch all videos from all users and populate user details
+        const videos = await Video.find().populate('id', 'username email avatar');
         
-//         // Fetch videos for the logged-in user using correct field name
-//         const videos = await Video.find({ id: userId }).populate('user', 'username email avatar');
-//         // Note: Changed 'id' to 'user' assuming that's your reference field name
-        
-//         return res.status(200).json({
-//             success: true,
-//             count: videos.length,
-//             data: videos,
-//         });
-//     } catch (error) {
-//         return res.status(500).json({
-//             success: false,
-//             message: error.message || 'Failed to fetch videos',
-//         });
-//     }
-// });
+        return res.status(200).json({
+            success: true,
+            count: videos.length,
+            data: videos,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message || 'Failed to fetch videos',
+        });
+    }
+});
