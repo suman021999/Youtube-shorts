@@ -9,14 +9,14 @@ import Create from "../create/Create";
 
 
 
-const Dashboard = props => {
+const Dashboard = () => {
   return (
     <>
       <Navbar />
       <section className="w-full min-h-screen  pt-[15vh] flex">
         <Routes>
           <Route path="/homes" element={<Homecontext />} />
-          <Route path="/shorts" element={<Shortscontext />} />
+          <Route path="/shorts/:id" element={<Shortscontext />} />
           <Route path="/Mychennel" element={<Mypage />} />
           <Route path="/create" element={<Create />} />
           

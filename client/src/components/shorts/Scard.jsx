@@ -110,54 +110,56 @@ const Scard = ({ videoUrl,  id }) => {
   }, []);
 
 
-//user shortname
-  // const user = JSON.parse(localStorage.getItem("user"));
-  // const isLoggedIn = !!user;
+// user shortname
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isLoggedIn = !!user;
 
-//   // Avatar display logic
-//   const renderAvatar = () => {
-//     if (!isLoggedIn) {
-//       return <span className="text-sm">?</span>;
-//     }
-    
-//     // For Google users with avatar image
-//     if (user.avatar) {
-//       return (    
-//         <p>{user.avatar}</p>
-//       );
-//     }
-    
-//     // For regular users - show initials
-//     const initials = user.username 
-//       ? user.username.slice(0, 2).toUpperCase()
-//       : "US";
-    
-//     return <span className="text-sm">{initials}</span>;
-//   };
-
- 
-
-
-  // Updated avatar rendering
+  // Avatar display logic
   const renderAvatar = () => {
-    if (!id) return <span className="text-sm">?</span>;
+    if (!isLoggedIn) {
+      return <span className="text-sm">?</span>;
+    }
     
-    if (id.avatar) {
-      return (
-        <p>{id.avatar}</p>
+    // For Google users with avatar image
+    if (user.avatar) {
+      return (    
+        <p>{user.avatar}</p>
       );
     }
     
-    const initials = id.username 
-      ? id.username.slice(0, 2).toUpperCase()
-      : "YT";
+    // For regular users - show initials
+    const initials = user.username 
+      ? user.username.slice(0, 2).toUpperCase()
+      : "US";
     
     return <span className="text-sm">{initials}</span>;
   };
 
- const username = id
-  ? id.username || id.email?.split('@')[0] || 'My Channel'
+ 
+ const username = user
+  ? user.username || user.email?.split('@')[0] || 'My Channel'
   : 'Unknown User';
+
+  // Updated avatar rendering
+//   const renderAvatar = () => {
+//     if (!id) return <span className="text-sm">?</span>;
+    
+//     if (id.avatar) {
+//       return (
+//         <p>{id.avatar}</p>
+//       );
+//     }
+    
+//     const initials = id.username 
+//       ? id.username.slice(0, 2).toUpperCase()
+//       : "YT";
+    
+//     return <span className="text-sm">{initials}</span>;
+//   };
+
+//  const username = id
+//   ? id.username || id.email?.split('@')[0] || 'My Channel'
+//   : 'Unknown User';
 
   return (
     <>
@@ -176,7 +178,7 @@ const Scard = ({ videoUrl,  id }) => {
            onClick={handleVideoClick}
            onMouseMove={resetTimeout}
                >
-         <source src={videoUrl} type="video/mp4" />
+         <source src="/1111.mp4" type="video/mp4" />
          </video>
 
         {/* Progress bar with input range */}
@@ -294,3 +296,8 @@ const Scard = ({ videoUrl,  id }) => {
 };
 
 export default Scard;
+
+
+
+
+

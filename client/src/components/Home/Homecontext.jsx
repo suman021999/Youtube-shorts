@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 import Cards from './Cards'
 import { useSelector } from 'react-redux';
 import axios from 'axios'
+import VideoCard from '../videocards/VideoCard';
+import error from "../../../public/404.png"
 
 const Homecontext = () => {
   const [videos, setVideos] = useState([])
@@ -23,6 +25,7 @@ const Homecontext = () => {
         });
         
         setVideos(response.data.data);
+        // console.log(response.data.data[0]._id,"fklljg")
       } catch (error) {
         console.error("Error fetching videos:", error);
         // Handle specific error messages from backend
@@ -44,7 +47,10 @@ const Homecontext = () => {
   }, []);
 
   if (loading) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>
+    return <div className="flex flex-col gap-4 justify-center items-center h-screen w-screen">
+      <img className='h-44 w-44 rounded-full' src={error} alt="" />
+      <p>Connect to the internet</p>
+    </div>
   }
   
   return (
@@ -52,12 +58,14 @@ const Homecontext = () => {
       <section className={` w-full ${isSidebarOpen ? 'lg:ml-[45vh] ' : ''} lg:ml-8  mt-20`}>  
         <div className="lg:flex lg:flex-wrap justify-center items-center gap-4 p-4 w-full grid grid-cols-2  md:grid-cols-3 md:items-center">
           {videos.map((video) => (
-            <Cards 
+            <VideoCard
               key={video._id}
               videoUrl={video.videoUrl}
               description={video.description}
               views={video.views}
-              id={video.id}
+              id={video._id}  
+              owner={video.owner}  
+              isShort={false}
             />
           ))}
         </div>

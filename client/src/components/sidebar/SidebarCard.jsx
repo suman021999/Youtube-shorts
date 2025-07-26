@@ -138,7 +138,7 @@ const SidebarCard = () => {
           </Link>
 
           <Link
-            to="/shorts"
+            to={`/shorts`}
             className={`${
               shouldHighlightShorts ? 
                 (isDarkMode ? "bg-[#dbe1e330]" : "bg-[#b3b0b034]") : 
@@ -169,7 +169,7 @@ const SidebarCard = () => {
         </Link>
 
         <Link
-          to="/shorts"
+          to={`/shorts/id`}
           className={`${
             shouldHighlightShorts ? 
               (isDarkMode ? "bg-[#dbe1e330]" : "bg-[#b3b0b034]") : 
