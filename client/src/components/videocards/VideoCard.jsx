@@ -100,6 +100,14 @@ const VideoCard = ({
     }
   };
 
+    // New handler for channel navigation
+  const handleChannelClick = (e) => {
+    e.preventDefault();
+    if (owner?.username) {
+      navigate(`/channel/${owner.username}`);
+    }
+  };
+
   const updateProgress = () => {
     if (!isDraggingRef.current && videoRef.current && videoRef.current.readyState > 0) {
       const currentTime = videoRef.current.currentTime;
@@ -181,7 +189,11 @@ const VideoCard = ({
           {isShort && (
             <div className="absolute bottom-2 left-0 right-0 p-4 pb-10 z-10">
               <div className="flex items-center mb-2">
-                <Link to={`/channel/${owner?._id || owner?.id}`} className='flex items-center'>
+                <Link
+
+                 to={`/channel/${owner?.username || owner?.id}`} 
+                 onClick={handleChannelClick} 
+                 className='flex items-center'>
                   <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-400 mr-2">
                     {renderAvatar()}
                   </div>

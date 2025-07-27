@@ -130,6 +130,24 @@ export const loginAccount = asyncHandler(async (req, res) => {
 });
 
 
+export const getUserByUsername = asyncHandler(async (req, res) => {
+  const {username} = req.params;
+
+  const user = await User.findOne({ username: username.toLowerCase().trim() })
+    .select('-password -__v'); // Exclude sensitive fields
+
+  if (!user) {
+    res.status(404);
+    throw new Error('User not found');
+  }
+
+  res.status(200).json({
+    success: true,
+    user
+  });
+});
+
+
 export const logout = asyncHandler(async (req, res) => {
   res.cookie('jwt', '', {
     httpOnly: true,

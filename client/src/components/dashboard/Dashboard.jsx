@@ -18,7 +18,7 @@ const Dashboard = () => {
         <Routes>
           <Route path="/homes" element={<Homecontext />} />
           <Route path="/shorts/:id" element={<Shortscontext />} />
-          <Route path="/channel/:userId" element={<Mypage />} />
+          <Route path="/channel/:username" element={<Mypage />} />
           <Route path="/create" element={<Create />} />
           
           
@@ -29,9 +29,4 @@ const Dashboard = () => {
     </>
   )
 }
-
-Dashboard.propTypes = {
-
-}
-
 export default Dashboard
