@@ -30,8 +30,10 @@ const [videos, setVideos] = useState(null)
 
     fetchVideo();
   }, [id]);
-       if (!videos) {
-    return <div>Loading...</div>;
+
+
+    if (!videos) {
+    return (<div className="flex flex-col gap-4 justify-center items-center h-screen w-screen">Loading...</div>)
   }
     
   return (

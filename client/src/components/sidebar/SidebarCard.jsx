@@ -3,7 +3,7 @@ import { LiaHomeSolid } from "react-icons/lia";
 import { SiYoutubeshorts } from "react-icons/si";
 import { useSelector, useDispatch } from "react-redux";
 import { closeSidebar } from "../../hooks/sidebarSlice";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { GoPlus } from "react-icons/go";
 import axios from "axios";
 
@@ -16,6 +16,40 @@ const SidebarCard = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+
+   const { id } = useParams();
+  //   // console.log(id)
+  //    useEffect(() => {
+  //   const fetchVideo = async () => {
+     
+  //     try {
+        
+  //       const token = localStorage.getItem('token');
+  //       const response = await axios.get(`${import.meta.env.VITE_VIDEO_URL}/${id}`, {
+  //         headers: {
+  //           'Authorization': `Bearer ${token}`
+  //         }
+  //       });
+        
+  //       setVideos(response.data.data);
+       
+  //     } catch (err) {
+  //     console.log(err)
+  //     } 
+
+  //   };
+
+  //   fetchVideo();
+  // }, [id]);
+
+
+
+
+
+
+
+
+
 
   // Get user data from localStorage
   const user = JSON.parse(localStorage.getItem("user"));
@@ -138,7 +172,7 @@ const SidebarCard = () => {
           </Link>
 
           <Link
-            to={`/shorts`}
+            to={`/shorts/id`}
             className={`${
               shouldHighlightShorts ? 
                 (isDarkMode ? "bg-[#dbe1e330]" : "bg-[#b3b0b034]") : 

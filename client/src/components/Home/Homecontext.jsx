@@ -46,10 +46,10 @@ const Homecontext = () => {
   }, []);
 
   if (loading) {
-    return <div className="flex flex-col gap-4 justify-center items-center h-screen w-screen">
+    return (<div className="flex flex-col gap-4 justify-center items-center h-screen w-screen">
       {/* <img className='h-44 w-44 rounded-full' src={error} alt="" /> */}
       <p>loding</p>
-    </div>
+    </div>)
   }
   
   return (
