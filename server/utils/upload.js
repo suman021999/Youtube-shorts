@@ -45,11 +45,10 @@ import multer from "multer";
 const storage = multer.memoryStorage();
 
 const supportedVideoFormats = [
-    'video/mp4',
-    'video/quicktime',
-    'video/webm',
-    'video/x-msvideo', // AVI
-    'video/x-matroska' // MKV
+    'video/mp4',       // MP4 is most widely supported
+    'video/quicktime', // For iOS devices
+    'video/webm'       // For smaller file sizes
+
 ];
 
 const fileFilter = (req, file, cb) => {

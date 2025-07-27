@@ -59,7 +59,7 @@ const Homecontext = () => {
         <div className="lg:flex lg:flex-wrap justify-center items-center gap-4 p-4 w-full grid grid-cols-2  md:grid-cols-3 md:items-center">
           {videos.map((video) => (
             <VideoCard
-              key={video._id}
+              key={video.id}
               videoUrl={video.videoUrl}
               description={video.description}
               views={video.views}

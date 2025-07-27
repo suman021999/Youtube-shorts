@@ -1,3 +1,4 @@
+
 import React, { useRef, useState, useEffect } from 'react';
 import { FaPlay, FaPause } from "react-icons/fa";
 import { MdOutlineZoomOutMap } from "react-icons/md";
@@ -13,14 +14,16 @@ const VideoCard = ({
   id, 
   isShort = false, 
   showDetails = true,
-  autoPlay = false,
+  autoPlay = true,
   owner
 }) => {
-  // State and refs
   const [isPlaying, setIsPlaying] = useState(autoPlay);
   const [showCenterButton, setShowCenterButton] = useState(true);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [isMuted, setIsMuted] = useState(false);
+  const [autoplayAttempted, setAutoplayAttempted] = useState(false);
+  
   const videoRef = useRef(null);
   const timeoutRef = useRef(null);
   const progressBarRef = useRef(null);
@@ -28,17 +31,57 @@ const VideoCard = ({
   const navigate = useNavigate();
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
 
- 
+  const attemptAutoplay = async () => {
+    if (!isShort || !autoPlay || !videoRef.current || autoplayAttempted) return;
 
-  // Handlers
-  const handlePlayPause = () => {
-    if (videoRef.current) {
+    try {
+      videoRef.current.muted = false;
+      await videoRef.current.play();
+      setIsPlaying(true);
+      setIsMuted(false);
+    } catch (error) {
+      try {
+        videoRef.current.muted = true;
+        await videoRef.current.play();
+        setIsPlaying(true);
+        setIsMuted(true);
+      } catch (mutedError) {
+        console.log("Autoplay completely blocked");
+      }
+    }
+    setAutoplayAttempted(true);
+  };
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleCanPlay = () => attemptAutoplay();
+    
+    video.addEventListener('canplay', handleCanPlay);
+    return () => video.removeEventListener('canplay', handleCanPlay);
+  }, [autoPlay]);
+
+  useEffect(() => {
+    attemptAutoplay();
+  }, []);
+
+  const handlePlayPause = async () => {
+    if (!videoRef.current) return;
+
+    try {
       if (isPlaying) {
         videoRef.current.pause();
       } else {
-        videoRef.current.play();
+        if (isMuted) {
+          videoRef.current.muted = false;
+          setIsMuted(false);
+        }
+        await videoRef.current.play();
       }
       setIsPlaying(!isPlaying);
+    } catch (error) {
+      console.error("Playback error:", error);
     }
     setShowCenterButton(true);
     resetTimeout();
@@ -52,17 +95,11 @@ const VideoCard = ({
     } else {
       e.preventDefault();
       navigate(`/shorts/${id}`, { 
-        state: { 
-          videoUrl,
-          description,
-          views,
-          id,
-        }
+        state: { videoUrl, description, views, id }
       });
     }
   };
 
-  // Progress and controls
   const updateProgress = () => {
     if (!isDraggingRef.current && videoRef.current && videoRef.current.readyState > 0) {
       const currentTime = videoRef.current.currentTime;
@@ -79,7 +116,6 @@ const VideoCard = ({
     timeoutRef.current = setTimeout(() => setShowCenterButton(false), 500);
   };
 
-  // Effects
   useEffect(() => {
     resetTimeout();
     const video = videoRef.current;
@@ -96,45 +132,16 @@ const VideoCard = ({
     };
   }, []);
 
-
-  //  // User data
-  // const user = JSON.parse(localStorage.getItem("user"));
-  // const isLoggedIn = !!user;
-  // const username = user
-  //   ? user.username || user.email?.split('@')[0] || 'My Channel'
-  //   : 'Unknown User';
-
-  // // Avatar render
-  // const renderAvatar = () => {
-  //   if (!isLoggedIn) return <span className="text-sm">?</span>;
-  //   if (user.avatar) return <p>{user.avatar}</p>;
-  //   const initials = user.username 
-  //     ? user.username.slice(0, 2).toUpperCase()
-  //     : "US";
-  //   return <span className="text-sm">{initials}</span>;
-  // };
-
-
-
-    // Remove the logged-in user data section and replace with creator data
   const username = owner?.username || 'Unknown User';
 
-  // Avatar render using creator data
-const renderAvatar = () => {
-  if (!owner) return <span className="text-sm">?</span>;
-  if (owner.avatar) return(
-    <p>{owner.avatar}</p>
-  );
-  // <img src= alt={username} className="w-full h-full rounded-full" />
-  const initials = owner.username  // Changed from user.username to owner.username
-    ? owner.username.slice(0, 2).toUpperCase()
-    : "US";
-  return <span className="text-sm">{initials}</span>;
-};
+  const renderAvatar = () => {
+    if (!owner) return <span className="text-sm">?</span>;
+    if (owner.avatar) return <p>{owner.avatar}</p>;
+    const initials = owner.username ? owner.username.slice(0, 2).toUpperCase() : "US";
+    return <span className="text-sm">{initials}</span>;
+  };
 
-  // Render different layouts based on isShort prop
   return isShort ? (
-    // Shorts view layout
     <section className="relative group z-10 flex gap-4">
       <div className='relative flex'>
         <div className={`relative ${isShort ? 'h-[70vh]' : 'h-auto'} bg-cover md:w-[400px] max-w-sm rounded-lg shadow-md overflow-hidden`}>
@@ -144,14 +151,17 @@ const renderAvatar = () => {
             autoPlay={autoPlay}
             loop={isShort}
             preload="auto"
+            muted={isMuted}
+            playsInline
             className={`${isShort ? 'h-full' : 'h-auto'} w-full object-cover`}
             onClick={handleVideoClick}
             onMouseMove={resetTimeout}
           >
             <source src={videoUrl} type="video/mp4" />
+            <source src={videoUrl} type="video/quicktime" />
+            <source src={videoUrl} type="video/webm" />
           </video>
 
-          {/* Progress bar */}
           {isShort && (
             <div className="absolute bottom-0 left-0 right-0 pb-[2px]">
               <div 
@@ -164,30 +174,14 @@ const renderAvatar = () => {
                 >
                   <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-3 h-3 bg-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-75"></div>
                 </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  step="0.1"
-                  value={progress}
-                  onChange={(e) => {
-                    const newProgress = parseFloat(e.target.value);
-                    setProgress(newProgress);
-                    if (videoRef.current && duration) {
-                      videoRef.current.currentTime = (newProgress / 100) * duration;
-                    }
-                  }}
-                  className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
-                />
               </div>
             </div>
           )}
 
-          {/* Video info */}
           {isShort && (
             <div className="absolute bottom-2 left-0 right-0 p-4 pb-10 z-10">
               <div className="flex items-center mb-2">
-                <Link  to={`/Mychennel/@${username}`} className='flex items-center'>
+                <Link to={`/channel/${owner?._id || owner?.id}`} className='flex items-center'>
                   <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-400 mr-2">
                     {renderAvatar()}
                   </div>
@@ -203,12 +197,10 @@ const renderAvatar = () => {
             </div>
           )}
 
-          {/* Gradient overlay */}
           {isShort && (
             <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent rounded-lg opacity-30 pointer-events-none"></div>
           )}
 
-          {/* Controls */}
           <div className="absolute overflow-hidden top-0 left-0 right-0 p-4 flex items-center justify-between z-10">
             <div className='flex items-center justify-between'>
               <button onClick={handlePlayPause}>
@@ -225,7 +217,14 @@ const renderAvatar = () => {
 
               {isShort && (
                 <div className={isPlaying ? "opacity-0 group-hover:opacity-100" : ""}>
-                  <Sound videoRef={videoRef}/>
+                  <Sound 
+                    videoRef={videoRef}
+                    isMuted={isMuted}
+                    onToggleMute={() => {
+                      const newMuted = !isMuted;
+                      setIsMuted(newMuted);
+                    }}
+                  />
                 </div>
               )}
             </div>
@@ -239,7 +238,6 @@ const renderAvatar = () => {
             )}
           </div>
 
-          {/* Centered play button */}
           {showCenterButton && (
             <div 
               className="absolute inset-0 flex items-center justify-center z-0 cursor-pointer"
@@ -264,7 +262,6 @@ const renderAvatar = () => {
       )}
     </section>
   ) : (
-    // Regular card view layout
     <div className={`${isShort ? '' : 'lg:w-[15vw] mb-20 lg:mb-0 rounded-lg'}`}>
       <Link 
         to={`/shorts/${id}`}
@@ -278,15 +275,13 @@ const renderAvatar = () => {
             type="video/mp4" 
             className="w-full rounded-lg"
             loop={false}
-            autoPlay={false}
+            autoPlay={false} 
+            muted={false} 
           />
         </div>
         
         {showDetails && (
           <div className='px-4 py-2'>
-
-
-            
             <h2 className={`text-lg font-semibold mb-2 text-ellipsis overflow-hidden whitespace-nowrap ${isDarkMode ? 'text-white' : ''}`}>
               {description || 'No description'}
             </h2>

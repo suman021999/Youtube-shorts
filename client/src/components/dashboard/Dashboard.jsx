@@ -10,6 +10,7 @@ import Create from "../create/Create";
 
 
 const Dashboard = () => {
+  
   return (
     <>
       <Navbar />
@@ -17,7 +18,7 @@ const Dashboard = () => {
         <Routes>
           <Route path="/homes" element={<Homecontext />} />
           <Route path="/shorts/:id" element={<Shortscontext />} />
-          <Route path="/Mychennel" element={<Mypage />} />
+          <Route path="/channel/:userId" element={<Mypage />} />
           <Route path="/create" element={<Create />} />
           
           

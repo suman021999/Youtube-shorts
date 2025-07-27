@@ -5,7 +5,6 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 const Shortscontext = () => {
-  // const [videoData, setVideoData] = useState(null);
 const [videos, setVideos] = useState([]) 
 
     const { id } = useParams();
@@ -39,8 +38,7 @@ const [videos, setVideos] = useState([])
      <section className={` w-full  mt-20 mb-[40vh]  h-full`}>  
         <div className="flex flex-wrap justify-center items-center gap-4 p-4 ">
 
-          {/* {
-            videos.map((video)=>( */}
+          
 
               
              <VideoCard
@@ -48,9 +46,9 @@ const [videos, setVideos] = useState([])
           description={videos.description}
           views={videos.views}
           
-          autoPlay={false}
+          autoPlay={true}
           owner={videos.owner} 
-          id={videos._id}
+          id={videos.id}
           isShort={true}   
           
              />
