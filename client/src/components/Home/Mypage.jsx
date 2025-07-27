@@ -28,7 +28,7 @@ const Mypage = () => {
         );
         setChannelOwner(ownerResponse.data.user);
         const videosResponse = await axios.get(
-          `${import.meta.env.VITE_VIDEO_URL}/user/${ownerResponse.data.user._id}`, //=${ownerResponse.data._id}
+          `${import.meta.env.VITE_VIDEO_URL}/user/${ownerResponse.data.user._id}`,
           {
             headers: { 'Authorization': `Bearer ${token}` }
           }
@@ -97,9 +97,6 @@ const renderAvatar = () => {
             <h1 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>
               {channelOwner?.username ? `@${channelOwner.username}` : 'Channel'}
             </h1>
-            <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              {channelOwner?.email || 'No additional info'}
-            </p>
             <div className="flex items-center space-x-4 mt-2">
               <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                 {videos.length} videos

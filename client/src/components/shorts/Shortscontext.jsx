@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 const Shortscontext = () => {
-const [videos, setVideos] = useState([]) 
+const [videos, setVideos] = useState(null) 
 
     const { id } = useParams();
     // console.log(id)
@@ -29,8 +29,10 @@ const [videos, setVideos] = useState([])
     };
 
     fetchVideo();
-  }, []);
-     
+  }, [id]);
+       if (!videos) {
+    return <div>Loading...</div>;
+  }
     
   return (
     <>

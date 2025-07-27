@@ -1,3 +1,4 @@
+
 import React, { useRef, useState, useEffect } from 'react';
 import { FaPlay, FaPause } from "react-icons/fa";
 import { MdOutlineZoomOutMap } from "react-icons/md";
@@ -19,7 +20,7 @@ const VideoCard = ({
   const [showCenterButton, setShowCenterButton] = useState(true);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(false); 
   const [autoplayAttempted, setAutoplayAttempted] = useState(false);
   const [showDetails] = useState(!isShort); // Only show details for non-shorts
   
@@ -34,10 +35,10 @@ const VideoCard = ({
     if (!isShort || !autoPlay || !videoRef.current || autoplayAttempted) return;
 
     try {
-      videoRef.current.muted = false;
+    
       await videoRef.current.play();
       setIsPlaying(true);
-      setIsMuted(false);
+      setIsMuted(true);
     } catch (error) {
       try {
         videoRef.current.muted = true;
@@ -50,6 +51,8 @@ const VideoCard = ({
     }
     setAutoplayAttempted(true);
   };
+
+
 
   useEffect(() => {
     const video = videoRef.current;
@@ -101,6 +104,7 @@ const VideoCard = ({
     }
   };
 
+
   const handleChannelClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -109,6 +113,7 @@ const VideoCard = ({
     }
   };
 
+  // Update progress bar
   const updateProgress = () => {
     if (!isDraggingRef.current && videoRef.current && videoRef.current.readyState > 0) {
       const currentTime = videoRef.current.currentTime;
@@ -118,6 +123,37 @@ const VideoCard = ({
       setDuration(duration);
     }
     requestAnimationFrame(updateProgress);
+  };
+
+  // Click on progress bar
+  const handleProgressClick = (e) => {
+    if (videoRef.current && progressBarRef.current) {
+      const rect = progressBarRef.current.getBoundingClientRect();
+      const clickPosition = Math.min(Math.max(e.clientX - rect.left, 0), rect.width);
+      const seekTime = (clickPosition / rect.width) * videoRef.current.duration;
+      
+      videoRef.current.currentTime = seekTime;
+      setProgress((seekTime / videoRef.current.duration) * 100);
+    }
+  };
+
+  // Handle input range changes
+  const handleProgressChange = (e) => {
+    const newProgress = parseFloat(e.target.value);
+    setProgress(newProgress);
+    
+    if (videoRef.current && duration) {
+      videoRef.current.currentTime = (newProgress / 100) * duration;
+    }
+  };
+
+  // Drag handlers
+  const handleDragStart = () => {
+    isDraggingRef.current = true;
+  };
+
+  const handleDragEnd = () => {
+    isDraggingRef.current = false;
   };
 
   const resetTimeout = () => {
@@ -133,6 +169,7 @@ const VideoCard = ({
       video.addEventListener('loadedmetadata', () => {
         setDuration(video.duration);
       });
+      
       const animationFrame = requestAnimationFrame(updateProgress);
       
       return () => {
@@ -159,7 +196,7 @@ const VideoCard = ({
   return isShort ? (
     <section className="relative group z-10 flex gap-4">
       <div className='relative flex'>
-        <div className={`relative ${isShort ? 'h-[70vh]' : 'h-auto'} bg-cover md:w-[400px] max-w-sm rounded-lg shadow-md overflow-hidden`}>
+        <div className={`relative ${isShort ? 'h-[75vh]' : 'h-auto'} bg-cover md:w-[400px] max-w-sm rounded-lg shadow-md overflow-hidden`}>
           <video
             ref={videoRef}
             src={videoUrl}
@@ -182,13 +219,31 @@ const VideoCard = ({
               <div 
                 ref={progressBarRef}
                 className="relative w-full h-1 bg-gray-600 bg-opacity-50 rounded-full cursor-pointer group"
+                onClick={handleProgressClick}
               >
+                {/* Visual progress indicator */}
                 <div 
                   className="h-full bg-red-500 rounded-full relative"
                   style={{ width: `${progress}%` }}
                 >
+                  {/* Thumb that appears on hover */}
                   <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-3 h-3 bg-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-75"></div>
                 </div>
+                
+                {/* Actual input range (hidden but functional) */}
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="0.1"
+                  value={progress}
+                  onChange={handleProgressChange}
+                  onMouseDown={handleDragStart}
+                  onMouseUp={handleDragEnd}
+                  onTouchStart={handleDragStart}
+                  onTouchEnd={handleDragEnd}
+                  className="absolute top-0 left-0 w-full h-full opacity-0 cursor-pointer"
+                />
               </div>
             </div>
           )}

@@ -130,7 +130,7 @@ const calculateTimeAgo = (timestamp) => {
   };
 
   return (
-    <section className={`h-[70vh] w-[400px] rounded-lg shadow-md overflow-hidden bg-gray-100 ${isDarkMode && "dark:bg-[#121212e8] border-2"} `}>
+    <section className={`h-[75vh] w-[400px] rounded-lg shadow-md overflow-hidden bg-gray-100 ${isDarkMode && "dark:bg-[#121212e8] border-2"} `}>
       <div className="p-4 h-full flex flex-col">
         <div className='flex items-center justify-between mb-2'>
           <h2 className="text-xl font-bold">Comments ({comments.length})</h2>

@@ -1,11 +1,10 @@
 
 
 import React, { useEffect, useState } from 'react'
-import Cards from './Cards'
 import { useSelector } from 'react-redux';
 import axios from 'axios'
 import VideoCard from '../videocards/VideoCard';
-import error from "../../../public/404.png"
+
 
 const Homecontext = () => {
   const [videos, setVideos] = useState([])

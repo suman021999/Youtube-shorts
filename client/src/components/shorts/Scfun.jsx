@@ -17,7 +17,7 @@ const Scfun = () => {
 
   return (
     <>
-      <div className='flex flex-row h-[70vh] w-0 relative'>
+      <div className='flex flex-row h-[75vh] w-0 relative'>
         {/* Left sidebar with icons */}
         <div className='flex flex-col'>
           <div className={`mt-36 cursor-pointer  `}><AiFillLike className='text-2xl'/></div>

@@ -129,7 +129,7 @@ const LoginPage = () => {
             <input
               type="text"
               name="username"
-              placeholder="name"
+              placeholder="username"
               value={signUpForm.username}
               onChange={handleSignUpChange}
               required

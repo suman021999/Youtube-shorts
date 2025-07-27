@@ -47,7 +47,7 @@ const Sound = ({ videoRef, isMuted, onToggleMute }) => {
         }}
         onMouseEnter={() => setShowVolumeSlider(true)}
         className="text-white text-2xl cursor-pointer hover:scale-110 transition-transform"
-        aria-label={isMuted ? "Unmute" : "Mute"}
+        aria-label={isMuted ?   "Mute":"Unmute"}
       >
         {getVolumeIcon()}
       </button>
