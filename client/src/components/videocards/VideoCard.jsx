@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { FaPlay, FaPause } from "react-icons/fa";
 import { MdOutlineZoomOutMap } from "react-icons/md";
@@ -9,13 +8,12 @@ import Scfun from '../shorts/Scfun';
 
 const VideoCard = ({ 
   videoUrl, 
-  description, 
-  views, 
+  description = '', 
+  views = 0, 
   id, 
   isShort = false, 
-  showDetails = true,
   autoPlay = true,
-  owner
+  owner = {}
 }) => {
   const [isPlaying, setIsPlaying] = useState(autoPlay);
   const [showCenterButton, setShowCenterButton] = useState(true);
@@ -23,6 +21,7 @@ const VideoCard = ({
   const [duration, setDuration] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
   const [autoplayAttempted, setAutoplayAttempted] = useState(false);
+  const [showDetails] = useState(!isShort); // Only show details for non-shorts
   
   const videoRef = useRef(null);
   const timeoutRef = useRef(null);
@@ -60,11 +59,13 @@ const VideoCard = ({
     
     video.addEventListener('canplay', handleCanPlay);
     return () => video.removeEventListener('canplay', handleCanPlay);
-  }, [autoPlay]);
+  }, [autoPlay, isShort, autoplayAttempted]);
 
   useEffect(() => {
-    attemptAutoplay();
-  }, []);
+    if (isShort) {
+      attemptAutoplay();
+    }
+  }, [isShort]);
 
   const handlePlayPause = async () => {
     if (!videoRef.current) return;
@@ -95,14 +96,14 @@ const VideoCard = ({
     } else {
       e.preventDefault();
       navigate(`/shorts/${id}`, { 
-        state: { videoUrl, description, views, id }
+        state: { videoUrl, description, views, id, owner }
       });
     }
   };
 
-    // New handler for channel navigation
   const handleChannelClick = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     if (owner?.username) {
       navigate(`/channel/${owner.username}`);
     }
@@ -132,12 +133,13 @@ const VideoCard = ({
       video.addEventListener('loadedmetadata', () => {
         setDuration(video.duration);
       });
-      updateProgress();
+      const animationFrame = requestAnimationFrame(updateProgress);
+      
+      return () => {
+        if (timeoutRef.current) clearTimeout(timeoutRef.current);
+        cancelAnimationFrame(animationFrame);
+      };
     }
-    
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
   }, []);
 
   const username = owner?.username || 'Unknown User';
@@ -149,12 +151,18 @@ const VideoCard = ({
     return <span className="text-sm">{initials}</span>;
   };
 
+  if (!videoUrl) {
+    console.error("Video URL is missing for video:", id);
+    return null; // or render a placeholder
+  }
+
   return isShort ? (
     <section className="relative group z-10 flex gap-4">
       <div className='relative flex'>
         <div className={`relative ${isShort ? 'h-[70vh]' : 'h-auto'} bg-cover md:w-[400px] max-w-sm rounded-lg shadow-md overflow-hidden`}>
           <video
             ref={videoRef}
+            src={videoUrl}
             controls={false}
             autoPlay={autoPlay}
             loop={isShort}
@@ -166,8 +174,7 @@ const VideoCard = ({
             onMouseMove={resetTimeout}
           >
             <source src={videoUrl} type="video/mp4" />
-            <source src={videoUrl} type="video/quicktime" />
-            <source src={videoUrl} type="video/webm" />
+            Your browser does not support the video tag.
           </video>
 
           {isShort && (
@@ -190,10 +197,10 @@ const VideoCard = ({
             <div className="absolute bottom-2 left-0 right-0 p-4 pb-10 z-10">
               <div className="flex items-center mb-2">
                 <Link
-
-                 to={`/channel/${owner?.username || owner?.id}`} 
-                 onClick={handleChannelClick} 
-                 className='flex items-center'>
+                  to={`/channel/${owner?.username || owner?.id}`} 
+                  onClick={handleChannelClick} 
+                  className='flex items-center'
+                >
                   <div className="w-8 h-8 rounded-full flex items-center justify-center bg-gray-400 mr-2">
                     {renderAvatar()}
                   </div>
@@ -269,7 +276,7 @@ const VideoCard = ({
 
       {isShort && (
         <div className="flex absolute lg:static right-8 z-20">
-          <Scfun />
+          <Scfun  />
         </div>
       )}
     </section>
@@ -298,7 +305,7 @@ const VideoCard = ({
               {description || 'No description'}
             </h2>
             <p className={`text-sm pb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-500'}`}>
-              {views} Views • Date
+              {views} Views
             </p>
           </div>
         )}

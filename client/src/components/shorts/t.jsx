@@ -1,4 +1,3 @@
-
 import React, { useRef, useState, useEffect } from 'react';
 import { FaPlay, FaPause } from "react-icons/fa";
 import { MdOutlineZoomOutMap } from "react-icons/md";
@@ -264,8 +263,3 @@ const renderAvatar = () => {
 };
 
 export default Scard;
-
-
-
-
-

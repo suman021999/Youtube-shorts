@@ -56,12 +56,11 @@ export const uploadVideo = asyncHandler(async (req, res) => {
 export const getAllVideo = asyncHandler(async (req, res) => {
     try {
         // Get user ID from request
-        const userId = req.user.id; // This will work if auth middleware runs first
-        
+        const { ownerID } = req.params; // This will work if auth middleware runs first
+        console.log(ownerID)
         // Fetch videos for the logged-in user using correct field name
-        const videos = await Video.find({ owner: userId }).populate('owner', 'username email avatar');
+        const videos = await Video.find({ owner: ownerID }).populate('owner', 'username email avatar');
         // Note: Changed 'id' to 'user' assuming that's your reference field name
-        
         return res.status(200).json({
             success: true,
             count: videos.length,

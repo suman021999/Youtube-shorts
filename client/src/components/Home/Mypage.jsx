@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import VideoCard from "../videocards/VideoCard";
+import error from "../../../public/404.png"
 
 const Mypage = () => {
   const isSidebarOpen = useSelector((state) => state.sidebar.isOpen);
@@ -25,17 +26,13 @@ const Mypage = () => {
             headers: { 'Authorization': `Bearer ${token}` }
           }
         );
-        setChannelOwner(ownerResponse.data);
-        console.log(ownerResponse.data,'makar to')
-        // Then fetch videos for this channel
+        setChannelOwner(ownerResponse.data.user);
         const videosResponse = await axios.get(
-          `${import.meta.env.VITE_VIDEO_URL}?owner=${ownerResponse.data._id}`,
+          `${import.meta.env.VITE_VIDEO_URL}/user/${ownerResponse.data.user._id}`, //=${ownerResponse.data._id}
           {
             headers: { 'Authorization': `Bearer ${token}` }
           }
         );
-        
-       console.log('Videos response:', videosResponse.data,"kito");
         setVideos(videosResponse.data.videos || videosResponse.data.data || []);
       } catch (error) {
         console.error("Error fetching channel data:", error);
@@ -59,11 +56,13 @@ const renderAvatar = () => {
   );
 
   if (channelOwner.avatar) return (
-    <img 
-      src={channelOwner.avatar} 
-      alt="avatar" 
-      className="w-full h-full rounded-full object-cover"
-    />
+    // <img 
+    //   src= 
+    //   alt="avatar" 
+    //   className="w-full h-full rounded-full object-cover"
+    // />
+
+    <p>{channelOwner.avatar}</p>
   );
 
   // Fallback to initials
@@ -81,7 +80,10 @@ const renderAvatar = () => {
 };
 
   if (loading) {
-    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+    return <div className="flex flex-col gap-4 justify-center items-center h-screen w-screen">
+          <img className='h-44 w-44 rounded-full' src={error} alt="" />
+          <p>Connect to the internet</p>
+        </div>
   }
 
   return (

@@ -31,7 +31,7 @@ const Scfun = () => {
         {/* Chatbox that appears on the right when opened */}
         {isChatOpen && (
           <div className='ml-2 absolute -right-8 xl:static'>
-            <Chatbox />
+            <Chatbox  />
           </div>
         )}
       </div>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Scard from './Scard';
 import VideoCard from '../videocards/VideoCard';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
@@ -22,7 +21,7 @@ const [videos, setVideos] = useState([])
         });
         
         setVideos(response.data.data);
-        // console.log(response.data.data, "response")
+       
       } catch (err) {
       console.log(err)
       } 
@@ -45,7 +44,6 @@ const [videos, setVideos] = useState([])
           videoUrl={videos.videoUrl}
           description={videos.description}
           views={videos.views}
-          
           autoPlay={true}
           owner={videos.owner} 
           id={videos.id}
