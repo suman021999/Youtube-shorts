@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { toggleSidebar } from '../../hooks/sidebarSlice';
-import logo from "../../../public/youtube.svg";
+import logo from "../../../public/logo1.svg";
 import { CiSearch } from "react-icons/ci";
 import { GoPlus } from "react-icons/go";
 import { RxHamburgerMenu } from "react-icons/rx";

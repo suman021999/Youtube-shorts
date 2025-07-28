@@ -38,35 +38,4 @@ export default {
 
 
 
-
-// import { Router } from 'express';
-// import { protect } from '../middleware/auth.middleware.js';
-
-// const router = Router();
-// let chatController = null;
-
-// const checkController = (req, res, next) => {
-//   if (!chatController) {
-//     return res.status(500).json({ error: "Chat controller not initialized" });
-//   }
-//   next();
-// };
-
-// router.route('/:videoId/history')
-//   .get(protect, checkController, (req, res) => chatController.getChatHistory(req, res));
-
-// router.route('/:videoId/messages/:messageId/like')
-//   .post(protect, checkController, (req, res) => chatController.likeMessage(req, res));
-
-// router.route('/:videoId/messages/:messageId/dislike')
-//   .post(protect, checkController, (req, res) => chatController.dislikeMessage(req, res));
-
-// router.route('/:videoId/active-users')
-//   .get(protect, checkController, (req, res) => chatController.getActiveUsers(req, res));
-
-// export default {
-//   router,
-//   setController: (controller) => {
-//     chatController = controller;
-//   }
-// };
+// ------------------------?

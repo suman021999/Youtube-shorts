@@ -122,3 +122,11 @@ chatSchema.statics.handleReaction = async function(messageId, userId, action) {
 const Chat = mongoose.model('Chat', chatSchema);
 
 export default Chat;
+
+
+
+
+
+// -------------------
+
+
