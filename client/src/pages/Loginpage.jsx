@@ -133,7 +133,7 @@ const LoginPage = () => {
               value={signUpForm.username}
               onChange={handleSignUpChange}
               required
-              className="bg-gray-100 border-none py-3 px-4 my-2 w-full max-w-sm rounded text-sm md:text-base"
+              className="bg-gray-100 border-none py-3 px-4 text-black my-2 w-full max-w-sm rounded text-sm md:text-base"
             />
             <input
               type="email"
@@ -142,7 +142,7 @@ const LoginPage = () => {
               value={signUpForm.email}
               onChange={handleSignUpChange}
               required
-              className="bg-gray-100 border-none py-3 px-4 my-2 w-full max-w-sm rounded text-sm md:text-base"
+              className="bg-gray-100 border-none py-3 px-4 my-2 text-black w-full max-w-sm rounded text-sm md:text-base"
             />
             <div className="relative w-full max-w-sm">
               <input
@@ -153,7 +153,7 @@ const LoginPage = () => {
                 onChange={handleSignUpChange}
                 required
                 minLength="8"  // Changed from 6 to match backend
-                className="bg-gray-100 border-none py-3 px-4 my-2 w-full max-w-sm rounded pr-10 text-sm md:text-base"
+                className="bg-gray-100 border-none py-3 px-4 my-2 text-black w-full max-w-sm rounded pr-10 text-sm md:text-base"
               />
               <button
                 type="button"
@@ -215,7 +215,7 @@ const LoginPage = () => {
               value={signInForm.email}
               onChange={handleSignInChange}
               required
-              className="bg-gray-100 border-none py-3 px-4 my-2 w-full max-w-sm rounded text-sm md:text-base"
+              className="bg-gray-100 border-none py-3 px-4 my-2 text-black  w-full max-w-sm rounded text-sm md:text-base"
             />
             <div className="relative w-full max-w-sm">
               <input
@@ -225,7 +225,7 @@ const LoginPage = () => {
                 value={signInForm.password}
                 onChange={handleSignInChange}
                 required
-                className="bg-gray-100 border-none py-3 px-4 my-2 w-full max-w-sm rounded text-sm md:text-base pr-10"
+                className="bg-gray-100 border-none py-3 px-4 my-2 text-black w-full max-w-sm rounded text-sm md:text-base pr-10"
               />
               <button
                 type="button"

@@ -13,16 +13,30 @@ const Comment = ({
   setEditText, 
   setEditingCommentId,
   handleSaveEdit,
-  renderAvatar
+  renderAvatar,
+  // handleReply
 }) => {
   const [showOptions, setShowOptions] = useState(null);
+  const [showReplyInput, setShowReplyInput] = useState(false);
+  const [replyText, setReplyText] = useState("");
+
+
 
   const toggleOptions = (id) => {
     setShowOptions(showOptions === id ? null : id);
   };
+  const handleReplySubmit = () => {
+    if (replyText.trim()) {
+      handleReply(comment.id, replyText);
+      setReplyText("");
+      setShowReplyInput(false);
+    }
+  };
+ 
 
   return (
-    <div className="flex items-start space-x-2 pr-2 bg-amber-400">
+    <>
+    <div className="flex items-start space-x-2 pr-2 ">
       <div className="w-8 h-8 bg-red-600 text-white flex items-center justify-center rounded-full">
         {renderAvatar()}
       </div>
@@ -102,20 +116,82 @@ const Comment = ({
               <button className="text-gray-500 flex items-center hover:text-gray-700 text-xs">
                 <AiFillDislike /> {comment.dislikes}
               </button>
-              <button className="text-gray-500 hover:text-gray-700 text-xs">
+              <button 
+              className="text-gray-500 hover:text-gray-700 text-xs"
+              onClick={() => setShowReplyInput(!showReplyInput)}
+              >
                 Reply
               </button>
             </div>
+             {showReplyInput && (
+                <div className="mt-2">
+                  <textarea
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    className="w-full p-2 border rounded resize-none focus:outline-none"
+                    rows="2"
+                    placeholder="Write a reply..."
+                  />
+                  <div className="flex justify-end space-x-2 mt-1">
+                    <button
+                      onClick={() => setShowReplyInput(false)}
+                      className="px-2 py-1 text-xs text-gray-600 hover:bg-gray-100 rounded-full"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleReplySubmit}
+                      disabled={!replyText.trim()}
+                      className={`px-2 py-1 text-xs rounded-full ${replyText.trim() ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+                    >
+                      Reply
+                    </button>
+                  </div>
+                </div>
+              )}
+            {/* Render replies recursively */}
+                {comment.replies && comment.replies.length > 0 && (
+                <div className="ml-8 mt-2 space-y-2">
+                  {comment.replies.map((reply) => (
+                    <Comment
+                      key={reply.id}
+                      comment={reply}
+                      isDarkMode={isDarkMode}
+                      handleEdit={handleEdit}
+                      handleDelete={handleDelete}
+                      editingCommentId={editingCommentId}
+                      editText={editText}
+                      setEditText={setEditText}
+                      setEditingCommentId={setEditingCommentId}
+                      handleSaveEdit={handleSaveEdit}
+                      renderAvatar={renderAvatar}
+                      handleReply={handleReply}
+                    />
+                  ))}
+                </div>
+              )}
+
           </>
         )}
+        
       </div>
     </div>
+
+        
+
+    </>
+    
 
     
   );
 };
 
 export default Comment;
+
+
+
+
+
 
 
 
