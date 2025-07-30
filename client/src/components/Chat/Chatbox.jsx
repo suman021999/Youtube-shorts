@@ -16,7 +16,30 @@ const Chatbox = () => {
 
 
 
-
+const handleReply = (parentId, replyText) => {
+    if (!replyText.trim()) return;
+    const reply = {
+      id: Date.now(),
+      author: user?.username || 'You',
+      text: replyText,
+      likes: 0,
+      dislikes: 0,
+      time: 'Just now',
+      timestamp: Date.now(),
+      replies: []
+    };
+    setComments(prevComments => 
+      prevComments.map(comment => {
+        if (comment.id === parentId) {
+          return {
+            ...comment,
+            replies: [...(comment.replies || []), reply]
+          };
+        }
+        return comment;
+      })
+    );
+  };
 
 
   const handleAddComment = () => {
@@ -35,6 +58,9 @@ const Chatbox = () => {
     setNewComment('');
     setShowCommentInput(false);
   };
+
+
+
 
   const calculateTimeAgo = (timestamp) => {
     const seconds = Math.floor((Date.now() - timestamp) / 1000);
@@ -142,7 +168,7 @@ const Chatbox = () => {
                 setEditingCommentId={setEditingCommentId}
                 handleSaveEdit={handleSaveEdit}
                 renderAvatar={renderAvatar}
-                // handleReply={handleReply}
+                handleReply={handleReply}
               />
             ))
           )}
@@ -194,45 +220,3 @@ const Chatbox = () => {
 
 export default Chatbox;
 
-
-
-
-
-
-
-
-
-
-  // Helper to recursively add a reply to the correct comment/reply
-  // const addReplyRecursive = (commentsArr, parentId, replyObj) => {
-  //   return commentsArr.map(comment => {
-  //     if (comment.id === parentId) {
-  //       return {
-  //         ...comment,
-  //         replies: comment.replies ? [replyObj, ...comment.replies] : [replyObj]
-  //       };
-  //     }
-  //     if (comment.replies && comment.replies.length > 0) {
-  //       return {
-  //         ...comment,
-  //         replies: addReplyRecursive(comment.replies, parentId, replyObj)
-  //       };
-  //     }
-  //     return comment;
-  //   });
-  // };
-
-  // const handleReply = (parentId, replyText) => {
-  //   if (!replyText.trim()) return;
-  //   const reply = {
-  //     id: Date.now(),
-  //     author: user?.username || 'You',
-  //     text: replyText,
-  //     likes: 0,
-  //     dislikes: 0,
-  //     time: 'Just now',
-  //     timestamp: Date.now(),
-  //     replies: []
-  //   };
-  //   setComments(prevComments => addReplyRecursive(prevComments, parentId, reply));
-  // };
