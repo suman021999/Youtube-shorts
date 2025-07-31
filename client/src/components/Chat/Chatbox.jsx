@@ -3,7 +3,17 @@ import { useSelector } from 'react-redux';
 import Comment from './Comment';
 
 const Chatbox = () => {
-  const [comments, setComments] = useState([]);
+  // Load comments from localStorage on initial render
+  const [comments, setComments] = useState(() => {
+    try {
+      const savedComments = localStorage.getItem('chatbox-comments');
+      return savedComments ? JSON.parse(savedComments) : [];
+    } catch (error) {
+      console.error('Failed to load comments', error);
+      return [];
+    }
+  });
+
   const [newComment, setNewComment] = useState('');
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState(null);
@@ -14,10 +24,18 @@ const Chatbox = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const isLoggedIn = !!user;
 
+  // Save comments to localStorage whenever they change
+  useEffect(() => {
+    try {
+      localStorage.setItem('chatbox-comments', JSON.stringify(comments));
+    } catch (error) {
+      console.error('Failed to save comments', error);
+    }
+  }, [comments]);
 
-
-const handleReply = (parentId, replyText) => {
+  const handleReply = (parentId, replyText) => {
     if (!replyText.trim()) return;
+    
     const reply = {
       id: Date.now(),
       author: user?.username || 'You',
@@ -28,9 +46,23 @@ const handleReply = (parentId, replyText) => {
       timestamp: Date.now(),
       replies: []
     };
+    
+    const findRootParent = (comments, targetId) => {
+      for (let comment of comments) {
+        if (comment.id === targetId) return comment.id;
+        if (comment.replies?.length) {
+          for (let reply of comment.replies) {
+            if (reply.id === targetId) return comment.id;
+          }
+        }
+      }
+      return targetId;
+    };
+    
     setComments(prevComments => 
       prevComments.map(comment => {
-        if (comment.id === parentId) {
+        const rootParentId = findRootParent(prevComments, parentId);
+        if (comment.id === rootParentId) {
           return {
             ...comment,
             replies: [...(comment.replies || []), reply]
@@ -41,9 +73,8 @@ const handleReply = (parentId, replyText) => {
     );
   };
 
-
   const handleAddComment = () => {
-    if (newComment.trim() === '') return;
+    if (!newComment.trim()) return;
     const comment = {
       id: Date.now(),
       author: user?.username || 'You',
@@ -59,14 +90,11 @@ const handleReply = (parentId, replyText) => {
     setShowCommentInput(false);
   };
 
-
-
-
   const calculateTimeAgo = (timestamp) => {
     const seconds = Math.floor((Date.now() - timestamp) / 1000);
     if (seconds < 10) return 'Just now';
     const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
+    if (minutes < 60) return `${minutes} min${minutes === 1 ? '' : 's'} ago`;
     const hours = Math.floor(minutes / 60);
     if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
     const days = Math.floor(hours / 24);
@@ -119,7 +147,6 @@ const handleReply = (parentId, replyText) => {
   };
 
   const handleDelete = (id) => {
-    // Helper to recursively delete a comment/reply by id
     const deleteRecursive = (commentsArr, deleteId) => {
       return commentsArr
         .filter(comment => comment.id !== deleteId)
@@ -132,12 +159,8 @@ const handleReply = (parentId, replyText) => {
   };
 
   const renderAvatar = () => {
-    if (!isLoggedIn) {
-      return <span className="text-sm">?</span>;
-    }
-    if (user.avatar) {
-      return <p>{user.avatar}</p>;
-    }
+    if (!isLoggedIn) return <span className="text-sm">?</span>;
+    if (user.avatar) return <p>{user.avatar}</p>;
     const initials = user.username
       ? user.username.slice(0, 2).toUpperCase()
       : "US";
@@ -145,7 +168,7 @@ const handleReply = (parentId, replyText) => {
   };
 
   return (
-    <section className={`h-[75vh] w-[400px] rounded-lg shadow-md overflow-hidden bg-gray-100 ${isDarkMode && "dark:bg-[#121212e8] border-2"} `}>
+    <section className={`h-[75vh] w-[400px] rounded-lg shadow-md overflow-hidden bg-gray-100 ${isDarkMode && "dark:bg-[#121212e8] border-2"}`}>
       <div className="p-4 h-full flex flex-col">
         <div className='flex items-center justify-between mb-2'>
           <h2 className="text-xl font-bold">Comments ({comments.length})</h2>
@@ -187,7 +210,10 @@ const handleReply = (parentId, replyText) => {
               />
               <div className="flex justify-end space-x-2 mt-2">
                 <button
-                  onClick={() => setShowCommentInput(false)}
+                  onClick={() => {
+                    setShowCommentInput(false);
+                    setNewComment('');
+                  }}
                   className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded-full"
                 >
                   Cancel
@@ -219,4 +245,12 @@ const handleReply = (parentId, replyText) => {
 };
 
 export default Chatbox;
+
+
+
+
+
+
+
+
 

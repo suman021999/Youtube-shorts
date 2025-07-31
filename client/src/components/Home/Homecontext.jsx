@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import axios from 'axios'
 import VideoCard from '../videocards/VideoCard';
-
+import error from "../../../public/404.png"
 
 const Homecontext = () => {
   const [videos, setVideos] = useState([])
@@ -15,7 +15,7 @@ const Homecontext = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const token = localStorage.getItem('token'); // Or wherever you store your token
+        const token = localStorage.getItem('token');
         
         const response = await axios.get(`${import.meta.env.VITE_VIDEO_URL}/all`, {
           headers: {
@@ -46,9 +46,9 @@ const Homecontext = () => {
   }, []);
 
   if (loading) {
-    return (<div className="flex flex-col gap-4 justify-center items-center h-screen w-screen">
-      {/* <img className='h-44 w-44 rounded-full' src={error} alt="" /> */}
-      <p>loding</p>
+    return (<div className="flex flex-col gap-2 justify-center items-center h-screen w-screen">
+      <img className='h-44 w-44 rounded-full' src={error} alt="" />
+      <p className='font-bold'>connection broken</p>
     </div>)
   }
   
