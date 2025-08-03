@@ -1,3 +1,4 @@
+//chat.route.js
 import { Router } from 'express';
 import { protect } from '../middleware/auth.middleware.js';
 

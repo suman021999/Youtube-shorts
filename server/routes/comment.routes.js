@@ -1,9 +1,9 @@
 // comment.routes.js
-import express from 'express';
+import { Router } from 'express';
 import {CommentController} from '../controller/comment.controller.js';
 import {authMiddleware} from '../middleware/auth.middleware.js';
 
-const router = express.Router();
+const router =Router();
 const commentController = new CommentController();
 
 // Base route
