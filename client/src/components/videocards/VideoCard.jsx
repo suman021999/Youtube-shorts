@@ -197,7 +197,7 @@ const VideoCard = ({
   return isShort ? (
     <section className={`relative group z-10 flex gap-4  ${isSidebarOpen ? 'lg:ml-[45vh] ' : ''} lg:ml-8`}>
       <div className='relative flex'>
-        <div className={`relative ${isShort ? 'h-[75vh]' : 'h-auto'} bg-cover md:w-[400px] max-w-sm rounded-lg shadow-md overflow-hidden`}>
+        <div className={`relative ${isShort ? 'h-[85vh]' : 'h-auto'} bg-cover md:w-[400px] max-w-sm rounded-lg shadow-md overflow-hidden`}>
           <video
             ref={videoRef}
             src={videoUrl}
