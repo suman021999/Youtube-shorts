@@ -332,7 +332,7 @@ const VideoCard = ({
 
       {isShort && (
         <div className="flex absolute lg:static right-8 z-20">
-          <Scfun  />
+          <Scfun  videoId={id}/>
         </div>
       )}
     </section>

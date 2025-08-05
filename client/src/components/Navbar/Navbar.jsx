@@ -9,7 +9,7 @@ import { FaRegSun, FaRegMoon } from "react-icons/fa";
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '../../hooks/themeSlice'; 
 import Searchbar from '../searchbar/Searchbar'; // Import the Searchbar component
-import {Link} from "react-router-dom"
+import {Link, useLocation } from "react-router-dom"
 import Login from "../auth/g_login";
 
 const Navbar = () => {
@@ -39,12 +39,16 @@ const Navbar = () => {
   const handleSearchClose = () => {
     setIsSearchOpen(false);
   };
+  // Check if current path is '/homes'
+  const isHomesRoute = location.pathname === '/homes';
+
 
   return (
     <>
       <section
-         className={`fixed top-0 left-0 z-50 w-full h-[20vh] border-[#2777a0] transition-all duration-300 
-         ${scrolled ? (isDarkMode ? "lg:dark:bg-[#030303e4]" : "lg:bg-[#f4f2f2e8]") : ""}`}
+         className={`fixed top-0 left-0 z-50 w-full ${isHomesRoute?"h-[20vh]":"h-20"}    border-[#2777a0] transition-all duration-300 
+          ${isDarkMode?"bg-[#1E1E1E]": "bg-[#f4f2f2]"}
+           ${isHomesRoute && scrolled ? (isDarkMode ? "lg:dark:bg-[#030303e4]" : "lg:bg-[#f4f2f2e8]") : ""}`}
         style={{
           backdropFilter: scrolled ? "lg:blur(10px)" : "none",
           WebkitBackdropFilter: scrolled ? "lg:blur(10px)" : "none",

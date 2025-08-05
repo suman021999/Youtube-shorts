@@ -5,7 +5,7 @@ import { BsFillChatRightTextFill } from "react-icons/bs";
 import { IoShareSocialSharp } from "react-icons/io5";
 import Chatbox from '../Chat/Chatbox'; 
 
-const Scfun = () => {
+const Scfun = ({ videoId }) => {
   const [isChatOpen, setIsChatOpen] = useState(false);
 
 
@@ -31,7 +31,7 @@ const Scfun = () => {
         {/* Chatbox that appears on the right when opened */}
         {isChatOpen && (
           <div className='ml-2 absolute -right-8 xl:static'>
-            <Chatbox  />
+            <Chatbox videoId={videoId} />
           </div>
         )}
       </div>
