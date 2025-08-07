@@ -1,3 +1,4 @@
+//chat.controller.js
 import Chat from '../model/chat.model.js';
 import { createClient } from 'redis';
 import { createAdapter } from '@socket.io/redis-adapter';

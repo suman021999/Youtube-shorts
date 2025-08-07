@@ -1,3 +1,4 @@
+// chat.route.js
 import {Router} from 'express';
 // import ChatController from '../controller/chat.controller.js';
 import { authenticate } from '../middleware/auth.middleware.js';
@@ -17,4 +18,3 @@ router.route('/:chatId').get( authenticate, (req, res) => chatController.getChat
 router.route('/:chatId/read').post( authenticate, (req, res) => chatController.markMessagesAsRead(req, res));
 
 export default { router, setController };
-

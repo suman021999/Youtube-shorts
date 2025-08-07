@@ -1,3 +1,4 @@
+//comment.controller.js
 import Comment from '../model/comment.model.js';
 import { createClient } from 'redis';
 

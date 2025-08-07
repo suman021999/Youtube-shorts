@@ -1,3 +1,4 @@
+//commentController.js
 import {Router} from 'express';
 import CommentController from '../controller/comment.controller.js';
 import { authenticate } from '../middleware/auth.middleware.js';
