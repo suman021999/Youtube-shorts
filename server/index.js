@@ -3,14 +3,13 @@ import express from 'express';
 import dotenv from "dotenv";
 import cors from 'cors';
 import userRouter from "./routes/user.route.js";
-import chatRouter from "./routes/chat.route.js";
 import vedioRouter from "./routes/vedio.route.js";
-import commentRouter from './routes/comment.routes.js';
 import database from './db/database.js';
 import cookieParser from 'cookie-parser';
 import { configurePassport } from './config/passport.config.js';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
+import { chatRouter } from './routes/chat.route.js';
 import ChatController from './controller/chat.controller.js';
 
 // Load environment variables
@@ -44,7 +43,7 @@ app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/vedio", vedioRouter);
-app.use("/api/v1/comments", commentRouter);
+
 
 const port = process.env.PORT || 5000;
 const httpServer = createServer(app);
@@ -59,9 +58,14 @@ const io = new Server(httpServer, {
   }
 });
 
-// Initialize Chat Controller (will handle its own Redis connections)
+// // Initialize Chat Controller (will handle its own Redis connections)
+// const chatController = new ChatController(io);
+// chatRouter.setController(chatController);
+// app.use('/api/v1/chat', chatRouter.router);
+
+// Initialize Chat Controller
 const chatController = new ChatController(io);
-chatRouter.setController(chatController);
+chatRouter.setController(chatController); // Now this will work
 app.use('/api/v1/chat', chatRouter.router);
 
 // Server Startup

@@ -15,7 +15,9 @@ const Comment = ({
   setEditingCommentId,
   handleSaveEdit,
   renderAvatar,
-  handleReply
+  handleReply,
+  handleLike,
+  handleDislike
 }) => {
   const [showOptions, setShowOptions] = useState(null);
   const [showReplyInput, setShowReplyInput] = useState(false);
@@ -119,10 +121,10 @@ const Comment = ({
           <>
             <p className="text-sm mt-1">{comment.text}</p>
             <div className="flex items-center space-x-4 mt-1">
-              <button className="text-gray-500 flex items-center hover:text-gray-700 text-xs">
+              <button  onClick={() => handleLike(comment.id)} className="text-gray-500 flex items-center hover:text-gray-700 text-xs">
                 <AiFillLike /> {comment.likes}
               </button>
-              <button className="text-gray-500 flex items-center hover:text-gray-700 text-xs">
+              <button onClick={() => handleDislike(comment.id)} className="text-gray-500 flex items-center hover:text-gray-700 text-xs">
                 <AiFillDislike /> {comment.dislikes}
               </button>
               <button 
@@ -196,9 +198,6 @@ const Comment = ({
     </div>
   );
 };
-
 export default Comment;
 
 //----------__________________________--------------------_________________------------_________________
-
-

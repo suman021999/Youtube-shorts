@@ -1,47 +1,50 @@
 import mongoose from 'mongoose';
 
-const commentSchema = new mongoose.Schema({
-  videoId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Video',
-    required: true
+const commentSchema = new mongoose.Schema(
+  {
+    videoId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Video',
+      required: true
+    },
+    author: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
+    text: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    likes: {
+      type: Number,
+      default: 0
+    },
+    dislikes: {
+      type: Number,
+      default: 0
+    },
+    parentComment: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment',
+      default: null
+    },
+    replies: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment'
+    }],
+    isDeleted: {
+      type: Boolean,
+      default: false
+    }
   },
-  author: {  // Changed from 'user' to 'author'
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  text: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  likes: {
-    type: Number,
-    default: 0
-  },
-  dislikes: {
-    type: Number,
-    default: 0
-  },
-  parentComment: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Comment',
-    default: null
-  },
-  replies: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Comment'
-  }],
-  isDeleted: {
-    type: Boolean,
-    default: false
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
   }
-}, {
-  timestamps: true,
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true }
-});
+);
 
 // Virtual for time ago
 commentSchema.virtual('timeAgo').get(function() {
@@ -58,5 +61,15 @@ commentSchema.virtual('timeAgo').get(function() {
   return this.createdAt.toLocaleDateString();
 });
 
+// Soft delete middleware
+commentSchema.pre('find', function() {
+  this.where({ isDeleted: false });
+});
+
+commentSchema.pre('findOne', function() {
+  this.where({ isDeleted: false });
+});
+
 const Comment = mongoose.model('Comment', commentSchema);
+
 export default Comment;

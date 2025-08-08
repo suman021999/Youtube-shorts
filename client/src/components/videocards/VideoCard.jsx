@@ -22,7 +22,7 @@ const VideoCard = ({
   const [duration, setDuration] = useState(0);
   const [isMuted, setIsMuted] = useState(false); 
   const [autoplayAttempted, setAutoplayAttempted] = useState(false);
-  const [showDetails] = useState(!isShort); // Only show details for non-shorts
+  const [showDetails] = useState(!isShort); 
   
   const videoRef = useRef(null);
   const timeoutRef = useRef(null);
@@ -318,11 +318,11 @@ const VideoCard = ({
               className="absolute inset-0 flex items-center justify-center z-0 cursor-pointer"
               onClick={handlePlayPause}
             >
-              <div className="relative flex items-center justify-center rounded-full w-20 h-20 bg-opacity-50 transition-all pointer-events-none youtube-center-hover">
+              <div className="relative flex items-center justify-center rounded-full w-28 h-28 bg-opacity-50 transition-all pointer-events-none youtube-center-hover">
                 {isPlaying ? (
-                  <FaPause className="text-white text-4xl transition-all pointer-events-none " />
+                  <FaPause className="text-white text-4xl transition-all pointer-events-none h-16 w-16" />
                 ) : (
-                  <FaPlay className="text-white text-4xl transition-all pointer-events-none transform translate-x-[2px]" />
+                  <FaPlay className="text-white text-4xl transition-all pointer-events-none transform translate-x-[2px] h-16 w-16" />
                 )}
               </div>
             </div>
@@ -332,7 +332,7 @@ const VideoCard = ({
 
       {isShort && (
         <div className="flex absolute lg:static right-8 z-20">
-          <Scfun  videoId={id}/> {/*  */}
+          <Scfun  videoId={id}/> {/*id call here  */}
         </div>
       )}
     </section>
