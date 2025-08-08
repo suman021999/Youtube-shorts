@@ -51,8 +51,6 @@ export const uploadVideo = asyncHandler(async (req, res) => {
     }
 });
 
-
-
 export const getAllVideo = asyncHandler(async (req, res) => {
     try {
         // Get user ID from request
@@ -93,7 +91,6 @@ export const getAllVideos = asyncHandler(async (req, res) => {
         });
     }
 });
-
 
 export const getSingleVideo = asyncHandler(async (req, res) => {
     try {

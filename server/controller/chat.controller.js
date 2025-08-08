@@ -432,9 +432,8 @@
 
 //-------------------------------------------------------------
 
-
-
 import Comment from '../model/comment.model.js';
+import Chat from '../model/chat.model.js';
 
 class ChatController  {
   constructor(io) {
@@ -584,7 +583,7 @@ class ChatController  {
   async getChat(req, res) {
     try {
       const { chatId } = req.params;
-      const chat = await Chat.findById(chatId)
+      const chat = await Comment.findById(chatId)
         .populate('participants', 'username avatar')
         .populate('messages.sender', 'username avatar');
 
@@ -602,7 +601,7 @@ class ChatController  {
   async getUserChats(req, res) {
     try {
       const userId = req.user._id;
-      const chats = await Chat.find({ participants: userId })
+      const chats = await Comment.find({ participants: userId })
         .populate('participants', 'username avatar')
         .populate('lastMessage', 'text createdAt')
         .sort({ updatedAt: -1 });

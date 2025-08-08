@@ -45,6 +45,7 @@ app.use("/api/v1/auth", userRouter);
 app.use("/api/v1/vedio", vedioRouter);
 
 
+
 const port = process.env.PORT || 5000;
 const httpServer = createServer(app);
 // httpServer.setTimeout(0)
@@ -58,10 +59,6 @@ const io = new Server(httpServer, {
   }
 });
 
-// // Initialize Chat Controller (will handle its own Redis connections)
-// const chatController = new ChatController(io);
-// chatRouter.setController(chatController);
-// app.use('/api/v1/chat', chatRouter.router);
 
 // Initialize Chat Controller
 const chatController = new ChatController(io);

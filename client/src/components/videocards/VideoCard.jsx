@@ -262,9 +262,9 @@ const VideoCard = ({
                   </div>
                   <span className="text-white font-medium text-sm">@{username}</span>
                 </Link>
-                <button className="ml-auto bg-white text-black px-3 py-1 rounded-full text-sm font-medium">
+                {/* <button className="ml-auto bg-white text-black px-3 py-1 rounded-full text-sm font-medium">
                   Subscribe
-                </button>
+                </button> */}
               </div>
               <div>
                 <p className="text-white text-sm">{description || 'No description'}</p>
@@ -332,7 +332,7 @@ const VideoCard = ({
 
       {isShort && (
         <div className="flex absolute lg:static right-8 z-20">
-          <Scfun  videoId={id}/> {/*id call here  */}
+          <Scfun  videoId={id}/> {/*id call here */}
         </div>
       )}
     </section>
