@@ -1,5 +1,5 @@
 import express from 'express';
-import { uploadVideo,getSingleVideo,  getAllVideos, getAllVideo} from '../controller/Vedio.controller.js';
+import { uploadVideo,getSingleVideo,  getAllVideos, getAllVideo} from '../controllers/Vedio.controller.js';
 import { authMiddleware} from '../middleware/auth.middleware.js';
 import { upload } from '../utils/upload.js';
 

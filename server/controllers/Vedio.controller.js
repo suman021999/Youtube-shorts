@@ -1,7 +1,7 @@
 // controllers/video.controller.js
 import asyncHandler from 'express-async-handler';
 import { uploadOnCloudinary } from '../config/cloudinary.js';
-import { Video } from '../model/vedio.model.js';
+import { Video } from '../models/vedio.model.js';
 
 
 

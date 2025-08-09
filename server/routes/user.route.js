@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {getUserByUsername, handleGoogleAuth,loginAccount,logout,registerAccount} from '../controller/user.controller.js';
+import {getUserByUsername, handleGoogleAuth,loginAccount,logout,registerAccount} from '../controllers/user.controller.js';
 import {googleAuth,googleAuthCallback,protect} from "../middleware/auth.middleware.js";
 
 const router = Router();

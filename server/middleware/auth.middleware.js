@@ -2,7 +2,7 @@ import passport from 'passport';
 
 import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
-import { User } from '../model/user.model.js';
+import { User } from '../models/user.model.js';
 
 
 
