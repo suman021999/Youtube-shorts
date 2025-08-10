@@ -51,7 +51,7 @@ export const uploadVideo = asyncHandler(async (req, res) => {
     }
 });
 
-export const getAllVideo = asyncHandler(async (req, res) => {
+export const getAllUserVideos = asyncHandler(async (req, res) => {
     try {
         // Get user ID from request
         const { ownerID } = req.params; // This will work if auth middleware runs first
