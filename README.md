@@ -1,6 +1,6 @@
-# 🎬 YouTube Shorts Chat Application
+# 🎬 YouTube Shorts  Application
 
-A real-time chat application inspired by YouTube Shorts. Users can sign up, post short video content, and engage in live conversations. Built using the powerful MERN stack (MongoDB, Express, React, Node.js) and WebSocket for real-time messaging.
+A real-time social media application inspired by YouTube Shorts. Users can sign up, post short video content, and engage in live conversations. Built using the powerful MERN stack (MongoDB, Express, React, Node.js).
 
 ---
 
@@ -18,12 +18,12 @@ A real-time chat application inspired by YouTube Shorts. Users can sign up, post
 
 ## 🛠️ Tech Stack
 
-- **Frontend**: React, Axios, Socket.IO Client
-- **Backend**: Node.js, Express, Socket.IO, redis
+- **Frontend**: React, Axios,
+- **Backend**: Node.js, Express, 
 - **Database**: MongoDB with Mongoose
 - **Storage**: Cloudinary (for video & images)
 - **Authentication**: JWT, bcrypt
-- **Dev Tools**: Nodemon, Postman, Vercel (optional for frontend), Render (optional for backend)
+- **Dev Tools**: Nodemon, Postman, insomnia, Vercel (optional for frontend), Render (optional for backend)
 
 ---
 
@@ -105,21 +105,14 @@ POST /api/chat/message – Send message
 
 GET /api/chat/:id – Get chat history
 
-💬 Socket.IO Events
-connect – User connects to socket
 
-joinRoom – Join a video’s chat room
-
-sendMessage – Emit chat message
-
-receiveMessage – Listen for messages
 
 ✅ To-Do / Future Enhancements
 📱 Mobile responsiveness
 
 🔔 Notifications
 
-🗂️ Chat history search
+
 
 👥 Follow/like features
 
@@ -133,8 +126,6 @@ receiveMessage – Listen for messages
 🙌 Acknowledgements
 MERN Stack Docs
 
-Socket.IO
-Redis
 Cloudinary
 
 yaml
