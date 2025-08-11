@@ -62,6 +62,8 @@ const Scfun = ({ videoId }) => {
         <div className='flex flex-col'>
           <div className={`mt-28 flex justify-center items-center cursor-pointer hover:bg-[#22222223] h-10 w-10 rounded-full `}>
             <AiFillLike className='text-2xl'/>
+            <p>1.3k</p>
+            {/* //{likes} */}
             </div>
             <div className='mt-6 mb-28 flex flex-col'>
               <div className=' flex  justify-center items-center cursor-pointer hover:bg-[#22222223] h-10 w-10 rounded-full '>
