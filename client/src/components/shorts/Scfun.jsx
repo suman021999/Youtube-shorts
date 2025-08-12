@@ -60,11 +60,17 @@ const Scfun = ({ videoId }) => {
       <div className='flex flex-row h-[85vh] w-0 relative'>
         {/* Left sidebar with icons */}
         <div className='flex flex-col'>
-          <div className={`mt-28 flex justify-center items-center cursor-pointer hover:bg-[#22222223] h-10 w-10 rounded-full `}>
+
+          <div className="flex flex-col items-center mt-28">
+         <div className={` flex flex-col justify-center items-center cursor-pointer hover:bg-[#22222223] h-10 w-10 rounded-full `}>
             <AiFillLike className='text-2xl'/>
-            <p>1.3k</p>
+            
             {/* //{likes} */}
             </div>
+            <p>1.3k</p>
+          </div>
+          
+
             <div className='mt-6 mb-28 flex flex-col'>
               <div className=' flex  justify-center items-center cursor-pointer hover:bg-[#22222223] h-10 w-10 rounded-full '>
             <AiFillDislike className='text-2xl rotate-180'/>
