@@ -12,6 +12,7 @@ const VideoCard = ({
   description = '', 
   views = 0, 
   id, 
+  
   isShort = false, 
   autoPlay = true,
   owner = {}

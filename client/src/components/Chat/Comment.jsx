@@ -47,7 +47,7 @@ const Comment = ({
   return (
     <div className="flex items-start space-x-2 pr-2">
       <div className="w-8 h-8 bg-red-600 text-white flex items-center justify-center rounded-full">
-        {renderAvatar()}
+        {comment.author.slice(0, 2).toUpperCase()}
       </div>
       <div className={`flex-1 p-2 rounded-lg relative ${isDarkMode && "dark:bg-[#121212e8]"}`}>
         <div className='flex justify-between'>

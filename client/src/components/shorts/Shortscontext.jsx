@@ -50,7 +50,8 @@ const [videos, setVideos] = useState(null)
           views={videos.views}
           autoPlay={true}
           owner={videos.owner} 
-          id={videos.id}
+           id={videos._id}  // Handle both cases
+          
           isShort={true}   
           
              />
