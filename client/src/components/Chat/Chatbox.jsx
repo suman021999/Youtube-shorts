@@ -258,7 +258,7 @@
 // import { useSelector } from 'react-redux';
 // import Comment from './Comment';
 // import { IoCloseOutline } from 'react-icons/io5';
-// import { getComments, createComment, updateComment, deleteComment, likeComment, dislikeComment } from '../../service/chat.service'; // Import your API functions
+// import { getComments, createComment, updateComment, deleteComment, likeComment, dislikeComment } from '../../service/chat.service';
 
 // const Chatbox = ({ videoId, onClose }) => {
 //   const [comments, setComments] = useState([]);
@@ -274,80 +274,39 @@
 
 //   // Load comments from API on initial render
 //   useEffect(() => {
-//     const loadComments = async () => {
+//     const fetchComments = async () => {
 //       try {
 //         const data = await getComments(videoId);
 //         setComments(data);
 //       } catch (error) {
 //         console.error('Failed to load comments', error);
-//         // Fallback to localStorage if API fails
-//         try {
-//           const savedComments = localStorage.getItem('chatbox-comments');
-//           setComments(savedComments ? JSON.parse(savedComments) : []);
-//         } catch (localError) {
-//           console.error('Failed to load local comments', localError);
-//           setComments([]);
-//         }
 //       }
 //     };
 
 //     if (videoId) {
-//       loadComments();
+//       fetchComments();
 //     }
 //   }, [videoId]);
-
-//   // Save comments to localStorage whenever they change (backup)
-//   useEffect(() => {
-//     try {
-//       localStorage.setItem('chatbox-comments', JSON.stringify(comments));
-//     } catch (error) {
-//       console.error('Failed to save comments', error);
-//     }
-//   }, [comments]);
 
 //   const handleReply = async (parentId, replyText) => {
 //     if (!replyText.trim()) return;
     
 //     try {
-//       const replyData = await createComment(videoId, replyText);
-      
-//       const reply = {
-//         id: replyData.id || Date.now(),
-//         author: user?.username || 'You',
-//         text: replyText,
-//         likes: 0,
-//         dislikes: 0,
-//         time: 'Just now',
-//         timestamp: Date.now(),
-//         replies: []
-//       };
-      
-//       const findRootParent = (comments, targetId) => {
-//         for (let comment of comments) {
-//           if (comment.id === targetId) return comment.id;
-//           if (comment.replies?.length) {
-//             for (let reply of comment.replies) {
-//               if (reply.id === targetId) return comment.id;
-//             }
-//           }
-//         }
-//         return targetId;
-//       };
+//       const newReply = await createComment(videoId, replyText, parentId);
       
 //       setComments(prevComments => 
 //         prevComments.map(comment => {
-//           const rootParentId = findRootParent(prevComments, parentId);
-//           if (comment.id === rootParentId) {
+//           if (comment.id === parentId) {
 //             return {
 //               ...comment,
-//               replies: [...(comment.replies || []), reply]
+//               replies: [...(comment.replies || []), newReply]
 //             };
 //           }
 //           return comment;
 //         })
 //       );
 //     } catch (error) {
-//       console.error('Failed to add reply', error);
+//       console.error('Failed to create reply', error);
 //     }
 //   };
 
@@ -355,24 +314,12 @@
 //     if (!newComment.trim()) return;
     
 //     try {
-//       const commentData = await createComment(videoId, newComment);
-      
-//       const comment = {
-//         id: commentData.id || Date.now(),
-//         author: user?.username || 'You',
-//         text: newComment,
-//         likes: commentData.likes || 0,
-//         dislikes: commentData.dislikes || 0,
-//         time: 'Just now',
-//         timestamp: Date.now(),
-//         replies: []
-//       };
-      
+//       const comment = await createComment(videoId, newComment);
 //       setComments([comment, ...comments]);
 //       setNewComment('');
 //       setShowCommentInput(false);
 //     } catch (error) {
-//       console.error('Failed to add comment', error);
+//       console.error('Failed to create comment', error);
 //     }
 //   };
 
@@ -424,21 +371,12 @@
 
 //   const handleSaveEdit = async (id) => {
 //     try {
-//       await updateComment(id, editText);
-      
-//       const updateCommentsRecursive = (commentsArr) => {
-//         return commentsArr.map(comment => {
-//           if (comment.id === id) {
-//             return { ...comment, text: editText };
-//           }
-//           if (comment.replies && comment.replies.length > 0) {
-//             return { ...comment, replies: updateCommentsRecursive(comment.replies) };
-//           }
-//           return comment;
-//         });
-//       };
-
-//       setComments(prevComments => updateCommentsRecursive(prevComments));
+//       const updatedComment = await updateComment(id, editText);
+//       setComments(comments =>
+//         comments.map(comment =>
+//           comment.id === id ? { ...comment, text: editText } : comment
+//         )
+//       );
 //       setEditingCommentId(null);
 //       setEditText('');
 //     } catch (error) {
@@ -449,7 +387,6 @@
 //   const handleDelete = async (id) => {
 //     try {
 //       await deleteComment(id);
-      
 //       const deleteRecursive = (commentsArr, deleteId) => {
 //         return commentsArr
 //           .filter(comment => comment.id !== deleteId)
@@ -466,25 +403,26 @@
 
 //   const handleLike = async (id) => {
 //     try {
-//       const response = await likeComment(id);
-      
-//       const updateLikesRecursive = (commentsArr) => {
-//         return commentsArr.map(comment => {
+//       const updatedComment = await likeComment(id);
+//       setComments(prevComments =>
+//         prevComments.map(comment => {
 //           if (comment.id === id) {
-//             return { 
-//               ...comment, 
-//               likes: response.likes || comment.likes + 1,
-//               dislikes: response.dislikes !== undefined ? response.dislikes : comment.dislikes
+//             return { ...comment, likes: updatedComment.likes, dislikes: updatedComment.dislikes };
+//           }
+//           // Handle nested replies
+//           if (comment.replies) {
+//             return {
+//               ...comment,
+//               replies: comment.replies.map(reply =>
+//                 reply.id === id 
+//                   ? { ...reply, likes: updatedComment.likes, dislikes: updatedComment.dislikes }
+//                   : reply
+//               )
 //             };
 //           }
-//           if (comment.replies && comment.replies.length > 0) {
-//             return { ...comment, replies: updateLikesRecursive(comment.replies) };
-//           }
 //           return comment;
-//         });
-//       };
-
-//       setComments(prevComments => updateLikesRecursive(prevComments));
+//         })
+//       );
 //     } catch (error) {
 //       console.error('Failed to like comment', error);
 //     }
@@ -492,25 +430,26 @@
 
 //   const handleDislike = async (id) => {
 //     try {
-//       const response = await dislikeComment(id);
-      
-//       const updateDislikesRecursive = (commentsArr) => {
-//         return commentsArr.map(comment => {
+//       const updatedComment = await dislikeComment(id);
+//       setComments(prevComments =>
+//         prevComments.map(comment => {
 //           if (comment.id === id) {
-//             return { 
-//               ...comment, 
-//               dislikes: response.dislikes || comment.dislikes + 1,
-//               likes: response.likes !== undefined ? response.likes : comment.likes
+//             return { ...comment, likes: updatedComment.likes, dislikes: updatedComment.dislikes };
+//           }
+//           // Handle nested replies
+//           if (comment.replies) {
+//             return {
+//               ...comment,
+//               replies: comment.replies.map(reply =>
+//                 reply.id === id 
+//                   ? { ...reply, likes: updatedComment.likes, dislikes: updatedComment.dislikes }
+//                   : reply
+//               )
 //             };
 //           }
-//           if (comment.replies && comment.replies.length > 0) {
-//             return { ...comment, replies: updateDislikesRecursive(comment.replies) };
-//           }
 //           return comment;
-//         });
-//       };
-
-//       setComments(prevComments => updateDislikesRecursive(prevComments));
+//         })
+//       );
 //     } catch (error) {
 //       console.error('Failed to dislike comment', error);
 //     }
@@ -549,8 +488,6 @@
 //                 isDarkMode={isDarkMode}
 //                 handleEdit={handleEdit}
 //                 handleDelete={handleDelete}
-//                 handleLike={handleLike}
-//                 handleDislike={handleDislike}
 //                 editingCommentId={editingCommentId}
 //                 editText={editText}
 //                 setEditText={setEditText}
@@ -558,6 +495,8 @@
 //                 handleSaveEdit={handleSaveEdit}
 //                 renderAvatar={renderAvatar}
 //                 handleReply={handleReply}
+//                 handleLike={handleLike}
+//                 handleDislike={handleDislike}
 //               />
 //             ))
 //           )}
@@ -618,14 +557,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Comment from './Comment';
 import { IoCloseOutline } from 'react-icons/io5';
-import {
-  getComments,
-  createComment,
-  updateComment,
-  deleteComment,
-  likeComment,
-  dislikeComment
-} from '../../service/chat.service';
+import { getComments, createComment, updateComment, deleteComment, likeComment, dislikeComment } from '../../service/chat.service'; // Import your API functions
 
 const Chatbox = ({ videoId, onClose }) => {
   const [comments, setComments] = useState([]);
@@ -633,97 +565,59 @@ const Chatbox = ({ videoId, onClose }) => {
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editText, setEditText] = useState('');
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const textareaRef = useRef(null);
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const isLoggedIn = !!user;
 
-  const calculateTimeAgo = (timestamp) => {
-    const date = new Date(timestamp);
-    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
-    if (seconds < 10) return 'Just now';
-    const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return `${minutes} min${minutes === 1 ? '' : 's'} ago`;
-    const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
-    const days = Math.floor(hours / 24);
-    if (days < 7) return `${days} day${days === 1 ? '' : 's'} ago`;
-    const weeks = Math.floor(days / 7);
-    if (weeks < 4) return `${weeks} week${weeks === 1 ? '' : 's'} ago`;
-    return date.toLocaleDateString();
-  };
-
-  // Fetch comments on mount / when videoId changes
+  // Load comments from API on initial render
   useEffect(() => {
     const fetchComments = async () => {
       try {
         setLoading(true);
+        setError(null);
         const response = await getComments(videoId);
         if (response.success) {
-          const formattedComments = response.comments.map(comment => ({
-            ...comment,
-            time: calculateTimeAgo(comment.timestamp || comment.createdAt),
-            replies: comment.replies?.map(reply => ({
-              ...reply,
-              time: calculateTimeAgo(reply.timestamp || reply.createdAt)
-            })) || []
-          }));
-          setComments(formattedComments);
-        } else {
-          setError("Failed to load comments.");
+          setComments(response.comments);
         }
-      } catch (err) {
-        console.error("Error fetching comments:", err);
-        setError("Error loading comments.");
+      } catch (error) {
+        console.error('Failed to load comments', error);
+        setError('Failed to load comments. Please try again.');
       } finally {
         setLoading(false);
       }
     };
 
-    if (videoId) fetchComments();
+    if (videoId) {
+      fetchComments();
+    }
   }, [videoId]);
-
-  // Update times every minute
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setComments(prevComments =>
-        prevComments.map(comment => ({
-          ...comment,
-          time: calculateTimeAgo(comment.timestamp || comment.createdAt),
-          replies: comment.replies?.map(reply => ({
-            ...reply,
-            time: calculateTimeAgo(reply.timestamp || reply.createdAt)
-          })) || []
-        }))
-      );
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const handleReply = async (parentId, replyText) => {
     if (!replyText.trim()) return;
     
     try {
+      // Find the root parent comment ID (main comment, not a reply)
       const findRootParent = (comments, targetId) => {
         for (let comment of comments) {
-          if (comment.id === targetId) return comment.id;
+          if (comment.id === targetId) return comment.id; // This is already a main comment
           if (comment.replies?.length) {
             for (let reply of comment.replies) {
-              if (reply.id === targetId) return comment.id;
+              if (reply.id === targetId) return comment.id; // Return the main comment ID
             }
           }
         }
-        return targetId;
+        return targetId; // Fallback
       };
       
       const rootParentId = findRootParent(comments, parentId);
+      
       const response = await createComment(videoId, replyText, rootParentId);
-
       if (response.success) {
+        // Add the reply to the root parent comment
         setComments(prevComments => 
           prevComments.map(comment => {
             if (comment.id === rootParentId) {
@@ -758,6 +652,38 @@ const Chatbox = ({ videoId, onClose }) => {
     }
   };
 
+  const calculateTimeAgo = (timestamp) => {
+    const date = new Date(timestamp);
+    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+    if (seconds < 10) return 'Just now';
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes} min${minutes === 1 ? '' : 's'} ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours} hour${hours === 1 ? '' : 's'} ago`;
+    const days = Math.floor(hours / 24);
+    if (days < 7) return `${days} day${days === 1 ? '' : 's'} ago`;
+    const weeks = Math.floor(days / 7);
+    if (weeks < 4) return `${weeks} week${weeks === 1 ? '' : 's'} ago`;
+    return date.toLocaleDateString();
+  };
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setComments(prevComments =>
+        prevComments.map(comment => ({
+          ...comment,
+          time: calculateTimeAgo(comment.timestamp || comment.createdAt),
+          replies: comment.replies?.map(reply => ({
+            ...reply,
+            time: calculateTimeAgo(reply.timestamp || reply.createdAt)
+          })) || []
+        }))
+      );
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const handleKeyPress = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
@@ -786,6 +712,7 @@ const Chatbox = ({ videoId, onClose }) => {
             if (comment.id === id) {
               return { ...comment, text: editText };
             }
+            // Check in replies too
             if (comment.replies?.length) {
               const updatedReplies = comment.replies.map(reply =>
                 reply.id === id ? { ...reply, text: editText } : reply
@@ -804,7 +731,7 @@ const Chatbox = ({ videoId, onClose }) => {
     }
   };
 
-const handleDelete = async (id) => {
+  const handleDelete = async (id) => {
     try {
       const response = await deleteComment(id);
       if (response.success) {
@@ -833,6 +760,7 @@ const handleDelete = async (id) => {
             if (comment.id === id) {
               return { ...comment, likes: comment.likes + 1 };
             }
+            // Check in replies too
             if (comment.replies?.length) {
               const updatedReplies = comment.replies.map(reply =>
                 reply.id === id ? { ...reply, likes: reply.likes + 1 } : reply
@@ -858,6 +786,7 @@ const handleDelete = async (id) => {
             if (comment.id === id) {
               return { ...comment, dislikes: comment.dislikes + 1 };
             }
+            // Check in replies too
             if (comment.replies?.length) {
               const updatedReplies = comment.replies.map(reply =>
                 reply.id === id ? { ...reply, dislikes: reply.dislikes + 1 } : reply
@@ -883,8 +812,20 @@ const handleDelete = async (id) => {
     return <span className="text-sm">{initials}</span>;
   };
 
+  if (loading) {
+    return (
+      <section className={`h-[85vh] w-[400px] rounded-lg shadow-md overflow-hidden bg-gray-100 ${isDarkMode && "dark:bg-[#121212e8] border-2"}`}>
+        <div className="p-4 h-full flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+            <p className="text-gray-500">Loading comments...</p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
-return (
+  return (
     <section className={`h-[85vh] w-[400px] rounded-lg shadow-md overflow-hidden bg-gray-100 ${isDarkMode && "dark:bg-[#121212e8] border-2"}`}>
       <div className="p-4 h-full flex flex-col">
         <div className='flex items-center justify-between mb-2'>
@@ -911,9 +852,7 @@ return (
         )}
 
         <div className="flex-1 mb-4 space-y-4 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent scrollbar-thumb-rounded-full dark:scrollbar-thumb-gray-600">
-          {loading ? (
-            <p className="text-gray-500 text-center mt-10">No comments yet</p>
-          ) : comments.length === 0 ? (
+          {comments.length === 0 ? (
             <p className="text-gray-500 text-center mt-10">No comments yet</p>
           ) : (
             comments.map(comment => (
@@ -930,8 +869,8 @@ return (
                 handleSaveEdit={handleSaveEdit}
                 renderAvatar={(author, avatar) => renderAvatar(author || comment.author, avatar || comment.avatar)}
                 handleReply={handleReply}
-                handleLike={handleLike}
-                handleDislike={handleDislike}
+               handleLike={handleLike}
+               handleDislike={handleDislike}
               />
             ))
           )}

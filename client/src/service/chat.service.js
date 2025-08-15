@@ -22,13 +22,13 @@ export const getComments = async (videoId) => {
   }
 };
 
-export const createComment = async (videoId, content, parentCommentId = null) => {
+export const createComment = async (videoId, text, parentId = null) => {
   try {
-    const requestBody = { videoId, content };
-    if (parentCommentId) {
-      requestBody.parentCommentId = parentCommentId;
+    const requestBody = { videoId, text };
+    if (parentId) {
+      requestBody.parentId = parentId;
     }
-
+    
     const response = await axios.post(
       API_URL,
       requestBody,
@@ -36,25 +36,24 @@ export const createComment = async (videoId, content, parentCommentId = null) =>
     );
     return response.data;
   } catch (error) {
-    console.error('Error creating comment:', error.response?.data || error.message);
+    console.error('Error creating comment:', error);
     throw error;
   }
 };
 
-export const updateComment = async (id, content) => {
+export const updateComment = async (id, text) => {
   try {
     const response = await axios.put(
       `${API_URL}/${id}`,
-      { content },
+      { text },
       getAuthHeaders()
     );
     return response.data;
   } catch (error) {
-    console.error('Error updating comment:', error.response?.data || error.message);
+    console.error('Error updating comment:', error);
     throw error;
   }
 };
-
 
 export const deleteComment = async (id) => {
   try {

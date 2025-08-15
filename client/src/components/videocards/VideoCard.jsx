@@ -11,8 +11,7 @@ const VideoCard = ({
   videoUrl, 
   description = '', 
   views = 0, 
-  id,
- _id,
+  id, 
   isShort = false, 
   autoPlay = true,
   owner = {}
@@ -333,7 +332,7 @@ const VideoCard = ({
 
       {isShort && (
         <div className="flex absolute lg:static right-8 z-20">
-          <Scfun  videoId={_id}/>
+          <Scfun  videoId={id}/>
         </div>
       )}
     </section>
