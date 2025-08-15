@@ -188,6 +188,8 @@ const Comment = ({
                     handleSaveEdit={handleSaveEdit}
                     renderAvatar={renderAvatar}
                     handleReply={handleReply}
+                    handleLike={handleLike}
+                    handleDislike={handleDislike}    
                   />
                 ))}
               </div>

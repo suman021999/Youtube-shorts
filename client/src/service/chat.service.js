@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_CHAT_URL; // Ensure this environment variable is set in your .env file
@@ -21,33 +22,39 @@ export const getComments = async (videoId) => {
   }
 };
 
-export const createComment = async (videoId, text) => {
+export const createComment = async (videoId, content, parentCommentId = null) => {
   try {
+    const requestBody = { videoId, content };
+    if (parentCommentId) {
+      requestBody.parentCommentId = parentCommentId;
+    }
+
     const response = await axios.post(
       API_URL,
-      { videoId, text },
+      requestBody,
       getAuthHeaders()
     );
     return response.data;
   } catch (error) {
-    console.error('Error creating comment:', error);
+    console.error('Error creating comment:', error.response?.data || error.message);
     throw error;
   }
 };
 
-export const updateComment = async (id, text) => {
+export const updateComment = async (id, content) => {
   try {
     const response = await axios.put(
       `${API_URL}/${id}`,
-      { text },
+      { content },
       getAuthHeaders()
     );
     return response.data;
   } catch (error) {
-    console.error('Error updating comment:', error);
+    console.error('Error updating comment:', error.response?.data || error.message);
     throw error;
   }
 };
+
 
 export const deleteComment = async (id) => {
   try {
@@ -86,6 +93,16 @@ export const dislikeComment = async (id) => {
     return response.data;
   } catch (error) {
     console.error('Error disliking comment:', error);
+    throw error;
+  }
+};
+
+export const searchComments = async (videoId, query) => {
+  try {
+    const response = await axios.get(`${API_URL}/search/${videoId}?query=${encodeURIComponent(query)}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error searching comments:', error);
     throw error;
   }
 };

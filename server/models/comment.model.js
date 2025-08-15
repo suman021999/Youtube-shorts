@@ -29,7 +29,7 @@ const commentSchema = new Schema({
   parentId: {
     type: Schema.Types.ObjectId,
     ref: 'Comment',
-    // default: null
+    default: null
   },
   replies: [{
     type: Schema.Types.ObjectId,

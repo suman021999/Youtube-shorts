@@ -44,21 +44,16 @@ const [videos, setVideos] = useState(null)
           
 
               
-             <VideoCard
+          <VideoCard
           videoUrl={videos.videoUrl}
           description={videos.description}
           views={videos.views}
           autoPlay={true}
           owner={videos.owner} 
-           id={videos._id}  // Handle both cases
-          
+          id={videos.id  ||videos._id}  
           isShort={true}   
           
              />
-{/* 
-            ))
-          } */}
-
         </div>
       
       </section>
