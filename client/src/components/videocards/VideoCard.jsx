@@ -337,7 +337,7 @@ const VideoCard = ({
       )}
     </section>
   ) : (
-    <div className={`${isShort ? '' : 'lg:w-[15vw] mb-20 lg:mb-0 rounded-lg'}`}>
+    <div className={`${isShort ? '' : 'lg:w-[15vw] mb-20 lg:mb-0 rounded-lg p-2 hover:bg-[#b3b0b04b]'}`}>
       <Link 
         to={`/shorts/${id}`}
         onClick={handleVideoClick}

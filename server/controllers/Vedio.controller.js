@@ -119,3 +119,37 @@ export const getSingleVideo = asyncHandler(async (req, res) => {
 });
 
 
+export const getRandomVideo = asyncHandler(async (req, res) => {
+    try {
+        // Get total count of videos
+        const count = await Video.countDocuments();
+        
+        if (count === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'No videos found',
+            });
+        }
+        
+        // Get a random video
+        const randomIndex = Math.floor(Math.random() * count);
+        const video = await Video.findOne().skip(randomIndex).populate('owner', 'username email avatar');
+        
+        if (!video) {
+            return res.status(404).json({
+                success: false,
+                message: 'No video found',
+            });
+        }
+        
+        return res.status(200).json({
+            success: true,
+            data: video,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message || 'Failed to fetch random video',
+        });
+    }
+});

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import VideoCard from '../videocards/VideoCard';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { FaArrowDown,FaArrowUp  } from "react-icons/fa6";
 
 const Shortscontext = () => {
 const [videos, setVideos] = useState(null) 
@@ -38,11 +39,12 @@ const [videos, setVideos] = useState(null)
     
   return (
     <>
-     <section className={` w-full  mt-20 mb-[40vh]  h-full`}>  
-        <div className="flex flex-wrap justify-center items-center gap-4 p-4 ">
+     <section className={` w-full  mb-[40vh]  h-full`}>  
+        <div className="flex flex-wrap justify-center items-center gap-4  ">
 
+         
+       
           
-
               
           <VideoCard
           videoUrl={videos.videoUrl}
@@ -51,9 +53,9 @@ const [videos, setVideos] = useState(null)
           autoPlay={true}
           owner={videos.owner} 
           id={videos._id}  
-          isShort={true}   
-          
-             />
+          isShort={true}
+          />
+
         </div>
       
       </section>
@@ -62,4 +64,17 @@ const [videos, setVideos] = useState(null)
 }
 
 export default Shortscontext
+
+
+
+//  <div className='flex flex-col gap-4 justify-center items-center'>
+
+//           <div className='h-16 w-16 rounded-full flex justify-center items-center bg-[#9791915a]'>
+//           <FaArrowUp  className='h-6 w-6' />
+//           </div>
+//           <div className='h-16 w-16 rounded-full flex justify-center items-center bg-[#9791915a]'>
+//           <FaArrowDown className='h-6 w-6' />
+//           </div>
+         
+//           </div>
 
