@@ -46,7 +46,7 @@ const Navbar = () => {
   return (
     <>
       <section
-         className={`fixed top-0 left-0 z-50 w-full ${isHomesRoute?"h-[20vh]":"h-20"}    border-[#2777a0] transition-all duration-300 
+         className={`fixed top-0 left-0 z-50 w-full ${isHomesRoute?"h-[20vh]":"h-20"}   border-[#2777a0] transition-all duration-300 
           ${isDarkMode?"bg-[#1E1E1E]": "bg-[#f4f2f2]"}
            ${isHomesRoute && scrolled ? (isDarkMode ? "lg:dark:bg-[#030303e4]" : "lg:bg-[#f4f2f2e8]") : ""}`}
         style={{

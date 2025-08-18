@@ -39,13 +39,9 @@ const [videos, setVideos] = useState(null)
     
   return (
     <>
-     <section className={` w-full  mb-[40vh]  h-full`}>  
-        <div className="flex flex-wrap justify-center items-center gap-4  ">
+     <section className={` w-full   h-[80vh]`}>  
+        <div className="flex  flex-wrap justify-center items-center gap-4  ">
 
-         
-       
-          
-              
           <VideoCard
           videoUrl={videos.videoUrl}
           description={videos.description}
@@ -72,9 +68,10 @@ export default Shortscontext
 //           <div className='h-16 w-16 rounded-full flex justify-center items-center bg-[#9791915a]'>
 //           <FaArrowUp  className='h-6 w-6' />
 //           </div>
-//           <div className='h-16 w-16 rounded-full flex justify-center items-center bg-[#9791915a]'>
-//           <FaArrowDown className='h-6 w-6' />
-//           </div>
+          // <div className='h-16 w-16 rounded-full flex justify-center items-center bg-[#9791915a]'>
+          // <FaArrowDown className='h-6 w-6' />
+          // </div>
          
 //           </div>
+
 

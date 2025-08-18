@@ -14,7 +14,7 @@ const Dashboard = () => {
   return (
     <>
       <Navbar />
-      <section className="w-full min-h-screen  pt-[15vh] flex">
+      <section className="w-full min-h-screen  pt-24 flex">
         <Routes>
           <Route path="/homes" element={<Homecontext />} />
           <Route path="/shorts/:id" element={<Shortscontext />} />

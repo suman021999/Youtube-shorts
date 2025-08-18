@@ -7,6 +7,11 @@ import Chatbox from '../Chat/Chatbox';
 
 const Scfun = ({ videoId }) => {
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [isicon, setIsIcon] = useState(false);
+
+  const toggleicon=()=>{
+    setIsIcon(!isicon);
+  }
 
   const toggleChat = () => {
     setIsChatOpen(!isChatOpen);
@@ -14,17 +19,31 @@ const Scfun = ({ videoId }) => {
 
   return (
     <>
-      <div className='flex flex-row h-[85vh] w-0 relative'>
+      <div className='flex flex-row h-[85vh] w-10 relative bg-amber-200'>
         {/* Left sidebar with icons */}
         <div className='flex flex-col'>
 
-          <div className="flex flex-col items-center mt-28">
-         <div className={` flex flex-col justify-center items-center cursor-pointer hover:bg-[#22222223] h-10 w-10 rounded-full `}>
+         
+        <div className="flex flex-col items-center mt-28 " onClick={toggleicon}>
+          {isicon=="absolute lg:static right-8 z-20" ?
+          <>
+          <div className={` flex flex-col justify-center items-center cursor-pointer hover:bg-[#22222223] h-10 w-10 rounded-full `}>
             <AiFillLike className='text-2xl'/>
             
             {/* //{likes} */}
             </div>
             <p>1.3k</p>
+          </>
+          :<>
+          <div className={` flex flex-col justify-center items-center cursor-pointer hover:bg-[#22222223] h-10 w-10 rounded-full `}>
+            <AiFillLike className='text-2xl'/>
+            
+            {/* //{likes} */}
+            </div>
+            <p>1.3k</p>
+          </>}
+
+
           </div>
           
 
@@ -44,7 +63,7 @@ const Scfun = ({ videoId }) => {
 
         {/* Chatbox that appears on the right when opened */}
         {isChatOpen && (
-          <div className='ml-2 absolute -right-8 xl:static'>
+          <div className='ml-2 absolute right-8 xl:static'>
             <Chatbox videoId={videoId} onClose={toggleChat} /> {/*id call here  */}
           </div>
         )}
@@ -54,3 +73,13 @@ const Scfun = ({ videoId }) => {
 }
 
 export default Scfun
+
+// absolute lg:static right-8 z-20
+
+
+        //  <div className={` flex flex-col justify-center items-center cursor-pointer hover:bg-[#22222223] h-10 w-10 rounded-full `}>
+        //     <AiFillLike className='text-2xl'/>
+            
+        //     {/* //{likes} */}
+        //     </div>
+        //     <p>1.3k</p>
