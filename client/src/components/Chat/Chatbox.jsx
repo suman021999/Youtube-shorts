@@ -260,7 +260,7 @@ const Chatbox = ({ videoId, onClose }) => {
 
   if (loading) {
     return (
-      <section className={`h-[85vh] w-[400px] rounded-lg shadow-md overflow-hidden bg-gray-100 ${isDarkMode && "dark:bg-[#121212e8] border-2"}`}>
+      <section className={`h-[85vh]   w-[400px] rounded-lg shadow-md overflow-hidden bg-gray-100 ${isDarkMode && "dark:bg-[#121212e8] border-2"}`}>
         <div className="p-4 h-full flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
