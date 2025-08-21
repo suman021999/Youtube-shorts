@@ -1,7 +1,7 @@
 
 import React, { useRef, useState, useEffect } from 'react';
 import { FaPlay, FaPause } from "react-icons/fa";
-import { MdOutlineZoomOutMap } from "react-icons/md";
+// import { MdOutlineZoomInMap, MdOutlineZoomOutMap } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import Sound from '../shorts/Sound';
@@ -31,6 +31,7 @@ const VideoCard = ({
   const navigate = useNavigate();
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
    const isSidebarOpen = useSelector((state) => state.sidebar.isOpen);
+   
 
   const attemptAutoplay = async () => {
     if (!isShort || !autoPlay || !videoRef.current || autoplayAttempted) return;
@@ -195,6 +196,9 @@ const VideoCard = ({
   }
 
   return isShort ? (
+
+    <>
+
     <section className={`relative group z-10 flex gap-4  ${isSidebarOpen ? 'lg:ml-[45vh] ' : ''} lg:ml-8`}>
       <div className='relative flex'>
         <div className={`relative ${isShort ? 'h-[75vh]  md:h-[80vh] lg:h-[85vh]  ' : 'h-full'}  bg-cover md:w-[400px] max-w-sm rounded-lg shadow-md overflow-hidden`}>
@@ -304,13 +308,7 @@ const VideoCard = ({
               )}
             </div>
 
-            {isShort && (
-              <div className="hidden lg:flex">
-                <MdOutlineZoomOutMap className={`text-white text-2xl cursor-pointer hover:scale-110 transition-transform ${
-                  isPlaying ? "opacity-0 group-hover:opacity-100" : ""
-                }`} />
-              </div>
-            )}
+            
           </div>
 
           {showCenterButton && (
@@ -336,6 +334,7 @@ const VideoCard = ({
         </div>
       )}
     </section>
+    </> 
   ) : (
     <div className={`${isShort ? '' : 'lg:w-[15vw] mb-20 lg:mb-0 rounded-lg p-2 hover:bg-[#b3b0b04b]'}`}>
       <Link 
@@ -371,3 +370,21 @@ const VideoCard = ({
 };
 
 export default VideoCard;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

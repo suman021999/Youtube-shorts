@@ -1,9 +1,8 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Comment from './Comment';
 import { IoCloseOutline } from 'react-icons/io5';
-import { getComments, createComment, updateComment, deleteComment, likeComment, dislikeComment } from '../../service/chat.service'; // Import your API functions
+import { getComments, createComment, updateComment, deleteComment, likeComment, dislikeComment } from '../../service/chat.service';
 
 const Chatbox = ({ videoId, onClose }) => {
   const [comments, setComments] = useState([]);
@@ -15,6 +14,10 @@ const Chatbox = ({ videoId, onClose }) => {
   const [error, setError] = useState(null);
   const textareaRef = useRef(null);
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
+
+  // State variables for tracking user interactions
+  const [userLikes, setUserLikes] = useState({});
+  const [userDislikes, setUserDislikes] = useState({});
 
   const user = JSON.parse(localStorage.getItem("user"));
   const isLoggedIn = !!user;
@@ -28,6 +31,33 @@ const Chatbox = ({ videoId, onClose }) => {
         const response = await getComments(videoId);
         if (response.success) {
           setComments(response.comments);
+          
+          // Also update user interactions based on backend data
+          if (isLoggedIn && user?.id) {
+            const userLikes = {};
+            const userDislikes = {};
+            
+            // Recursive function to process comments and replies
+            const processComments = (commentsArr) => {
+              commentsArr.forEach(comment => {
+                if (comment.userLiked) userLikes[comment.id] = true;
+                if (comment.userDisliked) userDislikes[comment.id] = true;
+                
+                if (comment.replies) {
+                  processComments(comment.replies);
+                }
+              });
+            };
+            
+            processComments(response.comments);
+            
+            setUserLikes(userLikes);
+            setUserDislikes(userDislikes);
+            
+            // Also save to localStorage
+            localStorage.setItem(`userLikes_${user.id}`, JSON.stringify(userLikes));
+            localStorage.setItem(`userDislikes_${user.id}`, JSON.stringify(userDislikes));
+          }
         }
       } catch (error) {
         console.error('Failed to load comments', error);
@@ -42,6 +72,16 @@ const Chatbox = ({ videoId, onClose }) => {
     }
   }, [videoId]);
 
+  // Load user interactions from localStorage
+  useEffect(() => {
+    if (isLoggedIn && user?.id) {
+      const savedLikes = JSON.parse(localStorage.getItem(`userLikes_${user.id}`)) || {};
+      const savedDislikes = JSON.parse(localStorage.getItem(`userDislikes_${user.id}`)) || {};
+      setUserLikes(savedLikes);
+      setUserDislikes(savedDislikes);
+    }
+  }, [isLoggedIn, user?.id]);
+
   const handleReply = async (parentId, replyText) => {
     if (!replyText.trim()) return;
     
@@ -49,21 +89,20 @@ const Chatbox = ({ videoId, onClose }) => {
       // Find the root parent comment ID (main comment, not a reply)
       const findRootParent = (comments, targetId) => {
         for (let comment of comments) {
-          if (comment.id === targetId) return comment.id; // This is already a main comment
+          if (comment.id === targetId) return comment.id;
           if (comment.replies?.length) {
             for (let reply of comment.replies) {
-              if (reply.id === targetId) return comment.id; // Return the main comment ID
+              if (reply.id === targetId) return comment.id;
             }
           }
         }
-        return targetId; // Fallback
+        return targetId;
       };
       
       const rootParentId = findRootParent(comments, parentId);
       
       const response = await createComment(videoId, replyText, rootParentId);
       if (response.success) {
-        // Add the reply to the root parent comment
         setComments(prevComments => 
           prevComments.map(comment => {
             if (comment.id === rootParentId) {
@@ -158,7 +197,6 @@ const Chatbox = ({ videoId, onClose }) => {
             if (comment.id === id) {
               return { ...comment, text: editText };
             }
-            // Check in replies too
             if (comment.replies?.length) {
               const updatedReplies = comment.replies.map(reply =>
                 reply.id === id ? { ...reply, text: editText } : reply
@@ -190,6 +228,18 @@ const Chatbox = ({ videoId, onClose }) => {
             }));
         };
         setComments(prevComments => deleteRecursive(prevComments, id));
+        
+        // Also remove from user interactions if needed
+        if (isLoggedIn && user?.id) {
+          const newUserLikes = {...userLikes};
+          const newUserDislikes = {...userDislikes};
+          delete newUserLikes[id];
+          delete newUserDislikes[id];
+          setUserLikes(newUserLikes);
+          setUserDislikes(newUserDislikes);
+          localStorage.setItem(`userLikes_${user.id}`, JSON.stringify(newUserLikes));
+          localStorage.setItem(`userDislikes_${user.id}`, JSON.stringify(newUserDislikes));
+        }
       }
     } catch (error) {
       console.error('Failed to delete comment:', error);
@@ -198,18 +248,54 @@ const Chatbox = ({ videoId, onClose }) => {
   };
 
   const handleLike = async (id) => {
+    if (!isLoggedIn) {
+      setError('Please log in to like comments');
+      return;
+    }
+    
+    // Check if user already liked this comment
+    if (userLikes[id]) {
+      return;
+    }
+    
     try {
       const response = await likeComment(id);
       if (response.success) {
+        // Update user interactions from backend response
+        const newUserLikes = { ...userLikes, [id]: true };
+        const newUserDislikes = { ...userDislikes };
+        
+        // Remove dislike if user had disliked before
+        if (userDislikes[id]) {
+          delete newUserDislikes[id];
+          setUserDislikes(newUserDislikes);
+        }
+        
+        setUserLikes(newUserLikes);
+        
+        // Save to localStorage
+        if (user?.id) {
+          localStorage.setItem(`userLikes_${user.id}`, JSON.stringify(newUserLikes));
+          localStorage.setItem(`userDislikes_${user.id}`, JSON.stringify(newUserDislikes));
+        }
+        
+        // Update comment counts from backend response
         setComments(prevComments =>
           prevComments.map(comment => {
             if (comment.id === id) {
-              return { ...comment, likes: comment.likes + 1 };
+              return { 
+                ...comment, 
+                likes: response.comment.likes,
+                dislikes: response.comment.dislikes
+              };
             }
-            // Check in replies too
             if (comment.replies?.length) {
               const updatedReplies = comment.replies.map(reply =>
-                reply.id === id ? { ...reply, likes: reply.likes + 1 } : reply
+                reply.id === id ? { 
+                  ...reply, 
+                  likes: response.comment.likes,
+                  dislikes: response.comment.dislikes
+                } : reply
               );
               return { ...comment, replies: updatedReplies };
             }
@@ -224,18 +310,54 @@ const Chatbox = ({ videoId, onClose }) => {
   };
 
   const handleDislike = async (id) => {
+    if (!isLoggedIn) {
+      setError('Please log in to dislike comments');
+      return;
+    }
+    
+    // Check if user already disliked this comment
+    if (userDislikes[id]) {
+      return;
+    }
+    
     try {
       const response = await dislikeComment(id);
       if (response.success) {
+        // Update user interactions from backend response
+        const newUserDislikes = { ...userDislikes, [id]: true };
+        const newUserLikes = { ...userLikes };
+        
+        // Remove like if user had liked before
+        if (userLikes[id]) {
+          delete newUserLikes[id];
+          setUserLikes(newUserLikes);
+        }
+        
+        setUserDislikes(newUserDislikes);
+        
+        // Save to localStorage
+        if (user?.id) {
+          localStorage.setItem(`userLikes_${user.id}`, JSON.stringify(newUserLikes));
+          localStorage.setItem(`userDislikes_${user.id}`, JSON.stringify(newUserDislikes));
+        }
+        
+        // Update comment counts from backend response
         setComments(prevComments =>
           prevComments.map(comment => {
             if (comment.id === id) {
-              return { ...comment, dislikes: comment.dislikes + 1 };
+              return { 
+                ...comment, 
+                likes: response.comment.likes,
+                dislikes: response.comment.dislikes
+              };
             }
-            // Check in replies too
             if (comment.replies?.length) {
               const updatedReplies = comment.replies.map(reply =>
-                reply.id === id ? { ...reply, dislikes: reply.dislikes + 1 } : reply
+                reply.id === id ? { 
+                  ...reply, 
+                  likes: response.comment.likes,
+                  dislikes: response.comment.dislikes
+                } : reply
               );
               return { ...comment, replies: updatedReplies };
             }
@@ -260,7 +382,7 @@ const Chatbox = ({ videoId, onClose }) => {
 
   if (loading) {
     return (
-      <section className={`h-[85vh]   w-[400px] rounded-lg shadow-md overflow-hidden bg-gray-100 ${isDarkMode && "dark:bg-[#121212e8] border-2"}`}>
+      <section className={`h-[85vh] w-[400px] rounded-lg shadow-md overflow-hidden bg-gray-100 ${isDarkMode && "dark:bg-[#121212e8] border-2"}`}>
         <div className="p-4 h-full flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
@@ -315,8 +437,11 @@ const Chatbox = ({ videoId, onClose }) => {
                 handleSaveEdit={handleSaveEdit}
                 renderAvatar={(author, avatar) => renderAvatar(author || comment.author, avatar || comment.avatar)}
                 handleReply={handleReply}
-               handleLike={handleLike}
-               handleDislike={handleDislike}
+                handleLike={handleLike}
+                handleDislike={handleDislike}
+                userLikes={userLikes}
+                userDislikes={userDislikes}
+                isLoggedIn={isLoggedIn}
               />
             ))
           )}

@@ -8,8 +8,8 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { FaRegSun, FaRegMoon } from "react-icons/fa";
 import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '../../hooks/themeSlice'; 
-import Searchbar from '../searchbar/Searchbar'; // Import the Searchbar component
-import {Link, useLocation } from "react-router-dom"
+import Searchbar from '../searchbar/Searchbar';
+import { Link, useLocation } from "react-router-dom"
 import Login from "../auth/g_login";
 
 const Navbar = () => {
@@ -18,6 +18,7 @@ const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -39,15 +40,19 @@ const Navbar = () => {
   const handleSearchClose = () => {
     setIsSearchOpen(false);
   };
+
+  const handleSearchChange = (query) => {
+    setSearchQuery(query);
+  };
+
   // Check if current path is '/homes'
   const isHomesRoute = location.pathname === '/homes';
-
 
   return (
     <>
       <section
-         className={`fixed top-0 left-0 z-50 w-full ${isHomesRoute?"h-[20vh]":"h-20"}   border-[#2777a0] transition-all duration-300 
-          ${isDarkMode?"bg-[#1E1E1E]": "bg-[#f4f2f2]"}
+        className={`fixed top-0 left-0 z-50 w-full ${isHomesRoute ? "h-[20vh]" : "h-20"} border-[#2777a0] transition-all duration-300 
+          ${isDarkMode ? "bg-[#1E1E1E]" : "bg-[#f4f2f2]"}
            ${isHomesRoute && scrolled ? (isDarkMode ? "lg:dark:bg-[#030303e4]" : "lg:bg-[#f4f2f2e8]") : ""}`}
         style={{
           backdropFilter: scrolled ? "lg:blur(10px)" : "none",
@@ -58,9 +63,9 @@ const Navbar = () => {
           {/* Left: Hamburger & Logo */}
           <div className="flex gap-4 items-center">
             <div className="lg:flex hidden cursor-pointer">
-              <RxHamburgerMenu 
-              className="h-6 w-6" 
-               onClick={() => dispatch(toggleSidebar())}
+              <RxHamburgerMenu
+                className="h-6 w-6"
+                onClick={() => dispatch(toggleSidebar())}
               />
             </div>
             <div className="flex items-center justify-center">
@@ -75,14 +80,14 @@ const Navbar = () => {
               <input
                 id="search"
                 type="text"
-                placeholder="search"
+                placeholder="Search videos..."
                 className="w-[500px] h-10 px-8 border border-[#9e9898d6] rounded-l-4xl hover:shadow-[inset_0_0_6px_#1e90ff]"
                 onClick={handleSearchClick}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               
-              <div className="py-4 border border-[#9e9898d6] rounded-r-4xl w-[100px] h-10 flex items-center justify-center  hover:bg-[#cccaca95] "> 
+              <div className="py-4 border border-[#9e9898d6] rounded-r-4xl w-[100px] h-10 flex items-center justify-center hover:bg-[#cccaca95]"> 
                 <CiSearch className="w-6 h-6" />
               </div>
             </div>
@@ -103,13 +108,13 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Search Icon only */}
-            <div className="lg:hidden  flex items-center">
-              <CiSearch className="w-10 h-10 " onClick={handleSearchClick} />
+            <div className="lg:hidden flex items-center">
+              <CiSearch className="w-10 h-10" onClick={handleSearchClick} />
             </div>
 
             {/* Theme Toggle Icons mobile */}
             <div className="lg:hidden flex items-center gap-4 ml-4">
-              {isDarkMode ?(
+              {isDarkMode ? (
                 <FaRegMoon
                   className="w-6 h-6 cursor-pointer"
                   onClick={() => dispatch(toggleTheme())}
@@ -126,21 +131,24 @@ const Navbar = () => {
           {/* Buttons */}
           <div className="gap-4 items-center lg:flex hidden">
             <Link to="/create">
-            <div className="bg-[#d4d0d079] hover:bg-[#a4a1a179] px-4 py-2 rounded-4xl flex items-center gap-2">
-              <GoPlus />
-              Create
-            </div>
+              <div className="bg-[#d4d0d079] hover:bg-[#a4a1a179] px-4 py-2 rounded-4xl flex items-center gap-2">
+                <GoPlus />
+                Create
+              </div>
             </Link>
             
-
             <Login/>
-            
           </div>
         </div>
       </section>
 
       {/* Searchbar overlay */}
-      <Searchbar isOpen={isSearchOpen} onClose={handleSearchClose} />
+      <Searchbar 
+        isOpen={isSearchOpen} 
+        onClose={handleSearchClose} 
+        searchQuery={searchQuery}
+        onSearchChange={handleSearchChange}
+      />
     </>
   );
 };

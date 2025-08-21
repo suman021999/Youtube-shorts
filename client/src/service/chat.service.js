@@ -96,12 +96,3 @@ export const dislikeComment = async (id) => {
   }
 };
 
-export const searchComments = async (videoId, query) => {
-  try {
-    const response = await axios.get(`${API_URL}/search/${videoId}?query=${encodeURIComponent(query)}`);
-    return response.data;
-  } catch (error) {
-    console.error('Error searching comments:', error);
-    throw error;
-  }
-};

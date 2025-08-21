@@ -36,24 +36,29 @@ const Scfun = ({ videoId }) => {
   };
 
   // ✅ Fetch initial video data (likes, dislikes, user's like status)
-  const fetchVideoData = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/${videoId}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      
-      const videoData = response.data;
-      setLikeCount(videoData.likes || 0);
-      setDislikeCount(videoData.dislikes || 0);
-      
-      // Check if current user has liked/disliked this video
-      const userId = videoData.currentUserId; // You might need to get this from your auth context
-      setIsLiked(videoData.likedBy?.includes(userId) || false);
-      setIsDisliked(videoData.dislikedBy?.includes(userId) || false);
-    } catch (err) {
-      console.error("Error fetching video data:", err.response?.data || err.message);
-    }
-  };
+const fetchVideoData = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/${videoId}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    // 👇 Important: unwrap "data" since backend nests it
+    const videoData = response.data.data;  
+
+    setLikeCount(videoData.likes || 0);
+    setDislikeCount(videoData.dislikes || 0);
+
+    // Get userId from token (decode it) instead of waiting for backend
+    const tokenData = JSON.parse(atob(token.split('.')[1])); 
+    const userId = tokenData.id || tokenData._id;
+
+    setIsLiked(videoData.likedBy?.includes(userId) || false);
+    setIsDisliked(videoData.dislikedBy?.includes(userId) || false);
+  } catch (err) {
+    console.error("Error fetching video data:", err.response?.data || err.message);
+  }
+};
+
 
   // ✅ Load video data when component mounts
   useEffect(() => {

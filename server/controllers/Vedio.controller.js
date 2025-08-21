@@ -157,12 +157,45 @@ export const getRandomVideo = asyncHandler(async (req, res) => {
 
 
 
-// likeVideo controller
+// In your video controller
+export const searchVideos = async (req, res) => {
+  try {
+    const { q } = req.query;
+    
+    if (!q) {
+      return res.status(400).json({
+        success: false,
+        message: "Search query is required"
+      });
+    }
+
+    const videos = await Video.find({
+      description: { $regex: q, $options: 'i' } // Case-insensitive search
+    }).populate('owner', 'username avatar');
+
+    res.status(200).json({
+      success: true,
+      count: videos.length,
+      data: videos
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Error searching videos",
+      error: error.message
+    });
+  }
+};
+
+
+
+
+
+// ✅ LIKE controller
 export const likeVideo = asyncHandler(async (req, res) => {
   const userId = req.user._id; 
   const { videoId } = req.params; 
 
-  // Find the video
   const video = await Video.findById(videoId);
   if (!video) {
     return res.status(404).json({ message: 'Video not found' });
@@ -173,7 +206,6 @@ export const likeVideo = asyncHandler(async (req, res) => {
     video.likedBy.pull(userId);
     video.likes = Math.max(video.likes - 1, 0);
   } else {
-
     video.likedBy.push(userId);
     video.likes += 1;
     if (video.dislikedBy.includes(userId)) {
@@ -189,36 +221,29 @@ export const likeVideo = asyncHandler(async (req, res) => {
     likes: video.likes,
     likedBy: video.likedBy,
     dislikes: video.dislikes,
-    dislikedBy: video.dislikedBy
+    dislikedBy: video.dislikedBy,
+    currentUserId: userId   // 👈 send back for frontend
   });
 });
 
-
-// DisLikeVideo controller
+// ✅ DISLIKE controller
 export const dislikeVideo = asyncHandler(async (req, res) => {
   const userId = req.user._id; 
   const { videoId } = req.params; 
 
-  // Find the video
   const video = await Video.findById(videoId);
   if (!video) {
     return res.status(404).json({ message: 'Video not found' });
   }
 
-  // Check if user already disliked
   const alreadyDisliked = video.dislikedBy.includes(userId);
-
   if (alreadyDisliked) {
-    
     video.dislikedBy.pull(userId);
     video.dislikes = Math.max(video.dislikes - 1, 0);
   } else {
-    
     video.dislikedBy.push(userId);
-    
     video.dislikes += 1;
 
-    
     if (video.likedBy.includes(userId)) {
       video.likedBy.pull(userId);
       video.likes = Math.max(video.likes - 1, 0);
@@ -232,6 +257,7 @@ export const dislikeVideo = asyncHandler(async (req, res) => {
     dislikes: video.dislikes,
     dislikedBy: video.dislikedBy,
     likes: video.likes,
-    likedBy: video.likedBy
+    likedBy: video.likedBy,
+    currentUserId: userId   // 👈 send back for frontend
   });
 });

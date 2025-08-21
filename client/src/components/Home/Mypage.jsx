@@ -132,6 +132,5 @@ const renderAvatar = () => {
   );
 };
 
-
 export default Mypage
 

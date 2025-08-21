@@ -1,12 +1,12 @@
 // routes/comments.js
 import {Router} from 'express';
-import  { createComment, deleteComment, dislikeComment, getComments, likeComment, searchComments, updateComment } from '../controllers/comment.controller.js';
+import  { createComment, deleteComment, dislikeComment, getComments, likeComment,  updateComment } from '../controllers/comment.controller.js';
 import {authMiddleware} from '../middleware/auth.middleware.js';
 
 const router = Router();
 // Public routes
 router.get('/:videoId', getComments);
-router.get('/search/:videoId', searchComments);
+
 
 // Protected routes (require authentication)
 router.post('/', authMiddleware, createComment);

@@ -41,31 +41,58 @@ const formatTimeAgo = (date) => {
   return date.toLocaleDateString();
 };
 
+
+
+
+
 // Get comments for a video
 export const getComments = async (req, res) => {
   try {
     const { videoId } = req.params;
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 20;
-    const skip = (page - 1) * limit;
+    const userId = req.user?._id; // Optional - user might not be logged in
 
-    // Find top-level comments (no parentId)
-    const comments = await Comment.find({ 
-      videoId, 
-      parentId: null 
-    })
-    .sort({ createdAt: -1 })
-    .skip(skip)
-    .limit(limit);
+    const comments = await Comment.find({ videoId, parentId: null })
+      .populate('author', 'username avatar')
+      .populate({
+        path: 'replies',
+        populate: {
+          path: 'author',
+          select: 'username avatar'
+        }
+      })
+      .sort({ createdAt: -1 });
 
+    // Format comments and add user interaction info
     const formattedComments = await Promise.all(
-      comments.map(comment => formatComment(comment))
+      comments.map(async (comment) => {
+        const formatted = await formatComment(comment);
+        
+        // Add user interaction info if user is logged in
+        if (userId) {
+          formatted.userLiked = comment.likedBy.includes(userId);
+          formatted.userDisliked = comment.dislikedBy.includes(userId);
+        }
+        
+        // Process replies too
+        if (formatted.replies) {
+          formatted.replies = await Promise.all(
+            formatted.replies.map(async (reply) => {
+              if (userId) {
+                reply.userLiked = comment.likedBy.includes(userId);
+                reply.userDisliked = comment.dislikedBy.includes(userId);
+              }
+              return reply;
+            })
+          );
+        }
+        
+        return formatted;
+      })
     );
 
     res.json({
       success: true,
-      comments: formattedComments,
-      total: await Comment.countDocuments({ videoId, parentId: null })
+      comments: formattedComments
     });
   } catch (error) {
     res.status(500).json({
@@ -75,6 +102,8 @@ export const getComments = async (req, res) => {
     });
   }
 };
+
+
 
 // Create a new comment
 export const createComment = async (req, res) => {
@@ -223,12 +252,9 @@ export const likeComment = async (req, res) => {
     const { id } = req.params;
     const userId = req.user._id;
 
-    const comment = await Comment.findByIdAndUpdate(
-      id,
-      { $inc: { likes: 1 } },
-      { new: true }
-    );
-
+    // First check if user already disliked this comment
+    const comment = await Comment.findById(id);
+    
     if (!comment) {
       return res.status(404).json({
         success: false,
@@ -236,11 +262,35 @@ export const likeComment = async (req, res) => {
       });
     }
 
+    // Check if user already liked this comment
+    if (comment.likedBy.includes(userId)) {
+      return res.status(400).json({
+        success: false,
+        message: 'You already liked this comment'
+      });
+    }
+
+    // Remove from dislikedBy if user previously disliked
+    if (comment.dislikedBy.includes(userId)) {
+      comment.dislikedBy.pull(userId);
+      comment.dislikes -= 1;
+    }
+
+    // Add to likedBy and increment likes
+    comment.likedBy.push(userId);
+    comment.likes += 1;
+
+    await comment.save();
+
     const formattedComment = await formatComment(comment);
 
     res.json({
       success: true,
-      comment: formattedComment
+      comment: formattedComment,
+      userInteractions: {
+        liked: true,
+        disliked: false
+      }
     });
   } catch (error) {
     res.status(500).json({
@@ -257,12 +307,8 @@ export const dislikeComment = async (req, res) => {
     const { id } = req.params;
     const userId = req.user._id;
 
-    const comment = await Comment.findByIdAndUpdate(
-      id,
-      { $inc: { dislikes: 1 } },
-      { new: true }
-    );
-
+    const comment = await Comment.findById(id);
+    
     if (!comment) {
       return res.status(404).json({
         success: false,
@@ -270,11 +316,35 @@ export const dislikeComment = async (req, res) => {
       });
     }
 
+    // Check if user already disliked this comment
+    if (comment.dislikedBy.includes(userId)) {
+      return res.status(400).json({
+        success: false,
+        message: 'You already disliked this comment'
+      });
+    }
+
+    // Remove from likedBy if user previously liked
+    if (comment.likedBy.includes(userId)) {
+      comment.likedBy.pull(userId);
+      comment.likes -= 1;
+    }
+
+    // Add to dislikedBy and increment dislikes
+    comment.dislikedBy.push(userId);
+    comment.dislikes += 1;
+
+    await comment.save();
+
     const formattedComment = await formatComment(comment);
 
     res.json({
       success: true,
-      comment: formattedComment
+      comment: formattedComment,
+      userInteractions: {
+        liked: false,
+        disliked: true
+      }
     });
   } catch (error) {
     res.status(500).json({
@@ -285,39 +355,5 @@ export const dislikeComment = async (req, res) => {
   }
 };
 
-// Search comments
-export const searchComments = async (req, res) => {
-  try {
-    const { query } = req.query;
-    const { videoId } = req.params;
 
-    if (!query) {
-      return res.status(400).json({
-        success: false,
-        message: 'Search query is required'
-      });
-    }
 
-    const comments = await Comment.find({
-      videoId,
-      $text: { $search: query }
-    })
-    .sort({ score: { $meta: "textScore" } })
-    .limit(20);
-
-    const formattedComments = await Promise.all(
-      comments.map(comment => formatComment(comment))
-    );
-
-    res.json({
-      success: true,
-      comments: formattedComments
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: 'Failed to search comments',
-      error: error.message
-    });
-  }
-};
