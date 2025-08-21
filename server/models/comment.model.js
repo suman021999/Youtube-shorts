@@ -26,6 +26,14 @@ const commentSchema = new Schema({
     type: Number,
     default: 0
   },
+    likedBy: [{   
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
+  dislikedBy: [{ 
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   parentId: {
     type: Schema.Types.ObjectId,
     ref: 'Comment',

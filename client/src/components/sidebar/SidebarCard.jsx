@@ -172,7 +172,7 @@ const SidebarCard = () => {
         </div>
       </section>
 
-      <div className={`fixed bottom-0 left-0 right-0 lg:hidden flex justify-around items-center p-2 z-50 ${
+      <div className={`fixed bottom-0  left-0 right-0 lg:hidden flex justify-around items-center p-2 z-50 ${
         isDarkMode ? "bg-[#1e1e1e]" : "bg-white"
       } border-t ${isDarkMode ? "border-gray-700" : "border-gray-200"}`}>
         <Link

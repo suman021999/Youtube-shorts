@@ -1,6 +1,7 @@
 // controllers/video.controller.js
-import asyncHandler from 'express-async-handler';
 import { uploadOnCloudinary } from '../config/cloudinary.js';
+import asyncHandler from 'express-async-handler';
+
 import { Video } from '../models/vedio.model.js';
 
 
@@ -152,4 +153,85 @@ export const getRandomVideo = asyncHandler(async (req, res) => {
             message: error.message || 'Failed to fetch random video',
         });
     }
+});
+
+
+
+// likeVideo controller
+export const likeVideo = asyncHandler(async (req, res) => {
+  const userId = req.user._id; 
+  const { videoId } = req.params; 
+
+  // Find the video
+  const video = await Video.findById(videoId);
+  if (!video) {
+    return res.status(404).json({ message: 'Video not found' });
+  }
+
+  const alreadyLiked = video.likedBy.includes(userId);
+  if (alreadyLiked) {
+    video.likedBy.pull(userId);
+    video.likes = Math.max(video.likes - 1, 0);
+  } else {
+
+    video.likedBy.push(userId);
+    video.likes += 1;
+    if (video.dislikedBy.includes(userId)) {
+      video.dislikedBy.pull(userId);
+      video.dislikes = Math.max(video.dislikes - 1, 0);
+    }
+  }
+
+  await video.save();
+
+  res.status(200).json({
+    message: 'Like updated',
+    likes: video.likes,
+    likedBy: video.likedBy,
+    dislikes: video.dislikes,
+    dislikedBy: video.dislikedBy
+  });
+});
+
+
+// DisLikeVideo controller
+export const dislikeVideo = asyncHandler(async (req, res) => {
+  const userId = req.user._id; 
+  const { videoId } = req.params; 
+
+  // Find the video
+  const video = await Video.findById(videoId);
+  if (!video) {
+    return res.status(404).json({ message: 'Video not found' });
+  }
+
+  // Check if user already disliked
+  const alreadyDisliked = video.dislikedBy.includes(userId);
+
+  if (alreadyDisliked) {
+    
+    video.dislikedBy.pull(userId);
+    video.dislikes = Math.max(video.dislikes - 1, 0);
+  } else {
+    
+    video.dislikedBy.push(userId);
+    
+    video.dislikes += 1;
+
+    
+    if (video.likedBy.includes(userId)) {
+      video.likedBy.pull(userId);
+      video.likes = Math.max(video.likes - 1, 0);
+    }
+  }
+
+  await video.save();
+
+  res.status(200).json({
+    message: 'Dislike updated',
+    dislikes: video.dislikes,
+    dislikedBy: video.dislikedBy,
+    likes: video.likes,
+    likedBy: video.likedBy
+  });
 });

@@ -38,13 +38,13 @@ const Share = ({ onClose }) => {
         className="bg-white p-6 rounded-lg shadow-lg w-96"
       >
         <div className="flex justify-between mb-4 items-center">
-          <h1 className="text-2xl font-bold">Share</h1>
-          <button className="text-2xl cursor-pointer" onClick={onClose}>
+          <h1 className="text-2xl font-bold text-black">Share</h1>
+          <button className="text-2xl cursor-pointer " onClick={onClose}>
             <IoClose />
           </button>
         </div>
 
-        <div className="border-2 w-full p-2 flex items-center justify-between rounded">
+        <div className="border-2 border-black text-black w-full p-2 flex items-center justify-between rounded">
           <input
             type="text"
             value={currentUrl} // 👈 Auto-fill link
