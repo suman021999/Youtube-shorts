@@ -101,7 +101,7 @@ const Searchbar = ({ isOpen, onClose, searchQuery, onSearchChange }) => {
      
 
         {/* Search results */}
-        <div className="space-y-2 max-h-64 overflow-y-auto">
+        <div className="flex flex-col gap-1 space-y-2 max-h-64 overflow-y-auto">
           {loading ? (
             <div className="text-center dark:text-white py-4">Loading...</div>
           ) : searchResults.length > 0 ? (
