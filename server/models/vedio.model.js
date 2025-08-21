@@ -1,5 +1,4 @@
-
-// // models/video.model.js
+// models/video.model.js
 import mongoose from 'mongoose';
 
 const videoSchema = new mongoose.Schema({
@@ -31,6 +30,10 @@ const videoSchema = new mongoose.Schema({
         required: true,
     },
     views:{
+        type: Number,
+        required: true,
+    },
+    share:{
         type: Number,
         required: true,
     },

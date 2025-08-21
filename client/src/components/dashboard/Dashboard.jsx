@@ -6,15 +6,16 @@ import { Route, Routes } from "react-router-dom";
 import Shortscontext from "../shorts/Shortscontext";
 import Mypage from "../Home/Mypage";
 import Create from "../create/Create";
+import { useSelector } from "react-redux";
 
 
 
 const Dashboard = () => {
-  
+  const isBlurred = useSelector((state) => state.blur.isBlurred);
   return (
     <>
-      <Navbar />
-      <section className="w-full min-h-screen  pt-24 flex">
+      <section className={isBlurred ? "blurred" : ""}>
+        <div className="w-full min-h-screen  pt-24 flex">
         <Routes>
           <Route path="/homes" element={<Homecontext />} />
           <Route path="/shorts/:id" element={<Shortscontext />} />
@@ -25,7 +26,10 @@ const Dashboard = () => {
         </Routes>
 
         <SidebarCard />
+      </div>
       </section>
+      <Navbar />
+      
     </>
   )
 }

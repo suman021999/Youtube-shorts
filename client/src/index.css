@@ -112,6 +112,13 @@ body {
 
 
 
+.blurred > *:not(.share-overlay) {
+  position: fixed;
+  background: #52505069;
+  z-index: 999;
+  transition: filter 0.3s ease;
+  pointer-events: none;
+}
 
 
 

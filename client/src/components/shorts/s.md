@@ -448,3 +448,124 @@ const renderAvatar = () => {
 };
 
 export default Scard;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import React, { useEffect, useState } from 'react'
+import VideoCard from '../videocards/VideoCard';
+import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
+import { FaArrowDown, FaArrowUp } from "react-icons/fa6";
+
+const Shortscontext = () => {
+  const [videos, setVideos] = useState(null);
+  const [history, setHistory] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(-1);
+
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  // fetch single video by id (on mount / when id changes)
+  useEffect(() => {
+    const fetchVideo = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${import.meta.env.VITE_VIDEO_URL}/${id}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        setVideos(response.data.data);
+        // add to history if not already there
+        if (!history.find(v => v._id === response.data.data._id)) {
+          setHistory(prev => [...prev, response.data.data]);
+          setCurrentIndex(prev => prev + 1);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchVideo();
+  }, [id]);
+
+  // fetch random video
+  const fetchRandomVideo = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_VIDEO_URL}/random`);
+      return response.data.data;
+    } catch (err) {
+      console.log(err);
+      return null;
+    }
+  };
+
+  // next video (down arrow)
+  const handleNext = async () => {
+    const newVideo = await fetchRandomVideo();
+    if (newVideo) {
+      navigate(`/shorts/${newVideo._id}`); // update URL
+    }
+  };
+
+  // previous video (up arrow)
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      const prevVideo = history[currentIndex - 1];
+      navigate(`/shorts/${prevVideo._id}`); // update URL
+    }
+  };
+
+  if (!videos) {
+    return (
+      <div className="flex flex-col gap-4 justify-center items-center h-screen w-screen">
+        Loading...
+      </div>
+    )
+  }
+
+  return (
+    <>
+      <section className="w-full h-[80vh] flex justify-center items-center relative">
+        <div className="flex flex-wrap justify-center items-center gap-4">
+          <VideoCard
+            videoUrl={videos.videoUrl}
+            description={videos.description}
+            views={videos.views}
+            autoPlay={true}
+            owner={videos.owner}
+            id={videos._id}
+            isShort={true}
+          />
+        </div>
+
+        {/* Scroll Buttons – Desktop only */}
+        <div className="hidden md:flex flex-col gap-4 justify-center items-center absolute right-10 top-1/2 -translate-y-1/2">
+          <div
+            onClick={handlePrev}
+            className='h-16 w-16 rounded-full flex justify-center items-center bg-[#9791915a] cursor-pointer hover:bg-[#9791918a]'
+          >
+            <FaArrowUp className='h-6 w-6' />
+          </div>
+          <div
+            onClick={handleNext}
+            className='h-16 w-16 rounded-full flex justify-center items-center bg-[#9791915a] cursor-pointer hover:bg-[#9791918a]'
+          >
+            <FaArrowDown className='h-6 w-6' />
+          </div>
+        </div>
+      </section>
+    </>
+  )
+}
+
+export default Shortscontext;
+
