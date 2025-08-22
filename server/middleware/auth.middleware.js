@@ -1,4 +1,4 @@
-import passport from 'passport';
+// import passport from 'passport';
 
 import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
@@ -7,17 +7,17 @@ import { User } from '../models/user.model.js';
 
 
 
-// Middleware to initiate Google auth
-export const googleAuth = passport.authenticate('google', {
-  scope: ['profile', 'email'],
-  session: false
-});
+// // Middleware to initiate Google auth
+// export const googleAuth = passport.authenticate('google', {
+//   scope: ['profile', 'email'],
+//   session: false
+// });
 
-// Middleware to handle Google callback
-export const googleAuthCallback = passport.authenticate('google', {
-  failureRedirect: '/login',
-  session: false
-});
+// // Middleware to handle Google callback
+// export const googleAuthCallback = passport.authenticate('google', {
+//   failureRedirect: '/login',
+//   session: false
+// });
 
 
 

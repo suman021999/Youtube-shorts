@@ -23,16 +23,16 @@ const userSchema = new Schema(
       }
     },
     // Add OAuth-specific fields
-    googleId: {
-      type: String,
-      unique: true,
-      sparse: true
-    },
-    provider: {
-      type: String,
-      enum: ['local', 'google'], 
-      default: 'local'
-    },
+    // googleId: {
+    //   type: String,
+    //   unique: true,
+    //   sparse: true
+    // },
+    // provider: {
+    //   type: String,
+    //   enum: ['local', 'google'], 
+    //   default: 'local'
+    // },
     avatar: {
       type: String 
     },

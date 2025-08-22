@@ -1,13 +1,13 @@
 import {Router} from 'express';
-import {getUserByUsername, handleGoogleAuth,loginAccount,logout,registerAccount} from '../controllers/user.controller.js';
-import {googleAuth,googleAuthCallback,protect} from "../middleware/auth.middleware.js";
+import {getUserByUsername, loginAccount,logout,registerAccount} from '../controllers/user.controller.js';
+import {protect} from "../middleware/auth.middleware.js";
 
 const router = Router();
 
 // Google OAuth routes
-router.route('/google').get( googleAuth);
-router.route('/google').get(googleAuthCallback, handleGoogleAuth);
-
+// router.route('/google').get( googleAuth);
+// router.route('/google').get(googleAuthCallback, handleGoogleAuth);
+// handleGoogleAuth,googleAuth,googleAuthCallback,
 
 
 // Register route
