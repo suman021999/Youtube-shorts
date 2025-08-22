@@ -99,8 +99,10 @@ const LoginPage = () => {
   };
 
   const handleGoogleAuth = () => {
-    window.location.href = `${import.meta.env.VITE_AUTH_URL}/google`;
+    window.location.href = `${import.meta.env.VITE_AUTH_URL}/google`; 
   };
+
+
 
   return (
     <div className="flex justify-center items-center flex-col bg-black min-h-screen font-['Montserrat'] p-4">
@@ -168,7 +170,7 @@ const LoginPage = () => {
               <button 
                 type="button"
                 onClick={() => handleGoogleAuth("register")}
-                className="flex gap-2 items-center"
+                className="flex gap-2 items-center cursor-pointer"
               >
                 <FcGoogle size={24} />
                 <span>Sign up with Google</span>
@@ -236,11 +238,11 @@ const LoginPage = () => {
               </button>
             </div>
 
-            <div className="md:my-5 my-2 flex gap-2">
+            <div className="md:my-5 my-2 flex gap-2 ">
               <button 
                 type="button"
                 onClick={() => handleGoogleAuth("login")}
-                className="flex gap-2 items-center"
+                className="flex gap-2 items-center cursor-pointer"
               >
                 <FcGoogle size={24} />
                 <span>Sign in with Google</span>

@@ -6,7 +6,7 @@ const router = Router();
 
 // Google OAuth routes
 router.route('/google').get( googleAuth);
-router.route('/google/callback').get(googleAuthCallback, handleGoogleAuth);
+router.route('/google').get(googleAuthCallback, handleGoogleAuth);
 
 
 

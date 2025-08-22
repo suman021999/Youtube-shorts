@@ -47,7 +47,7 @@ const Homecontext = () => {
   }, []);
 
   if (loading) {
-    return (<div className="flex flex-col gap-2 justify-center items-center h-screen w-screen">
+    return (<div className="flex flex-col  gap-2 justify-center items-center h-screen w-screen">
       <img className='h-44 w-44 rounded-full' src={error} alt="" />
       <p className='font-bold'>connection broken</p>
     </div>)
@@ -55,7 +55,7 @@ const Homecontext = () => {
   
   return (
     <>
-      <section className={` w-full ${isSidebarOpen ? 'lg:ml-[45vh] ' : ''} lg:ml-8  mt-20`}>  
+      <section className={`mt-36  w-full ${isSidebarOpen ? 'lg:ml-[45vh] ' : ''} lg:ml-8  mt-20`}>  
         <div className="lg:flex lg:flex-wrap justify-center items-center gap-4 p-4 w-full grid grid-cols-2  md:grid-cols-3 md:items-center mb-20">
           {videos.map((video) => (
             <VideoCard

@@ -50,21 +50,6 @@ export { authMiddleware };
 
 
 
-// authenticate
-export const authenticate = passport.authenticate('jwt', { session: false });
-
-export const authenticateSocket = (socket, next) => {
-  passport.authenticate('jwt', { session: false }, (err, user, info) => {
-    if (err || !user) {
-      return next(new Error('Authentication error'));
-    }
-    socket.user = user;
-    next();
-  })(socket.request, {}, next);
-};
-
-
-
 // Middleware to protect routes with JWT
 export const protect = asyncHandler(async (req, res, next) => {
   let token = req.cookies.jwt || 

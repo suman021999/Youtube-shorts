@@ -227,7 +227,7 @@ const formatViews = (num) => {
 
     <>
 
-    <section className={`relative group z-10 flex gap-4  ${isSidebarOpen ? 'lg:ml-[45vh] ' : ''} lg:ml-8`}>
+    <section className={`relative group z-10 flex gap-4 lg:mt-24 ${isSidebarOpen ? 'lg:ml-[45vh] ' : ''} lg:ml-8`}>
       <div className='relative flex'>
         <div className={`relative ${isShort ? 'h-[75vh]  md:h-[80vh] lg:h-[85vh]  ' : 'h-full'}  bg-cover md:w-[400px] max-w-sm rounded-lg shadow-md overflow-hidden`}>
           <video

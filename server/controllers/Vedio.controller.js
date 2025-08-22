@@ -154,6 +154,40 @@ export const getRandomVideo = asyncHandler(async (req, res) => {
     }
 });
 
+
+export const getScroll = asyncHandler(async (req, res) => {
+  try {
+    // parse ?limit=20 (default to 1)
+    const limit = parseInt(req.query.limit) || 1;
+
+    const videos = await Video.aggregate([
+      { $sample: { size: limit } }
+    ]);
+
+    if (!videos || videos.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'No videos found',
+      });
+    }
+
+    // repopulate owner (aggregate doesn’t auto-populate)
+    await Video.populate(videos, { path: 'owner', select: 'username email avatar' });
+
+    return res.status(200).json({
+      success: true,
+      count: videos.length,
+      data: videos,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || 'Failed to fetch random video(s)',
+    });
+  }
+});
+
+
 export const searchVideos = async (req, res) => {
   try {
     const { q } = req.query;
@@ -265,3 +299,7 @@ export const views= async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
+
+

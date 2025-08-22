@@ -33,23 +33,6 @@ const SidebarCard = () => {
     }
   };
 
-  // const handleShortsClick = async (e) => {
-  //   e.preventDefault();
-  //   setIsLoading(true);
-  //   try {
-  //     const randomVideoId = await getRandomVideo();
-  //     if (randomVideoId) {
-  //       navigate(`/shorts/${randomVideoId}`);
-  //     } else {
-  //       navigate('/shorts');
-  //     }
-  //   } catch (error) {
-  //     console.error("Failed to navigate to random video:", error);
-  //     navigate('/shorts');
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
 
 
 const handleShortsClick = async (e) => {
@@ -165,7 +148,7 @@ const handleShortsClick = async (e) => {
         </div>
       )}
 
-      <section className={`p-4 transition-all duration-300 h-[85vh] fixed z-70 lg:flex hidden ${
+      <section className={`p-4 transition-all duration-300 h-[85vh] mt-36 fixed z-70 lg:flex hidden ${
         isSidebarOpen ? "w-[20vw]" : "w-[100px]"
       } sidebar`}>
         <div className="p-4 w-full h-[30vh] rounded-lg flex flex-col gap-4">

@@ -1,5 +1,5 @@
 import express from 'express';
-import { uploadVideo,getSingleVideo,  getAllVideos, getAllUserVideos, getRandomVideo, likeVideo, dislikeVideo, searchVideos, views } from '../controllers/Vedio.controller.js';
+import { uploadVideo,getSingleVideo,  getAllVideos, getAllUserVideos, getRandomVideo, likeVideo, dislikeVideo, searchVideos, views, getScroll } from '../controllers/Vedio.controller.js';
 import { authMiddleware} from '../middleware/auth.middleware.js';
 import { upload } from '../utils/upload.js';
 
@@ -19,6 +19,7 @@ router.route("/:videoId/dislike").post( authMiddleware, dislikeVideo);
 
 router.route('/all').get(authMiddleware,getAllVideos);
 router.route('/random').get(getRandomVideo);
+router.route('/scroll').get(getScroll);
 router.route('/:id').get( getSingleVideo);
 
 export default router;

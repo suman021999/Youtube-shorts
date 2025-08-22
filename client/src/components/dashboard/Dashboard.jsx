@@ -15,7 +15,8 @@ const Dashboard = () => {
   return (
     <>
       <section className={isBlurred ? "blurred" : ""}>
-        <div className="w-full min-h-screen  pt-24 md:pt-20 lg:pt-24 flex">
+        <div className="w-full min-h-screen  flex">
+          
         <Routes>
           <Route path="/homes" element={<Homecontext />} />
           <Route path="/shorts/:id" element={<Shortscontext />} />
