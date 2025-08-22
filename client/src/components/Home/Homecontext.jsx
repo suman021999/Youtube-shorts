@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
 import axios from 'axios'
@@ -10,6 +9,9 @@ const Homecontext = () => {
   const isSidebarOpen = useSelector((state) => state.sidebar.isOpen);
   const [loading, setLoading] = useState(true)
   
+  
+
+
   
   useEffect(() => {
     const fetchVideos = async () => {
@@ -73,4 +75,5 @@ const Homecontext = () => {
 }
 
 export default Homecontext
+
 

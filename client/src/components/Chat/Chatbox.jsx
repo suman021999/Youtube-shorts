@@ -464,14 +464,14 @@ const Chatbox = ({ videoId, onClose }) => {
                     setShowCommentInput(false);
                     setNewComment('');
                   }}
-                  className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded-full"
+                  className="px-3 py-1 text-sm cursor-pointer text-gray-600 hover:bg-gray-100 rounded-full"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleAddComment}
                   disabled={!newComment.trim()}
-                  className={`px-3 py-1 text-sm rounded-full ${newComment.trim() ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+                  className={`px-3 py-1 text-sm cursor-pointer rounded-full ${newComment.trim() ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
                 >
                   Comment
                 </button>

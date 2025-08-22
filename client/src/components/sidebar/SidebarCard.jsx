@@ -33,23 +33,50 @@ const SidebarCard = () => {
     }
   };
 
-  const handleShortsClick = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      const randomVideoId = await getRandomVideo();
-      if (randomVideoId) {
-        navigate(`/shorts/${randomVideoId}`);
-      } else {
-        navigate('/shorts');
+  // const handleShortsClick = async (e) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+  //   try {
+  //     const randomVideoId = await getRandomVideo();
+  //     if (randomVideoId) {
+  //       navigate(`/shorts/${randomVideoId}`);
+  //     } else {
+  //       navigate('/shorts');
+  //     }
+  //   } catch (error) {
+  //     console.error("Failed to navigate to random video:", error);
+  //     navigate('/shorts');
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
+
+const handleShortsClick = async (e) => {
+  e.preventDefault();
+  setIsLoading(true);
+  try {
+    const randomVideoId = await getRandomVideo();
+    if (randomVideoId) {
+      // increment views before navigation
+      try {
+        await axios.put(`${import.meta.env.VITE_VIDEO_URL}/views/${randomVideoId}`);
+      } catch (err) {
+        console.error("Error updating views:", err);
       }
-    } catch (error) {
-      console.error("Failed to navigate to random video:", error);
+
+      navigate(`/shorts/${randomVideoId}`);
+    } else {
       navigate('/shorts');
-    } finally {
-      setIsLoading(false);
     }
-  };
+  } catch (error) {
+    console.error("Failed to navigate to random video:", error);
+    navigate('/shorts');
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   const renderAvatar = () => {
     if (!isLoggedIn) {

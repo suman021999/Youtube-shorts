@@ -119,7 +119,6 @@ export const getSingleVideo = asyncHandler(async (req, res) => {
     }
 });
 
-
 export const getRandomVideo = asyncHandler(async (req, res) => {
     try {
         // Get total count of videos
@@ -155,9 +154,6 @@ export const getRandomVideo = asyncHandler(async (req, res) => {
     }
 });
 
-
-
-// In your video controller
 export const searchVideos = async (req, res) => {
   try {
     const { q } = req.query;
@@ -187,11 +183,6 @@ export const searchVideos = async (req, res) => {
   }
 };
 
-
-
-
-
-// ✅ LIKE controller
 export const likeVideo = asyncHandler(async (req, res) => {
   const userId = req.user._id; 
   const { videoId } = req.params; 
@@ -226,7 +217,6 @@ export const likeVideo = asyncHandler(async (req, res) => {
   });
 });
 
-// ✅ DISLIKE controller
 export const dislikeVideo = asyncHandler(async (req, res) => {
   const userId = req.user._id; 
   const { videoId } = req.params; 
@@ -261,3 +251,17 @@ export const dislikeVideo = asyncHandler(async (req, res) => {
     currentUserId: userId   // 👈 send back for frontend
   });
 });
+
+
+export const views= async (req, res) => {
+  try {
+    const video = await Video.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { views: 1 } },
+      { new: true }
+    );
+    res.json(video);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

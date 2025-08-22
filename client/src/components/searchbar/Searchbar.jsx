@@ -1,8 +1,8 @@
-
 import React, { useRef, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { searchVideos } from "../../service/video.Service.js";
 import { Link } from "react-router-dom";
+import { IoCloseOutline } from "react-icons/io5";
 
 const Searchbar = ({ isOpen, onClose, searchQuery, onSearchChange }) => {
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
@@ -78,7 +78,7 @@ const Searchbar = ({ isOpen, onClose, searchQuery, onSearchChange }) => {
 
   return (
     <div
-      className={`fixed inset-0 z-50 lg:right-44 flex justify-center pt-20 px-4`}
+      className={`fixed inset-0 z-50 lg:right-44 flex justify-center pt-20 px-4 `}
     >
       <div
         ref={searchbarRef}
@@ -92,23 +92,23 @@ const Searchbar = ({ isOpen, onClose, searchQuery, onSearchChange }) => {
           </h3>
           <button
             onClick={onClose}
-           className="text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100"
+           className=" cursor-pointer  hover:text-gray-700 dark:hover:text-gray-400"
           >
-            ✕
+            <IoCloseOutline className='h-8 w-8'/>  
           </button>
         </div>
         
      
 
         {/* Search results */}
-        <div className="flex flex-col gap-1 space-y-2 max-h-64 overflow-y-auto">
+        <div className="flex flex-col gap-1 space-y-2  h-64 overflow-y-hidden">
           {loading ? (
             <div className="text-center dark:text-white py-4">Loading...</div>
           ) : searchResults.length > 0 ? (
             searchResults.map((video) => (
               <Link
                 key={video._id}
-                to={`/video/${video._id}`}
+                to={`/shorts/${video._id}`}
                 onClick={handleVideoSelect}
               >
                 <div className="flex items-center p-3 bg-[#303030] rounded cursor-pointer transition-colors duration-200">
@@ -127,7 +127,7 @@ const Searchbar = ({ isOpen, onClose, searchQuery, onSearchChange }) => {
             </div>
           ) : (
             <div className="text-center dark:text-white py-4">
-              Type to search videos by description
+              search videos
             </div>
           )}
         </div>

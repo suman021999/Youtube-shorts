@@ -6,11 +6,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import Sound from '../shorts/Sound';
 import Scfun from '../shorts/Scfun';
+import axios from 'axios';
 
 const VideoCard = ({ 
   videoUrl, 
   description = '', 
-  views = 0, 
+  views, 
   id, 
   isShort = false, 
   autoPlay = true,
@@ -92,20 +93,45 @@ const VideoCard = ({
     setShowCenterButton(true);
     resetTimeout();
   };
-
-  const handleVideoClick = (e) => {
+    // -------- CLICK HANDLER ----------
+  const handleVideoClick = async (e) => {
     if (isShort) {
       if (e.target === videoRef.current) {
         handlePlayPause();
       }
     } else {
       e.preventDefault();
+      try {
+        // increment views in backend
+        await axios.put(`${import.meta.env.VITE_VIDEO_URL}/views/${id}`);
+      } catch (err) {
+        console.error("Error updating views:", err);
+      }
+
+      // navigate to shorts page
       navigate(`/shorts/${id}`, { 
-        state: { videoUrl, description, views, id, owner }
+        state: { videoUrl, description, views: views + 1, id, owner }
       });
     }
   };
 
+
+ 
+
+
+
+  // helper to format views
+const formatViews = (num) => {
+  if (num >= 1000000000) {
+    return (num / 1000000000).toFixed(1).replace(/\.0$/, "") + "B";
+  } else if (num >= 1000000) {
+    return (num / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
+  } else if (num >= 1000) {
+    return (num / 1000).toFixed(1).replace(/\.0$/, "") + "K";
+  } else {
+    return num.toString();
+  }
+};
 
   const handleChannelClick = (e) => {
     e.preventDefault();
@@ -194,6 +220,8 @@ const VideoCard = ({
     console.error("Video URL is missing for video:", id);
     return null; // or render a placeholder
   }
+
+  
 
   return isShort ? (
 
@@ -360,7 +388,7 @@ const VideoCard = ({
               {description || 'No description'}
             </h2>
             <p className={`text-sm pb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-500'}`}>
-              {views} Views
+             {formatViews(views)} Views
             </p>
           </div>
         )}

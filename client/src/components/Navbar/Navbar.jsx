@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { toggleSidebar } from '../../hooks/sidebarSlice';
 import logo from "../../../public/youtube.svg";
@@ -19,7 +18,7 @@ const Navbar = () => {
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
   const dispatch = useDispatch();
   const location = useLocation();
-
+ 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -47,6 +46,8 @@ const Navbar = () => {
 
   // Check if current path is '/homes'
   const isHomesRoute = location.pathname === '/homes';
+
+
 
   return (
     <>
@@ -92,7 +93,8 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Theme Toggle Icons */}
+        
+             {/* Theme Toggle Icons */}
             <div className="hidden lg:flex items-center gap-4 ml-4">
               {isDarkMode ? (
                 <FaRegMoon
@@ -107,12 +109,31 @@ const Navbar = () => {
               )}
             </div>
 
-            {/* Mobile Search Icon only */}
-            <div className="lg:hidden flex items-center">
-              <CiSearch className="w-10 h-10" onClick={handleSearchClick} />
-            </div>
 
-            {/* Theme Toggle Icons mobile */}
+            {/* Mobile Search */}
+<div className="lg:hidden flex items-center">
+  {isSearchOpen ? (
+    <div className="flex items-center gap-2">
+      <input
+        type="text"
+        autoFocus
+        placeholder="Search videos..."
+        className="px-2 border-b border-[#9e9898d6] focus:outline-none w-[300px]  sm:w-[400px] md:w-[600px]"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      {/* <CiSearch className="w-5 h-5 text-gray-600" /> */}
+    </div>
+  ) : (
+    <CiSearch
+      className="w-10 h-10 cursor-pointer"
+      onClick={handleSearchClick} // opens search
+    />
+  )}
+</div>
+
+
+  {/* Theme Toggle Icons mobile */}
             <div className="lg:hidden flex items-center gap-4 ml-4">
               {isDarkMode ? (
                 <FaRegMoon
@@ -126,7 +147,22 @@ const Navbar = () => {
                 />
               )}
             </div>
+
+
+
+
+ 
           </div>
+
+
+
+
+
+
+
+
+
+          
 
           {/* Buttons */}
           <div className="gap-4 items-center lg:flex hidden">

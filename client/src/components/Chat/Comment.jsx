@@ -74,7 +74,7 @@ const Comment = ({
                     handleEdit(comment);
                     setShowOptions(null);
                   }}
-                  className="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-[#dbe1e330]"
+                  className="flex items-center w-full px-4 cursor-pointer py-2 text-sm hover:bg-gray-100 dark:hover:bg-[#dbe1e330]"
                 >
                   <MdEdit className="mr-2" /> Edit
                 </button>
@@ -83,7 +83,7 @@ const Comment = ({
                     handleDelete(comment.id);
                     setShowOptions(null);
                   }}
-                  className="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-[#dbe1e330]"
+                  className="flex items-center w-full px-4 cursor-pointer py-2 text-sm hover:bg-gray-100 dark:hover:bg-[#dbe1e330]"
                 >
                   <MdDelete className="mr-2" /> Delete
                 </button>
@@ -104,14 +104,14 @@ const Comment = ({
             <div className="flex justify-end space-x-2 mt-2">
               <button 
                 onClick={() => setEditingCommentId(null)}
-                className="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded-full"
+                className="px-3 py-1 text-sm text-gray-600 cursor-pointer hover:bg-gray-100 rounded-full"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleSaveEdit(comment.id)}
                 disabled={!editText.trim()}
-                className={`px-3 py-1 text-sm rounded-full ${editText.trim() ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+                className={`px-3 py-1 text-sm cursor-pointer rounded-full ${editText.trim() ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
               >
                 Save
               </button>
@@ -121,14 +121,14 @@ const Comment = ({
           <>
             <p className="text-sm mt-1">{comment.text}</p>
             <div className="flex items-center space-x-4 mt-1">
-              <button  onClick={() => handleLike(comment.id)} className="text-gray-500 flex items-center hover:text-gray-700 text-xs">
+              <button  onClick={() => handleLike(comment.id)} className="text-gray-500 flex items-center hover:text-gray-700 text-xs cursor-pointer">
                 <AiFillLike /> {comment.likes}
               </button>
-              <button onClick={() => handleDislike(comment.id)} className="text-gray-500 flex items-center hover:text-gray-700 text-xs">
+              <button onClick={() => handleDislike(comment.id)} className="text-gray-500 flex items-center hover:text-gray-700 text-xs cursor-pointer">
                 <AiFillDislike /> {comment.dislikes}
               </button>
               <button 
-                className="text-gray-500 hover:text-gray-700 text-xs"
+                className="text-gray-500 cursor-pointer hover:text-gray-700 text-xs"
                 onClick={() => setShowReplyInput(!showReplyInput)}
               >
                 Reply
@@ -157,14 +157,14 @@ const Comment = ({
                 <div className="flex justify-end space-x-2 mt-1">
                   <button
                     onClick={handleCancelReply}
-                    className="px-2 py-1 text-xs text-gray-600 hover:bg-gray-200 rounded-full"
+                    className="px-2 py-1 text-xs cursor-pointer text-gray-600 hover:bg-gray-200 rounded-full"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleReplySubmit}
                     disabled={!replyText.trim()}
-                    className={`px-2 py-1 block text-xs rounded-full ${replyText.trim() ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+                    className={`px-2 py-1 block text-xs cursor-pointer rounded-full ${replyText.trim() ? 'bg-blue-500 text-white hover:bg-blue-600' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
                   >
                     Reply
                   </button>
