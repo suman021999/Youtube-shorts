@@ -364,7 +364,7 @@ const formatViews = (num) => {
     </section>
     </> 
   ) : (
-    <div className={`${isShort ? '' : 'lg:w-[15vw] mb-20 lg:mb-0 rounded-lg p-2 hover:bg-[#b3b0b04b]'}`}>
+    <div className={`${isShort ? '' : 'lg:w-[15vw] mb-4 lg:mb-0 rounded-lg p-2 hover:bg-[#b3b0b04b]'}`}>
       <Link 
         to={`/shorts/${id}`}
         onClick={handleVideoClick}
