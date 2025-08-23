@@ -59,7 +59,7 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_AUTH_URL}/api/v1/auth/login`,
+        `${import.meta.env.VITE_AUTH_URL}/login`,
         signInForm
       );
 
@@ -82,7 +82,7 @@ const LoginPage = () => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_AUTH_URL}/api/v1/auth/register`,
+        `${import.meta.env.VITE_AUTH_URL}/register`,
         {
           username: signUpForm.username,
           email: signUpForm.email,
@@ -109,11 +109,11 @@ const LoginPage = () => {
 
     try {
       const res = await axios.post(
-        `${import.meta.env.VITE_AUTH_URL}/api/v1/auth/google`,
+        `${import.meta.env.VITE_AUTH_URL}/google`,
         { token }
       );
 
-      console.log("Google login success:", res.data);
+      // console.log("Google login success:", res.data);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       navigate("/homes");
