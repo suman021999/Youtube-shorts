@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { toggleSidebar } from '../../hooks/sidebarSlice';
+import { toggleSidebar } from "../../hooks/sidebarSlice";
 import logo from "../../../public/youtube.svg";
 import { CiSearch } from "react-icons/ci";
 import { GoPlus } from "react-icons/go";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { FaRegSun, FaRegMoon } from "react-icons/fa";
-import { useSelector, useDispatch } from 'react-redux';
-import { toggleTheme } from '../../hooks/themeSlice'; 
-import Searchbar from '../searchbar/Searchbar';
-import { Link, useLocation } from "react-router-dom"
+import { useSelector, useDispatch } from "react-redux";
+import { toggleTheme } from "../../hooks/themeSlice";
+import Searchbar from "../searchbar/Searchbar";
+import { Link, useLocation } from "react-router-dom";
 import Login from "../auth/g_login";
 
 const Navbar = () => {
@@ -18,7 +18,7 @@ const Navbar = () => {
   const isDarkMode = useSelector((state) => state.theme.isDarkMode);
   const dispatch = useDispatch();
   const location = useLocation();
- 
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -45,16 +45,22 @@ const Navbar = () => {
   };
 
   // Check if current path is '/homes'
-  const isHomesRoute = location.pathname === '/homes';
-
-
+  const isHomesRoute = location.pathname === "/homes";
 
   return (
     <>
       <section
-        className={`fixed top-0 left-0 z-50 w-full ${isHomesRoute ? "h-[20vh]" : "h-20"} border-[#2777a0] transition-all duration-300 
+        className={`fixed top-0 left-0 z-50 w-full ${
+          isHomesRoute ? "h-[20vh]" : "h-20"
+        } border-[#2777a0] transition-all duration-300 
           ${isDarkMode ? "bg-[#1E1E1E]" : "bg-[#f4f2f2]"}
-           ${isHomesRoute && scrolled ? (isDarkMode ? "lg:dark:bg-[#030303e4]" : "lg:bg-[#f4f2f2e8]") : ""}`}
+           ${
+             isHomesRoute && scrolled
+               ? isDarkMode
+                 ? "lg:dark:bg-[#030303e4]"
+                 : "lg:bg-[#f4f2f2e8]"
+               : ""
+           }`}
         style={{
           backdropFilter: scrolled ? "lg:blur(10px)" : "none",
           WebkitBackdropFilter: scrolled ? "lg:blur(10px)" : "none",
@@ -70,7 +76,9 @@ const Navbar = () => {
               />
             </div>
             <div className="flex items-center justify-center">
-              <Link to="/homes"><img src={logo} alt="" className="h-10 w-10" /></Link>
+              <Link to="/homes">
+                <img src={logo} alt="" className="h-10 w-10" />
+              </Link>
             </div>
           </div>
 
@@ -87,14 +95,13 @@ const Navbar = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
-              
-              <div className="py-4 border border-[#9e9898d6] rounded-r-4xl w-[100px] h-10 flex items-center justify-center hover:bg-[#cccaca95]"> 
+
+              <div className="py-4 border border-[#9e9898d6] rounded-r-4xl w-[100px] h-10 flex items-center justify-center hover:bg-[#cccaca95]">
                 <CiSearch className="w-6 h-6" />
               </div>
             </div>
 
-        
-             {/* Theme Toggle Icons */}
+            {/* Theme Toggle Icons */}
             <div className="hidden lg:flex items-center gap-4 ml-4">
               {isDarkMode ? (
                 <FaRegMoon
@@ -109,31 +116,29 @@ const Navbar = () => {
               )}
             </div>
 
-
             {/* Mobile Search */}
-<div className="lg:hidden flex items-center">
-  {isSearchOpen ? (
-    <div className="flex items-center gap-2">
-      <input
-        type="text"
-        autoFocus
-        placeholder="Search videos..."
-        className="px-2 border-b border-[#9e9898d6] focus:outline-none w-[300px]  sm:w-[400px] md:w-[600px]"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-      />
-      {/* <CiSearch className="w-5 h-5 text-gray-600" /> */}
-    </div>
-  ) : (
-    <CiSearch
-      className="w-10 h-10 cursor-pointer"
-      onClick={handleSearchClick} // opens search
-    />
-  )}
-</div>
+            <div className="lg:hidden flex items-center">
+              {isSearchOpen ? (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    autoFocus
+                    placeholder="Search videos..."
+                    className="px-2 border-b border-[#9e9898d6] focus:outline-none w-[300px]  sm:w-[400px] md:w-[600px]"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  {/* <CiSearch className="w-5 h-5 text-gray-600" /> */}
+                </div>
+              ) : (
+                <CiSearch
+                  className="w-10 h-10 cursor-pointer"
+                  onClick={handleSearchClick} // opens search
+                />
+              )}
+            </div>
 
-
-  {/* Theme Toggle Icons mobile */}
+            {/* Theme Toggle Icons mobile */}
             <div className="lg:hidden flex items-center gap-4 ml-4">
               {isDarkMode ? (
                 <FaRegMoon
@@ -147,22 +152,7 @@ const Navbar = () => {
                 />
               )}
             </div>
-
-
-
-
- 
           </div>
-
-
-
-
-
-
-
-
-
-          
 
           {/* Buttons */}
           <div className="gap-4 items-center lg:flex hidden">
@@ -172,16 +162,16 @@ const Navbar = () => {
                 Create
               </div>
             </Link>
-            
-            <Login/>
+
+            <Login />
           </div>
         </div>
       </section>
 
       {/* Searchbar overlay */}
-      <Searchbar 
-        isOpen={isSearchOpen} 
-        onClose={handleSearchClose} 
+      <Searchbar
+        isOpen={isSearchOpen}
+        onClose={handleSearchClose}
         searchQuery={searchQuery}
         onSearchChange={handleSearchChange}
       />
