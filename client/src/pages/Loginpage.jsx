@@ -113,7 +113,7 @@ const LoginPage = () => {
         { token }
       );
 
-      console.log("Google login success:", res.data);
+      // console.log("Google login success:", res.data);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
       navigate("/homes");
