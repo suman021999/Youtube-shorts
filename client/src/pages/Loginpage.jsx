@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from "axios";
@@ -333,3 +332,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+

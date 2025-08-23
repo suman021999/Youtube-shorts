@@ -1,7 +1,12 @@
-
 import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/user.model.js';
+
+
+
+
+
+
 
 
 //authMiddleware
@@ -52,4 +57,7 @@ export const protect = asyncHandler(async (req, res, next) => {
     throw new Error('Not authorized, token failed');
   }
 });
+
+
+
 
