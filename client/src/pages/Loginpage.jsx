@@ -1,9 +1,10 @@
+
 import React, { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../index.css";
+import { GoogleLogin } from "@react-oauth/google";
 
 const LoginPage = () => {
   const [isRightActive, setIsRightActive] = useState(false);
@@ -13,23 +14,23 @@ const LoginPage = () => {
   const [signInError, setSignInError] = useState("");
   const [signUpError, setSignUpError] = useState("");
   const navigate = useNavigate();
-  
+
   // Form states
   const [signInForm, setSignInForm] = useState({
     email: "",
-    password: ""
+    password: "",
   });
-  
+
   const [signUpForm, setSignUpForm] = useState({
-    username: "",  // Changed from 'name'
+    username: "",
     email: "",
-    password: ""
+    password: "",
   });
 
   const handleSignInChange = (e) => {
     setSignInForm({
       ...signInForm,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
     setSignInError("");
   };
@@ -37,7 +38,7 @@ const LoginPage = () => {
   const handleSignUpChange = (e) => {
     setSignUpForm({
       ...signUpForm,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
     setSignUpError("");
   };
@@ -56,18 +57,20 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     setSignInError("");
-    
+
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_AUTH_URL}/login`,
+        `${import.meta.env.VITE_AUTH_URL}/api/v1/auth/login`,
         signInForm
       );
-      
+
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
       navigate("/homes");
     } catch (err) {
-      setSignInError(err.response?.data?.message || "Login failed. Please try again.");
+      setSignInError(
+        err.response?.data?.message || "Login failed. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -77,32 +80,52 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     setSignUpError("");
-    
+
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_AUTH_URL}/register`,
+        `${import.meta.env.VITE_AUTH_URL}/api/v1/auth/register`,
         {
           username: signUpForm.username,
           email: signUpForm.email,
-          password: signUpForm.password
+          password: signUpForm.password,
         }
       );
-      
+
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("user", JSON.stringify(response.data.user));
-      navigate("/");  // Changed from '/*'
+      navigate("/");
     } catch (err) {
-      setSignUpError(err.response?.data?.message || "Registration failed. Please try again.");
+      setSignUpError(
+        err.response?.data?.message ||
+          "Registration failed. Please try again."
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  // const handleGoogleAuth = () => {
-  //   window.location.href = `${import.meta.env.VITE_AUTH_URL}/google`; 
-  // };
+  // ✅ Google OAuth handlers
+  const handleSuccess = async (credentialResponse) => {
+    const token = credentialResponse.credential;
 
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_AUTH_URL}/api/v1/auth/google`,
+        { token }
+      );
 
+      console.log("Google login success:", res.data);
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+      navigate("/homes");
+    } catch (error) {
+      console.error("Google login failed:", error);
+    }
+  };
+
+  const handleError = () => {
+    console.log("Google Login Failed");
+  };
 
   return (
     <div className="flex justify-center items-center flex-col bg-black min-h-screen font-['Montserrat'] p-4">
@@ -119,8 +142,13 @@ const LoginPage = () => {
               : "md:opacity-0 md:z-10 opacity-0 z-10"
           }`}
         >
-          <form onSubmit={handleSignUp} className="bg-white flex flex-col items-center justify-center md:px-12 px-8 h-full text-center">
-            <h1 className="font-bold m-0 text-xl md:text-2xl mb-4">Create Account</h1>
+          <form
+            onSubmit={handleSignUp}
+            className="bg-white flex flex-col items-center justify-center md:px-12 px-8 h-full text-center"
+          >
+            <h1 className="font-bold m-0 text-xl md:text-2xl mb-4">
+              Create Account
+            </h1>
 
             {signUpError && (
               <div className="w-full max-w-sm mb-2 p-2 bg-red-100 text-red-600 rounded text-sm">
@@ -131,7 +159,7 @@ const LoginPage = () => {
             <input
               type="text"
               name="username"
-              placeholder="username"
+              placeholder="Username"
               value={signUpForm.username}
               onChange={handleSignUpChange}
               required
@@ -154,7 +182,7 @@ const LoginPage = () => {
                 value={signUpForm.password}
                 onChange={handleSignUpChange}
                 required
-                minLength="8"  // Changed from 6 to match backend
+                minLength="8"
                 className="bg-gray-100 border-none py-3 px-4 my-2 text-black w-full max-w-sm rounded pr-10 text-sm md:text-base"
               />
               <button
@@ -166,16 +194,10 @@ const LoginPage = () => {
               </button>
             </div>
 
-            {/* <div className="md:my-5 my-2 flex gap-2">
-              <button 
-                type="button"
-                onClick={() => handleGoogleAuth("register")}
-                className="flex gap-2 items-center cursor-pointer"
-              >
-                <FcGoogle size={24} />
-                <span>Sign up with Google</span>
-              </button>
-            </div> */}
+            {/* ✅ Google Sign Up */}
+            <div className="md:my-5 my-2 flex gap-2">
+              <GoogleLogin onSuccess={handleSuccess} onError={handleError} />
+            </div>
 
             <button
               type="button"
@@ -185,7 +207,7 @@ const LoginPage = () => {
               Already have an account? Sign In
             </button>
 
-            <button 
+            <button
               type="submit"
               disabled={loading}
               className="rounded-full bg-red-500 text-white text-xs font-bold py-3 px-8 md:px-12 my-2 uppercase tracking-wider border border-red-500 hover:bg-red-600 transition disabled:opacity-50"
@@ -201,7 +223,10 @@ const LoginPage = () => {
             isRightActive ? "md:translate-x-full opacity-0" : "opacity-100"
           }`}
         >
-          <form onSubmit={handleSignIn} className="bg-white flex flex-col items-center justify-center md:px-12 px-8 h-full text-center">
+          <form
+            onSubmit={handleSignIn}
+            className="bg-white flex flex-col items-center justify-center md:px-12 px-8 h-full text-center"
+          >
             <h1 className="font-bold m-0 text-xl md:text-2xl mb-4">Sign In</h1>
 
             {signInError && (
@@ -238,16 +263,10 @@ const LoginPage = () => {
               </button>
             </div>
 
-            {/* <div className="md:my-5 my-2 flex gap-2 ">
-              <button 
-                type="button"
-                onClick={() => handleGoogleAuth("login")}
-                className="flex gap-2 items-center cursor-pointer"
-              >
-                <FcGoogle size={24} />
-                <span>Sign in with Google</span>
-              </button>
-            </div> */}
+            {/* ✅ Google Sign In */}
+            <div className="md:my-5 my-2 flex gap-2">
+              <GoogleLogin onSuccess={handleSuccess} onError={handleError} />
+            </div>
 
             <button
               type="button"
@@ -256,7 +275,7 @@ const LoginPage = () => {
             >
               Don't have an account? Sign Up
             </button>
-            <button 
+            <button
               type="submit"
               disabled={loading}
               className="rounded-full bg-red-500 text-white text-xs font-bold py-3 px-12 my-2 uppercase tracking-wider border border-red-500 hover:bg-red-600 transition disabled:opacity-50"

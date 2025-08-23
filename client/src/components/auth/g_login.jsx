@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
@@ -8,84 +9,84 @@ const Login = () => {
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
   const navigate = useNavigate();
 
-
+  // ✅ Get user from localStorage (same as LoginPage)
+  const user = JSON.parse(localStorage.getItem("user"));
+  const isLoggedIn = !!user;
 
   const handleLogout = async () => {
     try {
-      await axios.get(`${import.meta.env.VITE_AUTH_URL}/logout`, {
-        withCredentials: true
+      await axios.get(`${import.meta.env.VITE_AUTH_URL}/api/v1/auth/logout`, {
+        withCredentials: true,
       });
-      
-      // Clear local storage
+
+      // Clear auth data
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      
-      // Redirect to login page
+
       navigate("/");
     } catch (error) {
       console.error("Logout failed:", error);
-      // Even if API logout fails, clear client-side auth
+
+      // Still clear client-side
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       navigate("/");
     }
   };
 
-    // Get user data from localStorage
-  const user = JSON.parse(localStorage.getItem("user"));
-  const isLoggedIn = !!user;
-
-  // Avatar display logic
+  // ✅ Avatar display
   const renderAvatar = () => {
     if (!isLoggedIn) {
       return <span className="text-sm">?</span>;
     }
-    
-    // For Google users with avatar image
+
     if (user.avatar) {
-      return (    
-        <p>{user.avatar}</p>
+      return (
+        <img
+          src={user.avatar}
+          alt="avatar"
+          className="w-10 h-10 rounded-full object-cover"
+        />
       );
     }
-    
-    // For regular users - show initials
-    const initials = user.username 
+
+    const initials = user.username
       ? user.username.slice(0, 2).toUpperCase()
       : "US";
-    
-    return <span className="text-sm">{initials}</span>;
+
+    return <span className="text-sm font-semibold">{initials}</span>;
   };
 
   return (
-    <>
-      <div className="relative">
-        <div
-          className="w-10 h-10 bg-red-800 text-amber-50 flex items-center justify-center rounded-full cursor-pointer overflow-hidden"
-          onClick={() => setShowLogoutPopup(!showLogoutPopup)}
-        >
-          {renderAvatar()}
-        </div>
-
-        {showLogoutPopup && (
-          <div
-            className={`absolute top-12 right-0 rounded-lg p-2 w-40 z-50 ${
-              isDarkMode ? "dark:bg-[#030303e4]" : "bg-[#b3b0b034]"
-            }`}
-          >
-            <div
-              className={`py-2 px-3 rounded cursor-pointer ${
-                isDarkMode
-                  ? "dark:hover:bg-[#dbe1e330]"
-                  : "hover:bg-[#b3b0b043] hover:bg-opacity-20"
-              }`}
-              onClick={handleLogout}
-            >
-              Sign out
-            </div>
-          </div>
-        )}
+    <div className="relative">
+      {/* Avatar Button */}
+      <div
+        className="w-10 h-10 bg-red-600 text-white flex items-center justify-center rounded-full cursor-pointer overflow-hidden"
+        onClick={() => setShowLogoutPopup(!showLogoutPopup)}
+      >
+        {renderAvatar()}
       </div>
-    </>
+
+      {/* Dropdown */}
+      {showLogoutPopup && (
+        <div
+          className={`absolute top-12 right-0 rounded-lg p-2 w-40 z-50 shadow-md ${
+            isDarkMode ? "bg-[#1e1e1e]" : "bg-white"
+          }`}
+        >
+          <div
+            className={`py-2 px-3 rounded cursor-pointer ${
+              isDarkMode
+                ? "hover:bg-[#333333]"
+                : "hover:bg-gray-100"
+            }`}
+            onClick={handleLogout}
+          >
+            Sign out
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

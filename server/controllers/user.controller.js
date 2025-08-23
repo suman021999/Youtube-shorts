@@ -1,4 +1,4 @@
-
+import { OAuth2Client } from "google-auth-library";
 import asyncHandler from 'express-async-handler';
 import jwt from 'jsonwebtoken';
 import bcrypt from "bcrypt"
@@ -15,29 +15,88 @@ const generateToken = (user) => {
   );
 };
 
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+
+
+// Google Login
+export const googleLogin = async (req, res) => {
+  try {
+    const { token } = req.body; // frontend will send Google ID token
+
+    if (!token) {
+      return res.status(400).json({ msg: "No token provided" });
+    }
+
+    // Verify token with Google
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { email, name, picture, sub: googleId } = payload;
+
+    // Check if user already exists
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      // Create new user if not exists
+      user = new User({
+        username: name.toLowerCase().replace(/\s+/g, "_"),
+        email,
+        provider: "google",
+        avatar: picture,
+        password: null, // no password for google users
+      });
+      await user.save();
+    }
+
+    // Generate JWT
+    const jwtToken = generateToken(user);
+
+    res.json({
+      success: true,
+      token: jwtToken,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+        avatar: user.avatar,
+        provider: user.provider,
+      },
+    });
+  } catch (err) {
+    console.error("Google login error:", err);
+    res.status(500).json({ msg: "Google login failed" });
+  }
+};
+
+
 // auth.controller.js
-// export const handleGoogleAuth = asyncHandler(async (req, res) => {
-//   if (!req.user) {
-//     res.status(401);
-//     throw new Error('Google authentication failed');
-//   }
+export const handleGoogleAuth = asyncHandler(async (req, res) => {
+  if (!req.user) {
+    res.status(401);
+    throw new Error('Google authentication failed');
+  }
 
-//   const token = generateToken(req.user);
-//   const userData = {
-//     _id: req.user._id,
-//     name: req.user.name,
-//     email: req.user.email,
-//     avatar: req.user.avatar,
-//     provider: req.user.provider
-//   };
+  const token = generateToken(req.user);
+  const userData = {
+    _id: req.user._id,
+    name: req.user.name,
+    email: req.user.email,
+    avatar: req.user.avatar,
+    provider: req.user.provider
+  };
 
-//   // For API responses
-//   res.status(200).json({
-//     success: true,
-//     ...userData,
-//     token
-//   });
-// });
+  // For API responses
+  res.status(200).json({
+    success: true,
+    ...userData,
+    token
+  });
+});
 
 
 
@@ -156,6 +215,7 @@ export const logout = asyncHandler(async (req, res) => {
   
   res.status(200).json({ message: 'Logged out successfully' });
 });
+
 
 
 

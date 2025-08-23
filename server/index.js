@@ -7,7 +7,7 @@ import vedioRouter from "./routes/vedio.route.js";
 import CommentRouter from "./routes/comment.route.js";
 import database from './db/database.js';
 import cookieParser from 'cookie-parser';
-// import { configurePassport } from './config/passport.config.js';
+
 
 // Load environment variables
 dotenv.config();
@@ -17,7 +17,7 @@ const app = express();
 
 // Database connection
 database();
-// configurePassport();
+
 
 // CORS Configuration
 const corsOptions = {
@@ -46,4 +46,5 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);
 });
+
 

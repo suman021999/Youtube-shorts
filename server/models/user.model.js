@@ -15,6 +15,19 @@ const userSchema = new Schema(
       lowercase: true,
       trim: true,
     },
+
+
+    googleId: {
+  type: String,
+  unique: true,
+  sparse: true, // allows null for non-google users
+},
+provider: {
+  type: String,
+  enum: ["local", "google"],
+  default: "local",
+},
+
     password: {
       type: String,
       // Make password optional for OAuth users
@@ -22,17 +35,7 @@ const userSchema = new Schema(
         return !(this.googleId || this.provider);
       }
     },
-    // Add OAuth-specific fields
-    // googleId: {
-    //   type: String,
-    //   unique: true,
-    //   sparse: true
-    // },
-    // provider: {
-    //   type: String,
-    //   enum: ['local', 'google'], 
-    //   default: 'local'
-    // },
+
     avatar: {
       type: String 
     },
@@ -58,5 +61,4 @@ userSchema.pre('save', function(next) {
 });
 
 export const User = mongoose.model("User", userSchema);
-
 
