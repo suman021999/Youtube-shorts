@@ -1,6 +1,6 @@
 import {configureStore} from '@reduxjs/toolkit'
 import themeReducer from './themeSlice.js';
-import sidebarReducer from './sidebarslice.js'
+import sidebarReducer from './sidebarSlice.js'
 import blurReducer from './blurSlice.js';
 
 
