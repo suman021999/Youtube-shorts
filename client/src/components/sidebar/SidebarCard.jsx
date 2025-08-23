@@ -61,20 +61,47 @@ const handleShortsClick = async (e) => {
 };
 
 
+ // Avatar display with better fallbacks
   const renderAvatar = () => {
     if (!isLoggedIn) {
-      return <span className="text-sm">?</span>;
+      return (
+        <div className="w-10 h-10 bg-gray-400 text-white flex items-center justify-center rounded-full cursor-pointer">
+          <span className="text-sm">?</span>
+        </div>
+      );
     }
-    
+
     if (user.avatar) {
-      return <p>{user.avatar} </p>;
+      const isImage =
+        typeof user.avatar === "string" &&
+        (user.avatar.startsWith("http") || 
+         user.avatar.startsWith("data:image"));
+
+      if (isImage) {
+        return (
+          <img
+            src={user.avatar}
+            alt="User avatar"
+            className="w-10 h-10 rounded-full object-cover"
+            onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'flex';
+            }}
+          />
+        );
+      }
     }
-    
-    const initials = user.username 
+
+    // Fallback: show initials
+    const initials = user.username
       ? user.username.slice(0, 2).toUpperCase()
       : "US";
-    
-    return <span className="text-sm">{initials}</span>;
+
+    return (
+      <div className="w-10 h-10 bg-red-600 text-white flex items-center justify-center rounded-full">
+        <span className="text-sm font-semibold">{initials}</span>
+      </div>
+    );
   };
 
   const handleLogout = async () => {
